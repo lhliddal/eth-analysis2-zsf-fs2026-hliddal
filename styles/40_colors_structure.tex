@@ -92,6 +92,18 @@
   \ZSFSetChapterPaletteByIndex{\the\ZSFchapterPaletteIndex}%
 }
 
+\newif\ifzsfAfterChapterBar
+\zsfAfterChapterBarfalse
+\newcommand{\ZSFMarkAfterChapterBar}{\global\zsfAfterChapterBartrue}
+% Kollabiert den before-skip der SubsectionBar auf \ZSFsubsectionAfterChapterGap,
+% wenn sie direkt nach einer ChapterBar steht. Reset nach Verwendung.
+\newcommand{\ZSFCollapseAfterChapterBar}{%
+  \ifzsfAfterChapterBar
+    \vspace*{\dimexpr\ZSFsubsectionAfterChapterGap-\ZSFsubsectionBarBeforeSkip\relax}%
+    \global\zsfAfterChapterBarfalse
+  \fi
+}
+
 \makeatletter
 \newcommand{\ZSFPostChapterSpacing}{\vspace*{\ZSFpostChapterNudge}}
 \newcommand{\StartChapter}[2][]{%
@@ -101,6 +113,7 @@
   \setcounter{subsection}{0}
   \if\relax\detokenize{#1}\relax\else\label{#1}\fi
   \ChapterBar{\thesection. #2}
+  \ZSFMarkAfterChapterBar
   \ZSFPostChapterSpacing
 }
 \makeatother
@@ -117,5 +130,6 @@
   \renewcommand{\chaptercolorlight}{ChapterColor0Light}
   \setcounter{subsection}{0}
   \ChapterBar{#1}
+  \ZSFMarkAfterChapterBar
   \ZSFPostChapterSpacing
 }

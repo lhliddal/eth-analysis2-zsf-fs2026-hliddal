@@ -28,6 +28,36 @@
   \end{chapterbar}
 }
 
+% ------------------------------------------------------------
+% Dokument-Titel-Masthead (einmalig, vor dem ersten Kapitel)
+% Kompakte Variante fuer Analysis: knapper Platz im 4-Spalten-Layout.
+% ------------------------------------------------------------
+\newtcolorbox{zsftitleheader}[1][]{
+  enhanced jigsaw,
+  breakable=false,
+  colback=ChapterColor0,
+  colframe=ChapterColor0,
+  boxrule=0pt,
+  boxsep=0pt,
+  left=\ZSFspaceS,
+  right=\ZSFspaceS,
+  top=0.8pt,
+  bottom=0.8pt,
+  before skip=0pt,
+  after skip=0pt,
+  halign=center,
+  #1
+}
+\newcommand{\ZSFTitleHeader}[2]{%
+  \penalty-500
+  \begin{zsftitleheader}
+    \sffamily
+    {\color{white}\fontsize{7.5bp}{8bp}\bfseries\selectfont #1\,%
+    \color{white!85}\fontsize{5.8bp}{6bp}\mdseries\itshape\selectfont \textemdash{}~von~#2\par}%
+  \end{zsftitleheader}
+  \penalty10000
+}
+
 \newtcolorbox{subsectionbar}[1][] {
   enhanced jigsaw,
   breakable=false,
@@ -39,7 +69,7 @@
   right=\ZSFspaceS,
   top=\ZSFspaceS,
   bottom=\ZSFspaceS,
-  before skip=5pt,
+  before skip=\ZSFsubsectionBarBeforeSkip,
   after skip=\ZSFspaceS,
   fontupper=\ZSFfontSection,
   #1
@@ -49,6 +79,7 @@
 \newcommand{\SubsectionBarNumbered}[2][]{
   \BreakIfNotEnoughSpace
   \penalty-500
+  \ZSFCollapseAfterChapterBar
   \refstepcounter{subsection}
   \if\relax\detokenize{#1}\relax\else\label{#1}\fi
   \begin{subsectionbar}
@@ -59,6 +90,7 @@
 \newcommand{\SubsectionBarStar}[2][]{
   \BreakIfNotEnoughSpace
   \penalty-500
+  \ZSFCollapseAfterChapterBar
   \if\relax\detokenize{#1}\relax\else\label{#1}\fi
   \begin{subsectionbar}
   \textcolor{white}{#2}
@@ -218,6 +250,33 @@
 \newcommand{\ZSFDerivationInlineCase}[3]{%
   \GoalCondition{#1}%
   \GoalStep{#2 = \GoalTargetBox{$\displaystyle #3$}}%
+}
+
+% Kompaktere Variante mit reduziertem vertikalen Abstand zwischen Bedingung und Umformung
+\newcommand{\ZSFDerivationInlineCaseCompact}[3]{%
+  {%
+    \setlength{\parskip}{0pt}%
+    \par\raggedright%
+    \tcbox[
+      on line,
+      enhanced,
+      boxrule=1.5pt,
+      colback=white,
+      colframe=\chaptercolorlight!22,
+      borderline={0.2pt}{0pt}{black},
+      arc=1pt,
+      boxsep=0pt,
+      left=0pt,
+      right=0pt,
+      top=0pt,
+      bottom=0pt,
+      nobeforeafter,
+      tcbox raise base
+    ]{\ZSFfontNote #1}\par
+    \vspace{0pt}%
+    \centering$\displaystyle #2 = \GoalTargetBox{$\displaystyle #3$}$\par
+    \vspace{-0.5pt}%
+  }%
 }
 
 \newcommand{\GoalCard}[4][]{%
