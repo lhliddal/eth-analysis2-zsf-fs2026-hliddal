@@ -1,0 +1,62 @@
+\StartChapter{Folgen und Reihen von Loris Hliddal}
+
+\SubsectionBar{Folgen\ZSFScriptRef{51}}
+Ordnet man jeder natürlichen Zahl $n$ eine reelle Zahl $a_n$ zu, entsteht eine \ZSFkeyword{Folge} $(a_n) = a_1, a_2, \dots, a_n$
+
+Gilt $a_{n+1} \geq a_n$, ist eine Folge \ZSFkeyword{monoton wachsend}. Gilt $a_{n+1} \leq a_n$, ist eine Folge \ZSFkeyword{monoton fallend}. Sind alle Glieder einer Folge in einem endlich breiten, waagerechten Parallelstreifen enthalten, ist die Folge \ZSFkeyword{beschränkt}
+
+$\Rightarrow$ Ist eine Folge sowohl monoton wachsend / fallend wie auch beschränkt, bezeichnet man sie als \ZSFkeyword{konvergent}
+
+\textVorBox{Eine Folge wird als \ZSFkeyword{Nullfolge} bezeichnet, wenn:}
+\begin{formulabox}
+    $\displaystyle \ZSFlimAuto{n \to \infty} a_n = 0$
+\end{formulabox}
+\textNachBox{woraus allerdings weder folgt, dass $(a_n)$ monoton wachsend / fallend ist, noch dass $\ZSFsumAuto{n=0}{\infty} a_n < \infty$}
+
+
+\SubsectionBar{Reihen \& Konvergenzbereich\ZSFScriptRef{51,77}}
+\textVorBox{Eine \ZSFkeyword{Reihe} ist die Summe der Glieder einer Folge $s_n = \ZSFsumAuto{n=1}{\infty} a_n$}
+\begin{fulltablebox}{C | C}
+    \TableTitle[(konvergiert für $|x| < 1$)]{Geometrische Reihe} & \TableTitle{Alternierende\TableTitleBreak geometrische Reihe} \\ \hline
+    \ZSFrowColor
+        $\displaystyle \ZSFsumAuto{k=0}{\infty} x^k = \frac{1}{1-x}$ & $\displaystyle \ZSFsumAuto{k=0}{\infty} (-1)^k x^k = \frac{1}{1+x}$
+\end{fulltablebox}
+
+Eine Reihe konvergiert, wenn $\ZSFlimAuto{n \to \infty} s_n$ konvergiert
+
+Die Menge der Zahlen $x$ für die eine Reihe konvergiert, wird als \ZSFkeyword{Konvergenzbereich} $[-\rho+x_0, \rho+x_0]$ bezeichnet
+
+\textVorBox{Der \ZSFkeyword{Konvergenzradius} $\rho$ ist die grösste Zahl, für die eine Reihe konvergiert. In gewissen Fällen kann der Konvergenzradius mit einem Limes bestimmt werden:}
+\begin{formulabox}
+    $\displaystyle \rho = \ZSFlimAuto{k \to \infty} \left| \frac{a_k}{a_{k+1}} \right|$
+\end{formulabox}
+\textNachBox{Beide Seiten des Intervalls müssen separat betrachtet werden}
+
+\begin{fulltablebox}{h{0.65} | Z{1.35}}
+    \displaystyle \ZSFsumAuto{n=1}{\infty} \frac{a}{n} & konvergiert nie, da $\frac{1}{n}$ divergiert \\ \hline
+    \displaystyle \ZSFsumAuto{k=0}{\infty} \left( \frac{bx+c}{d} \right)^k & konvergiert für $x$, wenn $|(\dots)| < 1$ \\ \hline
+    \displaystyle \ZSFsumAuto{k=0}{\infty} \frac{ \left(\frac{bx+c}{d}\right)^k }{a^k} & konvergiert für $x$, wenn $-a < (\dots) < a$ \\
+\end{fulltablebox}
+
+\SubsectionBar{Taylorreihe\ZSFScriptRef{77,78}}
+\textVorBox{Eine \ZSFkeyword{Taylorreihe} approximiert eine Funktion um den Punkt $x_0$:}
+\begin{formulabox}
+    $\displaystyle \ZSFsumAuto{k=0}{\infty} \frac{f^{(k)}(x_0)}{k!} (x - x_0)^k = \ZSFsumAuto{k=0}{\infty} a_k (x - x_0)^k$
+\end{formulabox}
+\textNachBox{Für $(x - x_0) < 1$ konvergiert die Taylorreihe}
+
+Das Taylorpolynom einer ungeraden Funktion besitzt nur ungerade Indizes und umgekehrt
+
+\begin{goalbox}[Beispiele für die Entwicklung einer Taylorreihe]
+        \ZSFDerivationInlineCase
+            {$\frac{1}{x+3}$ um $x_0 = 1$}
+            {\frac{1}{x+3} = \frac{1}{(x-1)+4} = \frac{1}{4} \frac{1}{1 - \frac{-(x-1)}{4}}}
+            {\frac{1}{4} \ZSFsumAuto{k=0}{\infty} \left(-\frac{1}{4}\right)^k (x-1)^k}
+
+    \formulasep
+
+        \ZSFDerivationInlineCase
+            {$\frac{1}{x+2}$ um $x_0 = 0$}
+            {\frac{1}{x+2} = \frac{1}{2-(-x)} = \frac{1}{2} \frac{1}{1 - \left(-\frac{x}{2}\right)}}
+            {\frac{1}{2} \ZSFsumAuto{k=0}{\infty} \left(-\frac{1}{2}\right)^k x^k}
+\end{goalbox}

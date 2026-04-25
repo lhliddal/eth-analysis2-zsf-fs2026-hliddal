@@ -1,0 +1,93 @@
+% ============================================================
+% LAYOUT AND SPACING
+% ============================================================
+
+\setlength{\parskip}{2.5pt plus 1pt minus 0.5pt}
+\setlength{\parindent}{0pt}
+
+\widowpenalty=10000
+\clubpenalty=10000
+\brokenpenalty=4000
+\predisplaypenalty=10000
+
+\raggedcolumns
+\newcounter{zsfFirstChap}\setcounter{zsfFirstChap}{1}
+
+% Kompakte Spacing-Skala (4 Stufen)
+\newlength{\ZSFspaceXS}          \setlength{\ZSFspaceXS}{1pt}
+\newlength{\ZSFspaceS}           \setlength{\ZSFspaceS}{2pt}
+\newlength{\ZSFspaceM}           \setlength{\ZSFspaceM}{4pt}
+\newlength{\ZSFspaceL}           \setlength{\ZSFspaceL}{8pt}
+
+% Abstand ober-/unterhalb von TextBlocks und Trennlinien
+\newlength{\ZSFspaceOuter}        \setlength{\ZSFspaceOuter}{3pt}
+\newlength{\ZSFspaceSep}          \setlength{\ZSFspaceSep}{3pt}
+
+\setlength{\ZSFtextMinPad}{\ZSFspaceXS}
+
+\setlength{\columnsep}{\ZSFspaceL} % Konsistent mit Skala
+\setlength{\multicolsep}{\ZSFspaceS}
+\setlength{\emergencystretch}{2em}
+\newlength{\ZSFbreakThreshold}   \setlength{\ZSFbreakThreshold}{4\baselineskip} % Mindesthöhe für BreakIfNotEnoughSpace
+\newlength{\ZSFpostChapterNudge} \setlength{\ZSFpostChapterNudge}{0pt}  % Korrektur nach Kapitelbalken (bei Bedarf anpassen)
+\newlength{\ZSFtitleBarHeight}    \setlength{\ZSFtitleBarHeight}{9.2pt}  % feste Hoehe aller Titelbalken
+
+% ============================================================
+% TEXT-BOX-BINDUNGEN (Klassen für Abstände)
+\newcommand{\ZSFRobustUnskip}{%
+  \ifdim\lastskip>0pt\relax\unskip\fi
+  \ifnum\lastpenalty=0\else\unpenalty\fi
+  \ifdim\lastskip>0pt\relax\unskip\fi
+}
+
+% Text, der zur Box DARÜBER gehört (Post-Box Text)
+\newcommand{\textNachBox}[1]{%
+    \par
+    \ZSFRobustUnskip % Löscht zu 100% verlässlich den Skip der Box (ohne manuelles Minus-Rechnen)
+    \vspace{\ZSFspaceXS}% Unser exakter Soll-Abstand
+    \begingroup
+    \setlength{\parskip}{0pt}% Kein zusätzlicher Absatz-Abstand!
+    \nopagebreak
+    {\small\color{TextNachBoxColor} \noindent #1\par}%
+    \endgroup
+    \addvspace{\ZSFspaceOuter}% Abstand zum nächsten Element
+}
+
+% Text, der zur Box DARUNTER gehört (Pre-Box Text)
+\newcommand{\textVorBox}[1]{%
+    \par
+    \addvspace{\ZSFspaceOuter}%
+    \begingroup
+    \setlength{\parskip}{0pt}% Kein zusätzlicher Absatz-Abstand!
+    {\small\color{TextVorBoxColor} \noindent #1\par}%
+    \endgroup
+    \nopagebreak
+    \vspace{\ZSFspaceXS}% Unser exakter Soll-Abstand
+    \vspace{-\ZSFspaceS}% Kompensiert den kommenden Box-Abstand
+}
+
+% ============================================================
+% TEXT-FORMEL-BINDUNGEN (Innerhalb von formulabox)
+% ============================================================
+
+% Titel/Text vor einer Formel (innerhalb der formulabox)
+\newcommand{\textVorFormel}[1]{%
+    \par
+    \begingroup
+    \setlength{\parskip}{0pt}% Kein zusätzlicher Absatz-Abstand!
+    \noindent\raggedright\textcolor{black!60}{\textbf{#1}}\par
+    \endgroup
+    \vspace{\ZSFspaceXS}% Unser exakter Soll-Abstand
+    \centering
+}
+
+% Erklärungstext nach einer Formel (innerhalb der formulabox)
+\newcommand{\textNachFormel}[1]{%
+    \par
+    \vspace{\ZSFspaceXS}% Unser exakter Soll-Abstand
+    \begingroup
+    \setlength{\parskip}{0pt}% Kein zusätzlicher Absatz-Abstand!
+    \noindent\raggedright\textcolor{black!60}{\small #1}\par
+    \endgroup
+    \centering
+}

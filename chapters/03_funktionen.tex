@@ -1,0 +1,280 @@
+\StartChapterOnNewColumn{Funktionen}
+
+\SubsectionBar{Eigenschaften\ZSFScriptRef{54}}
+
+Eine \ZSFkeyword{Funktion} $f: D(f) \to Z(f)$ bildet eine Menge auf einer anderen Menge ab. Sie besitzt einen Definitionsbereich $D(f)$, Zielbereich $Z(f)$ und einen Wertebereich / ein Bild $W(f) = \{f(x) | x \in D(f)\}$.
+
+\begin{fulltablebox}{C | C}
+    \TableTitle{Gerade Funktion} & \TableTitle{Ungerade Funktion} \\ \hline
+    \ZSFrowColor
+    $\displaystyle f(-x) = f(x)$ & $\displaystyle f(-x) = -f(x)$ \\
+\end{fulltablebox}
+
+Eine Funktion ist \ZSFkeyword{surjektiv}, wenn jeder Wert im Zielbereich angenommen wird: $Z(f) = W(f)$
+
+Eine Funktion ist \ZSFkeyword{injektiv}, wenn jede Horizontale den Graphen höchstens einmal schneidet: $f(x_1) = f(x_2) \Rightarrow x_1 = x_2$
+
+$\Rightarrow$ Eine Funktion ist \ZSFkeyword{bijektiv}, wenn sie injektiv und surjektiv ist. Bijektive Funktionen besitzen eine \ZSFkeyword{Umkehrfunktion / Inverse} mit $W(f^{-1}) = D(f)$ und $D(f^{-1}) = W(f)$
+
+\textVorBox{Eine Funktion $f(x)$ ist \ZSFkeyword{stetig} im Punkt $x = \xi$, wenn:}
+
+\begin{formulabox}
+    $\displaystyle \ZSFlimAuto{x \to \xi^-} f(x) = f(\xi) = \ZSFlimAuto{x \to \xi^+} f(x)$
+\end{formulabox}
+
+\SubsectionBar{Trigonometrische Funktionen\ZSFScriptRef{58,97,98,99}}
+
+\ZSFkeyword{Trigonometrische Funktionen} beschreiben Zusammenhänge zwischen Winkeln und Seitenverhältnissen.
+
+\begin{fulltablebox}{Z{1.6} | Y{0.9} | Y{0.9} | Y{0.9} | Y{0.9} | Y{0.9} | Y{0.9}}
+    $\alpha(^\circ)$ & $0^\circ$ & $30^\circ$ & $45^\circ$ & $60^\circ$ & $90^\circ$ & $180^\circ$ \\ 
+    $\alpha(\pi)$ & $0$ & $\pi/6$ & $\pi/4$ & $\pi/3$ & $\pi/2$ & $\pi$ \\ \hline
+    $\sin(\alpha)$ & $0$ & $1/2$ & $\sqrt{2}/2$ & $\sqrt{3}/2$ & $1$ & $0$ \\
+    $\cos(\alpha)$ & $1$ & $\sqrt{3}/2$ & $\sqrt{2}/2$ & $1/2$ & $0$ & $-1$ \\
+    $\tan(\alpha)$ & $0$ & $\sqrt{3}/3$ & $1$ & $\sqrt{3}$ & $\infty$ & $0$ \\
+\end{fulltablebox}
+
+\textVorBox{Der Cosinus ist eine gerade Funktion, der Sinus ist ungerade. Der Tangens ist der Quotient aus Sinus und Cosinus:}
+
+\begin{formulabox}
+    $\displaystyle \tan(x) = \frac{\sin(x)}{\cos(x)}$
+\end{formulabox}
+
+\textNachBox{\begin{itemize}
+    \item $\cos(x)$ ist grösser als $\sin(x)$ auf $(0, \frac{\pi}{4})$ und $(\frac{5\pi}{4}, 2\pi)$
+    \item $\sin(x)$ ist grösser als $\cos(x)$ auf $(\frac{\pi}{4}, \frac{5\pi}{4})$
+    \item $\cos(x)$ ist positiv auf $(0, \frac{\pi}{2})$ und $(\frac{3\pi}{2}, 2\pi)$
+    \item $\sin(x)$ ist positiv auf $(0, \pi)$
+\end{itemize}}
+
+\textVorBox{Der Cosinus und Sinus sind phasenversetzt:}
+
+\begin{formulabox}
+    \begin{longformula}
+        \cos(x \pm \pi/2) &= \mp\sin(x), & \sin(x \pm \pi/2) &= \pm\cos(x) \\
+        \cos(x \pm \pi) &= -\cos(x), & \sin(x \pm \pi) &= -\sin(x)
+    \end{longformula}
+\end{formulabox}
+
+\textVorBox{Die Ableitungen lauten:}
+
+\begin{formulabox}
+    \begin{longformula}
+        \frac{d}{dx} \cos(x) &= -\sin(x), & \frac{d}{dx} \arccos(x) &= -\frac{1}{\sqrt{1-x^2}} \\
+        \frac{d}{dx} \sin(x) &= \cos(x), & \frac{d}{dx} \arcsin(x) &= \frac{1}{\sqrt{1-x^2}} \\
+        \frac{d}{dx} \tan(x) &= \frac{1}{\cos^2(x)}, & \frac{d}{dx} \arctan(x) &= \frac{1}{1+x^2}
+    \end{longformula}
+\end{formulabox}
+\textVorBox{Die wichtigsten Identitäten lauten:}
+
+\begin{fulltablebox}[Grundrelationen \& Euler]{C | C}
+    \ZSFrowColor
+    $\displaystyle \sin^2(x) + \cos^2(x) = 1$ & $\displaystyle \cos^2(x) = \frac{1}{1 + \tan^2(x)}$ \\ \hline
+    $\displaystyle \cos(x) = \frac{e^{ix} + e^{-ix}}{2}$ & $\displaystyle \sin(x) = \frac{e^{ix} - e^{-ix}}{2i}$ \\ 
+\end{fulltablebox}
+
+\begin{fulltablebox}[Arkus-Identitäten]{C | C}
+    \ZSFrowColor
+    \multicolumn{2}{c}{$\displaystyle \sin(\arccos(x)) = \cos(\arcsin(x)) = \sqrt{1 - x^2}$} \\ \hline
+    $\displaystyle \sin(\arctan(x)) = \frac{x}{\sqrt{1+x^2}}$ & $\displaystyle \cos(\arctan(x)) = \frac{1}{\sqrt{1+x^2}}$ \\
+\end{fulltablebox}
+
+\begin{fulltablebox}[Doppel- \& Halbwinkel]{C | C}
+    \ZSFrowColor
+    $\displaystyle \sin(2x) = 2\sin(x)\cos(x)$ & $\displaystyle \tan(2x) = \frac{2\tan(x)}{1 - \tan^2(x)}$ \\ \hline
+    \multicolumn{2}{c}{$\displaystyle \cos(2x) = \cos^2(x) - \sin^2(x) = 1 - 2\sin^2(x)$} \\ \hline
+    \ZSFrowColor
+    $\displaystyle \sin\left(\frac{x}{2}\right) = \pm\sqrt{\frac{1-\cos(x)}{2}}$ & $\displaystyle \cos\left(\frac{x}{2}\right) = \pm\sqrt{\frac{1+\cos(x)}{2}}$ \\ 
+\end{fulltablebox}
+
+\begin{fulltablebox}[Vielfache \& Additionstheoreme]{C | C}
+    \ZSFrowColor
+    $\displaystyle \cos(3x) = 4\cos^3(x) - 3\cos(x)$ & $\displaystyle \sin(3x) = 3\sin(x) - 4\sin^3(x)$ \\ \hline
+    \multicolumn{2}{c}{$\displaystyle \cos(a \pm b) = \cos(a)\cos(b) \mp \sin(a)\sin(b)$} \\ \hline
+    \ZSFrowColor
+    \multicolumn{2}{c}{$\displaystyle \sin(a \pm b) = \cos(b)\sin(a) \pm \sin(b)\cos(a)$} \\ \hline
+    \multicolumn{2}{c}{$\displaystyle \sin(t)\cos(s) = \frac{1}{2}(\sin(t+s) + \sin(t-s))$} \\
+\end{fulltablebox}
+
+\textVorBox{Transformation von trigonometrischen Funktionen:}
+
+\begin{formulabox}
+    $\displaystyle a\cos(bx + c) + d$
+\end{formulabox}
+
+\textNachBox{\begin{itemize}
+    \item Bei $a > 1$ Streckung in $y$-Richtung, bei $0 < a < 1$ Stauchung in $y$-Richtung, Spiegelung an der $x$-Achse bei $a < 0$
+    \item Bei $0 < b < 1$ Streckung in $x$-Richtung, bei $b > 1$ Stauchung in $x$-Richtung
+    \item Verschiebung um $c$ in \textit{negative} $x$-Richtung
+    \item Verschiebung um $d$ in \textit{positive} $y$-Richtung
+\end{itemize}}
+
+\SubsectionBar{Hyperbolische Funktionen\ZSFScriptRef{60}}
+
+\ZSFkeyword{Hyperbolische Funktionen} sind trigonometrische Funktionen an der Einheitshyperbel.
+
+\begin{fulltablebox}{C | C | C | C}
+    $x$ & $\cosh(x)$ & $\sinh(x)$ & $\tanh(x)$ \\ \hline
+    \ZSFrowColor
+    $0$ & $1$ & $0$ & $0$ \\
+\end{fulltablebox}
+
+\textVorBox{Ihre Umkehrfunktionen sind definiert als:}
+
+\begin{formulabox}
+    \begin{longformula}
+        \operatorname{Arcosh}(x) &= \ln\left(x + \sqrt{x^2 - 1}\right) \\
+        \operatorname{Arsinh}(x) &= \ln\left(x + \sqrt{x^2 + 1}\right) \\
+        \operatorname{Artanh}(x) &= \frac{1}{2}\ln\left(\frac{1+x}{1-x}\right)
+    \end{longformula}
+\end{formulabox}
+
+\textVorBox{Die Ableitungen lauten:}
+
+\begin{formulabox}
+    \begin{longformula}
+        \frac{d}{dx}\cosh(x) &= \sinh(x), & \frac{d}{dx}\sinh(x) &= \cosh(x) \\
+        \frac{d}{dx}\operatorname{Arcosh}(x) &= \frac{1}{\sqrt{x^2 - 1}}, & \frac{d}{dx}\operatorname{Arsinh}(x) &= \frac{1}{\sqrt{x^2 + 1}}
+    \end{longformula}
+\end{formulabox}
+
+\textVorBox{Die wichtigsten Identitäten lauten:}
+
+\begin{fulltablebox}[Euler-Formeln]{C | C}
+    \ZSFrowColor
+    $\displaystyle \cosh(x) = \frac{e^x + e^{-x}}{2}$ & $\displaystyle \sinh(x) = \frac{e^x - e^{-x}}{2}$ \\ 
+\end{fulltablebox}
+
+\begin{fulltablebox}[Grundrelation \& Doppelwinkel]{C}
+    $\displaystyle \cosh(x)^2 - \sinh(x)^2 = 1$ \\ \hline
+    \ZSFrowColor
+    $\displaystyle \cosh(2x) = \cosh(x)^2 + \sinh(x)^2$ \\ 
+\end{fulltablebox}
+
+\begin{fulltablebox}[Halbwinkel\ \& Area-Identitäten]{C | C}
+    $\displaystyle \sinh\left(\frac{x}{2}\right) = \pm\sqrt{\frac{\cosh(x)-1}{2}}$ & $\displaystyle \cosh\left(\frac{x}{2}\right) = \sqrt{\frac{\cosh(x)+1}{2}}$ \\ \hline
+    \ZSFrowColor
+    $\displaystyle \sinh(\operatorname{Arcosh}(x)) = \sqrt{x^2 - 1}$ & $\displaystyle \cosh(\operatorname{Arsinh}(x)) = \sqrt{x^2 + 1}$ \\
+\end{fulltablebox}
+
+\begin{fulltablebox}[Additionstheoreme]{C}
+    \ZSFrowColor
+    $\displaystyle \cosh(a \pm b) = \cosh(a)\cosh(b) \pm \sinh(a)\sinh(b)$ \\ \hline
+    $\displaystyle \sinh(a \pm b) = \sinh(a)\cosh(b) \pm \cosh(a)\sinh(b)$ \\ 
+\end{fulltablebox}
+
+\SubsectionBar{Exponential \& Logarithmusfunktionen\ZSFScriptRef{17,58}}
+
+\ZSFkeyword{Exponentialfunktionen} sind Funktionen der Form $a b^x$. Die Umkehrfunktionen der Exponentialfunktionen sind die \ZSFkeyword{Logarithmusfunktionen} $\log_c(x)$.
+
+\ZSFdanger{Hinweis:} Bei Herrn Steiger entspricht $\log(x) = \log_e(x) = \ln(x)$.
+
+\textVorBox{Transformation für Potenz-, Exponential-, und Logarithmusfunktionen:}
+
+\begin{fulltablebox}{Z{1.3} | Y{0.7}}
+    \textbf{Potenzfunktion:} & $a(x + b)^n + c$ \\ \hline
+    \ZSFrowColor
+    \textbf{Exponentialfunktion:} & $am^x + c$ \\ \hline
+    \textbf{Logarithmusfunktion:} & $a\log(x + b) + c$ \\ 
+\end{fulltablebox}
+
+\textNachBox{\begin{itemize}
+    \item Bei $a > 1$ Streckung in $y$-Richtung, bei $0 < a < 1$ Stauchung in $y$-Richtung, Spiegelung an $x$-Achse bei $a < 0$
+    \item Verschiebung um $b$ in \textit{negative} $x$-Richtung
+    \item Verschiebung um $c$ in \textit{positive} $y$-Richtung
+\end{itemize}}
+
+\SubsectionBar{Grenzwerte\ZSFScriptRef{51,52,62,66}}
+
+Der \ZSFkeyword{Limes / Grenzwert} entspricht dem Funktionswert, dem sich eine Funktion an einer betrachteten Stelle annähert. Existiert ein Grenzwert, konvergiert die Funktion, andernfalls divergiert sie.
+
+\textVorBox{Die \ZSFkeyword{Grenzwertsätze} lauten:}
+
+\begin{formulabox}
+    \begin{longformula}
+        \ZSFlimAuto{x \to a} (f(x) \pm g(x)) &= \ZSFlimAuto{x \to a} f(x) \pm \ZSFlimAuto{x \to a} g(x) \\
+        \ZSFlimAuto{x \to a} (f(x)g(x)) &= \ZSFlimAuto{x \to a} f(x) \cdot \ZSFlimAuto{x \to a} g(x) \\
+        \ZSFlimAuto{x \to a} \frac{f(x)}{g(x)} &= \frac{\ZSFlimAuto{x \to a} f(x)}{\ZSFlimAuto{x \to a} g(x)}
+    \end{longformula}
+\end{formulabox}
+
+\textVorBox{Vorgehen beim Berechnen von Grenzwerten:
+\begin{enumerate}
+    \item Konstanten können vor den Grenzwert gezogen werden
+    \item Bei gewissen Termen (z.B. bei Ausdrücken im Argument eines Sinus oder Cosinus) lohnt es sich zu substituieren
+    \item Falls $\ZSFlimAuto{x \to \infty} f(x) = 0$ und $\ZSFlimAuto{x \to \infty} g(x) = 0$ (oder $\pm\infty$), darf man \ZSFkeyword{Bernoulli-L'Hôpital} anwenden:
+\end{enumerate}}
+
+\begin{formulabox}
+    $\displaystyle \ZSFlimAuto{x \to \infty} \frac{f(x)}{g(x)} = \ZSFlimAuto{x \to \infty} \frac{f'(x)}{g'(x)}$
+\end{formulabox}
+
+\textVorBox{Eine \ZSFkeyword{Asymptote} $\sim$ einer Kurve ist eine Funktion, bei der der Abstand zwischen Kurve und Funktion gegen Null strebt:}
+
+\begin{formulabox}
+    $\displaystyle \ZSFlimAuto{x \to \infty} (f(x) - g(x)) = 0$
+\end{formulabox}
+
+\textNachBox{Ist $f$ eine Asymptote von $g$, so ist auch $g$ eine Asymptote von $f$.}
+
+Die \ZSFkeyword{Landau-Symbole} werden verwendet, um das Wachstum von Funktionen zu beschreiben:\\
+\textVorBox{$f$ wächst langsamer als $g$:}
+
+\begin{formulabox}
+    $\displaystyle f(x) = o(g(x)) \text{ für } x \to a \Leftrightarrow \ZSFlimAuto{x \to a} \frac{f(x)}{g(x)} = 0$
+\end{formulabox}
+
+\textVorBox{$f$ wächst höchstens genauso schnell wie $g$:}
+
+\begin{formulabox}
+    $\displaystyle f(x) = \mathcal{O}(g(x)) \text{ für } x \to a \Leftrightarrow \ZSFlimAuto{x \to a} \frac{f(x)}{g(x)} \leq C \in \R$
+\end{formulabox}
+
+\textNachBox{$f(x) = o(g(x))$ und $f(x) = \mathcal{O}(g(x))$ können gleichzeitig zutreffen, da $C$ den Wert $0$ annehmen kann.}
+
+\textVorBox{Eine Funktion kann gegen 0 oszillieren:}
+
+\begin{formulabox}
+    \begin{longformula}
+        \ZSFlimAuto{x \to \infty} \left(\frac{\sin(x)}{x}\right) &= 0, & \ZSFlimAuto{x \to \infty} \left(\frac{1}{x\sin(x) + e^x}\right) &= 0
+    \end{longformula}
+\end{formulabox}
+
+\textVorBox{Für $x \to \infty$ gilt:}
+
+\begin{formulabox}
+    $\displaystyle e^x > a^x > x^b > \sqrt[c]{x} > \log_d(x) > \text{trig}$
+\end{formulabox}
+
+\textVorBox{Die \ZSFkeyword{Eulersche Zahl} $e$ kann mit Grenzwerten dargestellt werden:}
+
+\begin{formulabox}
+    \begin{longformula}
+        e &= \ZSFlimAuto{n \to \infty} \left(1 + \frac{1}{n}\right)^n, & e^x &= \ZSFsumAuto{n=0}{\infty} \frac{x^n}{n!} = \ZSFlimAuto{n \to \infty} \left(1 + \frac{x}{n}\right)^n
+    \end{longformula}
+\end{formulabox}
+
+\begin{fulltablebox}[Wichtige Grenzwerte]{C | C}
+    $\displaystyle \ZSFlimAuto{x \to \infty} \sqrt[x]{x} = 1$ & $\displaystyle \ZSFlimAuto{x \to 0} \frac{e^x - 1}{x} = 1$ \\ \hline
+    \ZSFrowColor
+    $\displaystyle \ZSFlimAuto{x \to 0} \frac{a^x - 1}{x} = \ln(a)$ & $\displaystyle \ZSFlimAuto{x \to 1} \frac{\ln(x)}{x - 1} = 1$ \\ \hline
+    $\displaystyle \ZSFlimAuto{x \to 0} \frac{\ln(a + x) - \ln(a)}{x} = \frac{1}{a}$ & $\displaystyle \ZSFlimAuto{x \to 0} \frac{\sin(x)}{x} = 1$ \\ \hline
+    \ZSFrowColor
+    $\displaystyle \ZSFlimAuto{x \to 0} \frac{x}{\sin(ax)} = \frac{1}{a}$ & $\displaystyle \ZSFlimAuto{x \to 0} \frac{\sin(ax)}{\sin(x)} = a$ \\ \hline
+    $\displaystyle \ZSFlimAuto{x \to 0} \frac{\cos(x)-1}{x} = 0$ & $\displaystyle \ZSFlimAuto{x \to 0} \frac{1 - \cos(x)}{x^2} = \frac{1}{2}$ \\ \hline
+    \ZSFrowColor
+    $\displaystyle \ZSFlimAuto{x \to \infty} x\sin\left(\frac{1}{x}\right) = 1$ & $\displaystyle \ZSFlimAuto{x \to 0} \frac{\tan(x)}{x} = 1$ \\ \hline
+    $\displaystyle \ZSFlimAuto{x \to \pi/2} \tan(x) = \pm\infty$ & $\displaystyle \ZSFlimAuto{x \to 0} \frac{\arctan(x)}{x} = 1$ \\ \hline
+    \ZSFrowColor
+    $\displaystyle \ZSFlimAuto{x \to \infty} \arctan(x) = \frac{\pi}{2}$ & $\displaystyle \ZSFlimAuto{x \to 0} \frac{\arcsin(x)}{x} = 1$ \\
+\end{fulltablebox}
+
+\SubsectionBar{Inverse}
+
+Die Steigung der Inverse ist die Inverse der Steigung.
+
+\textVorBox{Für die Inverse einer Verkettung gilt:}
+
+\begin{formulabox}
+    $\displaystyle f(g(x)) = y \quad \Rightarrow \quad \left(f(g(x))\right)^{-1} = g^{-1}(f^{-1}(y))$
+\end{formulabox}

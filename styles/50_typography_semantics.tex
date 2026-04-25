@@ -1,0 +1,35 @@
+% ============================================================
+% TYPOGRAPHY AND SEMANTIC CONTENT MACROS
+% ============================================================
+
+\newcommand{\ZSFfontChapter}{\sffamily\bfseries\fontsize{8.1bp}{9.1bp}\selectfont}
+\newcommand{\ZSFfontSection}{\sffamily\bfseries\fontsize{8.1bp}{9.1bp}\selectfont}
+\newcommand{\ZSFfontBoxTitle}{\sffamily\bfseries\fontsize{8.1bp}{9.1bp}\selectfont}
+\newcommand{\ZSFfontNote}{\sffamily\fontsize{6.7bp}{7.5bp}\itshape\selectfont}
+\newcommand{\TableCellNote}[1]{{\ZSFfontNote #1}}
+\newcommand{\TableTitleBreak}{\newline}
+\newcommand{\TableTitle}[2][]{%
+  \textbf{#2}%
+  \if\relax\detokenize{#1}\relax\else\newline\TableCellNote{#1}\fi
+}
+
+% Semantic Content Macros (für konsistente Skalierung und Anpassung)
+\newcommand{\ZSFkeyword}[1]{\textbf{#1}}
+\newcommand{\ZSFScriptRef}[1]{\hfill\textcolor{white!80}{\small (S.#1)}}
+\newcommand{\ZSFconclusion}[1]{%
+  \par\vspace{-\parskip}\vspace{\ZSFspaceS}%
+  \noindent$\Rightarrow$ #1%
+  \par\vspace{-\parskip}\vspace{\ZSFspaceS}%
+}
+
+\newcommand{\ZSFrowColor}{\rowcolor{\FormulaboxBackColor}}
+\newcommand{\ZSFtableRuleColor}{black!70}
+\newcommand{\SetZSFtableRuleColor}[1]{\renewcommand{\ZSFtableRuleColor}{#1}}
+\newcommand{\ZSFtableRuleWidth}{0.5pt}
+\newcommand{\SetZSFtableRuleWidth}[1]{\renewcommand{\ZSFtableRuleWidth}{#1}}
+\newcommand{\ZSFbeginTableRuleStyle}{%
+  \begingroup
+  \arrayrulecolor{\ZSFtableRuleColor}%
+  \setlength{\arrayrulewidth}{\ZSFtableRuleWidth}%
+}
+\newcommand{\ZSFendTableRuleStyle}{\endgroup}

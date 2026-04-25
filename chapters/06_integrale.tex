@@ -1,0 +1,160 @@
+\StartChapter{Integrale\ZSFScriptRef{70}}
+
+\SubsectionBar{Integrationsregeln\ZSFScriptRef{71}}
+\begin{fulltablebox}{Z{0.7} | Y{1.3}}
+    \textbf{Linearit\"at} &
+    $\displaystyle \int_a^b (f(x)+g(x))\,dx = \int_a^b f(x)\,dx + \int_a^b g(x)\,dx$ \\ \hline
+    \ZSFrowColor
+    \textbf{Ableitung mit variablen Grenzen} &
+    $\displaystyle \frac{d}{dx}\!\left(\int_{a(x)}^{b(x)} f(t)\,dt\right)=b'(x)f(b(x))-a'(x)f(a(x))$ \\ \hline
+    \textbf{Additivit\"at der Intervalle} &
+    $\displaystyle \int_a^b f(x)\,dx + \int_b^c f(x)\,dx = \int_a^c f(x)\,dx$ \\
+\end{fulltablebox}
+
+\begin{fulltablebox}{C | C}
+    \TableTitle{Gerade Funktionen} & \TableTitle{Ungerade Funktionen} \\ \hline
+    \ZSFrowColor
+    $\displaystyle \int_{-a}^{0} f(x)\,dx = \int_0^a f(x)\,dx$ &
+    $\displaystyle \int_{-a}^{0} f(x)\,dx = -\int_0^a f(x)\,dx$ \\
+\end{fulltablebox}
+
+\SubsectionBar{Uneigentliche Integrale\ZSFScriptRef{72}}
+Mit Hilfe der \ZSFkeyword{uneigentlichen Integrale} ist es m\"oglich, Funktionen zu integrieren deren Definitionsbereich unbeschr\"ankt ist:
+\textVorBox{1. Ordnung (Polstelle / Definitionsl\"ucke bei $\zeta$):}
+\begin{formulabox}
+    $\displaystyle \int_a^b f(x)\,dx = \lim_{\zeta \to a^+}\int_{\zeta}^{b} f(x)\,dx$
+\end{formulabox}
+\textVorBox{2. Ordnung (unbeschr\"ankter Definitionsbereich):}
+\begin{formulabox}
+    $\displaystyle \int_a^{\infty} f(x)\,dx = \lim_{\zeta \to \infty}\int_a^{\zeta} f(x)\,dx$
+\end{formulabox}
+
+\SubsectionBar{Hilfsmittel\ZSFScriptRef{71}}
+\textVorBox{\ZSFkeyword{Partielle Integration}:}
+\begin{formulabox}
+    $\displaystyle \int_a^b u'(x)v(x)\,dx = [u(x)v(x)]_a^b - \int_a^b u(x)v'(x)\,dx$
+\end{formulabox}
+
+Tricks, um Integrale mit partieller Integration zu l\"osen:
+\begin{itemize}
+    \item Term 2-mal partiell integrieren.
+    \item Setze $u'(x)=1$ (respektive $v'(x)=1$).
+\end{itemize}
+
+\textVorBox{\ZSFkeyword{Partialbruchzerlegung}:}
+\begin{fulltablebox}{Z{1} | C}
+    Einfache Nullstelle $x_0$: & $\displaystyle \frac{A}{x-x_0}$ \\ \hline
+    \ZSFrowColor
+    Zweifache Nullstelle $x_0$: & $\displaystyle \frac{A}{(x-x_0)^2} + \frac{B}{x-x_0}$ \\ \hline
+    Komplexe Nullstelle: & $\displaystyle \frac{Ax+B}{x^2+px+q}$ \\
+\end{fulltablebox}
+
+\textVorBox{Beispiel:}
+\begin{formulabox}
+    \begin{longformula}
+        \frac{x}{x^3+x^2-x-1} &= \frac{A}{(x+1)^2} + \frac{B}{x+1} + \frac{C}{x-1} \\
+        (-A-B+C=0,\quad x=0)& \\
+        4C=1,\quad x=1 \quad &\rightarrow\quad A=\frac{1}{2},\; B=-\frac{1}{4},\; C=\frac{1}{4} \\
+        (A+3B+9C=2,\quad x=2)&
+    \end{longformula}
+\end{formulabox}
+\textNachBox{\ZSFdanger{Tipp:} $(1+x^3)=(1+x)(1-x+x^2)$}
+
+\SubsectionBar{Substitution\ZSFScriptRef{71}}
+Bei der \ZSFkeyword{Substitution} ersetzt man komplizierte Terme. Im folgenden Beispiel wird $f(x)$ durch $u$ ersetzt:
+\begin{formulabox}
+    $\displaystyle \int_a^b f'(x)g'(f(x))\,dx = \int_{f(a)}^{f(b)} g'(u)\,du$
+\end{formulabox}
+
+\SubsectionBar{Anwendungen\ZSFScriptRef{75,76}}
+\textVorBox{Die Fl\"ache zwischen einer Kurve und der $x$-Achse betr\"agt:}
+\begin{formulabox}
+    \textbf{Explizit:}\quad $\displaystyle A = \int_a^b f(x)\,dx$\par
+    \formulasep
+    \textbf{Parametrisiert:}\quad $\displaystyle A = \int_a^b \dot x(t)y(t)\,dt$\par
+\end{formulabox}
+
+\textVorBox{Die Fl\"ache zwischen einer Kurve und der $y$-Achse betr\"agt:}
+\begin{formulabox}
+    $\displaystyle \text{Parametrisiert:}\quad A^{*} = \int_a^b x(t)\dot y(t)\,dt$
+\end{formulabox}
+
+\textVorBox{Die \ZSFkeyword{Sektorfl\"ache} ist die Fl\"ache zwischen dem Ursprung und zwei Punkten einer Kurve:}
+\begin{formulabox}
+    $\displaystyle S=\pm\frac{1}{2}\int_{t_1}^{t_2}\!\left(x(t)\dot y(t)-\dot x(t)y(t)\right)\,dt
+    =\pm\frac{1}{2}\int_{\varphi_1}^{\varphi_2}\!\rho(\varphi)^2\,d\varphi$
+\end{formulabox}
+\textNachBox{positiv, wenn die Fl\"ache links der Kurve ist und negativ, wenn sie rechts der Kurve ist.}
+
+\textVorBox{Die Bogenl\"ange einer Kurve oder Funktion:}
+\begin{formulabox}
+    \textbf{Explizit:}\quad $\displaystyle s = \int_a^b \sqrt{1+f'(x)^2}\,dx$\par
+    \formulasep
+    \textbf{Parametrisiert:}\quad $\displaystyle s = \int_{t_1}^{t_2}\sqrt{\dot x(t)^2+\dot y(t)^2}\,dt$\par
+    \formulasep
+    \textbf{Polarkoordinaten:}\quad $\displaystyle s = \int_{\varphi_1}^{\varphi_2}\sqrt{\rho(\varphi)^2+\dot \rho(\varphi)^2}\,d\varphi$\par
+\end{formulabox}
+
+\textVorBox{Das \ZSFkeyword{Rotationsvolumen} um die $x$-Achse betr\"agt:}
+\begin{formulabox}
+    \textbf{Explizit:}\quad $\displaystyle V_x = \pi\int_a^b f(x)^2\,dx$\par
+    \formulasep
+    \textbf{Parametrisiert:}\quad $\displaystyle V_x = \pi\left|\int_{t_1}^{t_2}\dot x(t)y^2(t)\,dt\right|$\par
+\end{formulabox}
+\textNachBox{wobei $a$ und $b$ zwei Punkte auf der $x$-Achse liegen.}
+
+\textVorBox{Das \ZSFkeyword{Rotationsvolumen} um die $y$-Achse betr\"agt:}
+\begin{formulabox}
+    \textbf{\shortstack[l]{Explizit (Fl\"ache zwischen\\Graphen und y-Achse):}}\quad $\displaystyle V_y = \pi\int_a^b f(y)^2\,dy$\par
+    \formulasep
+    \textbf{Umgeschrieben:}\quad $\displaystyle V_y = \pi\int_a^b x^2\cdot f'(x)\,dx$\par
+    \formulasep
+    \textbf{\shortstack[l]{Explizit (Fl\"ache zwischen\\Graphen und x-Achse):}}\quad $\displaystyle V_y = 2\pi\int_a^b xf(x)\,dx$\par
+    \formulasep
+    \textbf{Parametrisiert:}\quad $\displaystyle V_y = \pi\left|\int_{t_1}^{t_2}x^2(t)\dot y(t)\,dt\right|$\par
+\end{formulabox}
+\textNachBox{wobei $a$ und $b$ zwei Punkte auf der $y$-Achse liegen.}
+
+\textVorBox{Die \ZSFkeyword{Rotationsoberfl\"ache} um die $x$-Achse betr\"agt:}
+\begin{formulabox}
+    \textbf{Explizit:}\quad $\displaystyle O_x = 2\pi\int_a^b f(x)\sqrt{1+f'(x)^2}\,dx$\par
+    \formulasep
+    \textbf{Parametrisiert:}\quad $\displaystyle O_x = 2\pi\int_{t_1}^{t_2}|y(t)|\sqrt{\dot x(t)^2+\dot y(t)^2}\,dt$\par
+\end{formulabox}
+
+\textVorBox{Der \ZSFkeyword{Schwerpunkt} $(x_S,y_S)$ ist der Kr\"aftemittelpunkt:}
+\begin{formulabox}
+    \textbf{x-Koordinate:}\quad $\displaystyle x_S\int_a^b G(x)\,dx = x_SA = \int_a^b xG(x)\,dx$\par
+    \formulasep
+    \textbf{y-Koordinate:}\quad $\displaystyle y_S\int_c^d H(y)\,dy = y_SA = \int_c^d yH(y)\,dy$\par
+\end{formulabox}
+\textNachBox{wobei $G(x)$ und $H(y)$ die Ausdehnung in y- und x-Richtung sind, $a$ und $b$ auf der x-Achse und $c$ und $d$ auf der y-Achse liegen.}
+
+\textVorBox{Das \ZSFkeyword{Massentr\"agheitsmoment} gibt die Tr\"agheit eines starren K\"orpers gegen\"uber einer \"Anderung seiner Winkelgeschwindigkeit w\"ahrend der Drehung um eine bestimmte Achse an:}
+\begin{formulabox}
+    $\displaystyle \theta_y = \int_a^b \rho(x)x^2G(x)\,dx$
+\end{formulabox}
+
+\textNachBox{wobei $\rho$ die Dichte ist.}
+\textVorBox{F\"ur $\rho=1$ sei das \ZSFkeyword{Fl\"achentr\"agheitsmoment}:}
+\begin{formulabox}
+    \textbf{x-Achse:}\quad $\displaystyle I_x = \frac{1}{3}\int_a^b f(x)^3\,dx = \int_a^b y^2f(y)\,dy$\par
+    \formulasep
+    \textbf{y-Achse:}\quad $\displaystyle I_y = \int_a^b x^2f(x)\,dx$\par
+\end{formulabox}
+
+\textVorBox{Das polare Fl\"achentr\"agheitsmoment einer Kreisscheibe betr\"agt:}
+\begin{formulabox}
+    $\displaystyle I_0 = \frac{1}{2}\pi r^4$
+\end{formulabox}
+
+\textVorBox{Das Tr\"agheitsmoment eines rotierenden Graphen um die $x$-Achse:}
+\begin{formulabox}
+    $\displaystyle \theta_x = \frac{\pi\rho}{2}\int_a^b f(x)^4\,dx$
+\end{formulabox}
+\textNachBox{Die Berechnung f\"ur die $y$- und $z$-Achse erfolgt analog.}
+
+\textVorBox{Die \ZSFkeyword{kinetische Energie} der Rotation um eine Achse:}
+\begin{formulabox}
+    $\displaystyle T = \frac{1}{2}\theta_{x,y,z}\omega^2$
+\end{formulabox}

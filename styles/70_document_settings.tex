@@ -1,0 +1,20 @@
+% ============================================================
+% DOCUMENT SETTINGS
+% ============================================================
+
+\hypersetup{colorlinks=true, linkcolor=ChapterColor0, urlcolor=ChapterColor2}
+
+\AtBeginDocument{
+  \setlength{\abovedisplayskip}{\ZSFspaceXS}
+  \setlength{\belowdisplayskip}{\ZSFspaceXS}
+  \setlength{\abovedisplayshortskip}{\ZSFspaceXS}
+  \setlength{\belowdisplayshortskip}{\ZSFspaceXS}
+  \setlength{\mathsurround}{\ZSFspaceXS}
+}
+
+% Gemeinsame Basis fuer alle Listen
+\setlist{nosep, itemsep=0pt, parsep=0pt, topsep=\ZSFspaceXS, partopsep=0pt}
+% Typspezifische leftmargin (verhindert Duplikation in Kapiteln)
+\setlist[itemize]{leftmargin=3mm}
+\setlist[enumerate]{leftmargin=4mm}
+\setlength{\tabcolsep}{\ZSFspaceM}

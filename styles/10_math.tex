@@ -1,0 +1,47 @@
+% ============================================================
+% MATH MACROS
+% ============================================================
+
+% --- Zahlmengen (Blackboard Bold) ---
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+
+% --- Differentialoperator (aufrechtes d) ---
+\newcommand{\dd}{\,\mathrm{d}}
+
+% --- Operatornamen ---
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\divg}{div}
+\DeclareMathOperator{\rot}{rot}
+\newcommand{\vect}[1]{\vec{#1}}
+
+% --- Gepaarte Begrenzer (mathtools) ---
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+
+% --- Summen/Limes-Mode-System ---
+\newcommand{\ZSFsumMode}{auto}
+\newcommand{\SetZSFsumMode}[1]{\renewcommand{\ZSFsumMode}{#1}}
+\newcommand{\ZSFsumSide}[2]{\sum\nolimits_{#1}^{#2}}
+\newcommand{\ZSFsumStack}[2]{\sum\limits_{#1}^{#2}}
+\newcommand{\ZSFsumAuto}[2]{%
+  \IfStrEqCase{\ZSFsumMode}{%
+    {side}{\ZSFsumSide{#1}{#2}}%
+    {stack}{\ZSFsumStack{#1}{#2}}%
+    {auto}{\sum_{#1}^{#2}}%
+  }[\sum_{#1}^{#2}]%
+}
+
+\newcommand{\ZSFlimMode}{auto}
+\newcommand{\SetZSFlimMode}[1]{\renewcommand{\ZSFlimMode}{#1}}
+\newcommand{\ZSFlimAuto}[1]{%
+  \IfStrEqCase{\ZSFlimMode}{%
+    {side}{\lim\nolimits_{#1}}%
+    {stack}{\lim\limits_{#1}}%
+    {auto}{\lim_{#1}}%
+  }[\lim_{#1}]%
+}

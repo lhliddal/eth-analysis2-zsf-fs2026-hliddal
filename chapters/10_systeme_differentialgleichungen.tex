@@ -1,0 +1,115 @@
+\StartChapter{Systeme von Differentialgleichungen}
+
+\SubsectionBar{Eigenschaften}
+
+\textVorBox{Treten zwei Differentialgleichungen gekoppelt auf, so spricht man von einem \ZSFkeyword{System von Differentialgleichungen 1. Ordnung}:}
+\begin{formulabox}
+    $\displaystyle
+    \begin{cases}
+        y_1' = f_1(x,y_1,y_2,b_1)\\
+        y_2' = f_2(x,y_1,y_2,b_2)
+    \end{cases}$
+\end{formulabox}
+\textNachBox{Dabei sind $y_1$ und $y_2$ Funktionen in $x$.}
+
+Wenn $f_1$ und $f_2$ in $x$ stetig und nach $y_1$ und $y_2$ stetig differenzierbar sind, dann hat das AWP $y_1(x_0)=y_{1,0}$, $y_2(x_0)=y_{2,0}$ eine L\"osung.
+
+\textVorBox{Ein \ZSFkeyword{autonomes System} ist von der Form:}
+\begin{formulabox}
+    $\displaystyle
+    \begin{cases}
+        y_1' = f_1(y_1,y_2,b_1)\\
+        y_2' = f_2(y_1,y_2,b_2)
+    \end{cases}$
+\end{formulabox}
+\textNachBox{Dabei erfolgt die einzige Abh\"angigkeit von der Variablen $x$ indirekt \"uber $y_1(x)$ und $y_2(x)$.}
+
+Eine \ZSFkeyword{Trajektorie} ist die durch $(x_0,y_0)$ gehende Feldlinie. Die Schar aller Trajektorien ist das \ZSFkeyword{Phasenportrait}, ein Vektorfeld:
+\begin{formulabox}
+    $\displaystyle
+    \begin{cases}
+        x' = f_1(x,y)\\
+        y' = f_2(x,y)
+    \end{cases}
+    \Rightarrow
+    \vec v=
+    \begin{pmatrix}
+        x'\\
+        y'
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        v_1\\
+        v_2
+    \end{pmatrix}$
+\end{formulabox}
+
+\SubsectionBar{Linear-autonome DGL mit konst. Koeffizienten}
+
+\textVorBox{Ein System der folgenden Form ist ein \ZSFkeyword{linear autonomes DGL-System mit konstanten Koeffizienten} der Ordnung 1:}
+\begin{formulabox}
+    $\displaystyle
+    \begin{cases}
+        x_1' = a_{11}x_1 + a_{12}x_2 + b_1\\
+        x_2' = a_{21}x_1 + a_{22}x_2 + b_2
+    \end{cases}$
+\end{formulabox}
+
+\textVorBox{Ein L\"osungsverfahren f\"ur homogene DGLs lautet:}
+\begin{enumerate}
+    \item Matrix $A$ und Vektoren $\dot{\vec x}$, $\vec x$ und $\vec b$ aufstellen: $\dot{\vec x}=A\vec x$
+    \item Eigenwerte $\lambda_i$ und Eigenvektoren $\vec v_i$ bestimmen
+    \item $\vec x=\sum_i C_i\cdot e^{\lambda_i t}\cdot \vec v_i$ liefert die homogene L\"osung
+\end{enumerate}
+
+\textVorBox{Bei einem imagin\"aren Eigenwertepaar $\lambda_{1,2}=a\pm bi$ gilt in reeller Darstellung:}
+\begin{formulabox}
+    $\displaystyle
+    \vec x=
+    C_1\cdot e^{at}
+    \begin{pmatrix}
+        c\cos(bt)\mp d\sin(bt)\\
+        e\cos(bt)\mp f\sin(bt)\\
+        g\cos(bt)\mp h\sin(bt)
+    \end{pmatrix}
+    +C_2\cdot e^{at}
+    \begin{pmatrix}
+        c\sin(bt)\pm d\cos(bt)\\
+        e\sin(bt)\pm f\cos(bt)\\
+        g\sin(bt)\pm h\cos(bt)
+    \end{pmatrix}$
+\end{formulabox}
+
+\textVorBox{Wenn die Matrix $A$ nicht diagonalisierbar ist oder das DGLS inhomogen ist, eignet sich das \ZSFkeyword{Eliminationsverfahren}:}
+\begin{enumerate}
+    \item $x_1'$ oder $x_2'$ zu $x_1''$ bzw. $x_2''$ ableiten
+    \item $x_1'$ bzw. $x_2'$ im abgeleiteten Term durch die urspr\"ungliche Gleichung von $x_1'$ bzw. $x_2'$ ersetzen
+    \item $x_1$ bzw. $x_2$ mit Hilfe der urspr\"unglichen Gleichung eliminieren
+    \item Zu bekannter DGL umformen und Nullstellen bestimmen
+    \item Aus $x_1$ bzw. $x_2$ die zweite Funktion $x_2$ bzw. $x_1$ bestimmen
+\end{enumerate}
+
+\SubsectionBar{Gleichgewichtspunkte}
+
+\textVorBox{Wenn die beiden konstanten Funktionen $x_1(t)=c_1$ und $x_2(t)=c_2$ das autonome System l\"osen:}
+\begin{formulabox}
+    $\displaystyle
+    \begin{cases}
+        x_1' = f_1(x_1,x_2)\\
+        x_2' = f_2(x_1,x_2)
+    \end{cases}$
+\end{formulabox}
+\textNachBox{Dann ist $(c_1,c_2)$ ein \ZSFkeyword{Gleichgewichtspunkt} des DGL-Systems.}
+
+Um einen Gleichgewichtspunkt zu finden, setze $x_1'=x_2'=0$ und l\"ose nach $x_1$ und $x_2$ auf.
+
+Das gleiche gilt f\"ur eine gew\"ohnliche Differentialgleichung $y'=f(y(t))$, wenn $f(y_g)=0$. Das AWP $y(t_0)=y_g$ hat dann die konstante L\"osung $y(t)=y_g$ und ist ein Gleichgewichtspunkt.
+
+Die Gleichungssysteme lassen sich umschreiben zu $\dot{\vec x}=A\vec x$. Die Eigenwerte $\lambda_i$ von $A$ geben Aufschluss \"uber die Art des Gleichgewichtspunkts:
+\begin{fulltablebox}{Z{0.85} | Z{1.15}}
+    \ZSFrowColor
+    Asymptotisch stabil: & Alle Eigenwerte von $A$ haben negativen Realteil \\ \hline
+    Stabil: & Die Eigenwerte von $A$ haben Realteil $\mathcal{R}(\lambda_i)\leq 0$ \\ \hline
+    \ZSFrowColor
+    Instabil: & Der Realteil von mindestens einem Eigenwert ist positiv \\
+\end{fulltablebox}

@@ -1,0 +1,30 @@
+% ============================================================
+% TABLE COLUMNS AND TABLE HELPERS
+% ============================================================
+
+\renewcommand{\tabularxcolumn}[1]{m{#1}} % Zentriert X-Spalten vertikal für Formeln
+\newcolumntype{C}{>{\Centering\arraybackslash}O{X}}
+\newcolumntype{L}{>{\RaggedRight\arraybackslash}O{X}}
+\newcolumntype{R}{>{\RaggedLeft\arraybackslash}O{X}}
+
+% Modulare Tabellenspalten
+\newcolumntype{F}{>{\Centering\arraybackslash$}O{X}<{$}} % Zentrierte Formel
+\newcolumntype{T}{>{\RaggedRight\arraybackslash}O{X}} % Standard-Text
+\newcolumntype{H}{>{\columncolor{\FormulaboxBackColor}\Centering\arraybackslash$}O{X}<{$}} % Formel mit Hintergrund
+
+% Parametrisierte proportionale Spaltentypen
+\newcolumntype{f}[1]{>{\hsize=#1\hsize\Centering\arraybackslash$}O{X}<{$}}
+\newcolumntype{t}[1]{>{\hsize=#1\hsize\RaggedRight\arraybackslash}O{X}}
+\newcolumntype{h}[1]{>{\hsize=#1\hsize\columncolor{\FormulaboxBackColor}\Centering\arraybackslash$}O{X}<{$}}
+\newcolumntype{Y}[1]{>{\hsize=#1\hsize\Centering\arraybackslash}O{X}}
+\newcolumntype{Z}[1]{>{\hsize=#1\hsize\RaggedRight\arraybackslash}O{X}}
+\newcolumntype{Q}[1]{>{\hsize=#1\hsize\RaggedLeft\arraybackslash}O{X}}
+
+\newlength{\ZSFtextMinPad}
+\setlength{\ZSFtextMinPad}{1pt}
+
+% Wir binden siunitx ein, es krallt sich aber das S in Tabellen.
+% Durch [column=O] verwendet cellspace nun den Bezeichner "O" anstatt "S".
+\setlength\cellspacetoplimit{\ZSFtextMinPad}
+\setlength\cellspacebottomlimit{\ZSFtextMinPad}
+\addparagraphcolumntypes{X,m,p}

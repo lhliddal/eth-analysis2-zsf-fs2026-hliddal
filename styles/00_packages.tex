@@ -1,0 +1,46 @@
+% ============================================================
+% PACKAGES
+% ============================================================
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[sfdefault,lf]{carlito} % Carlito ist in LaTeX das Äquivalent zu Calibri (Open-Source von Google), 'lf' erzwingt Lining Figures (normale Zahlenhöhe) statt Old-Style (Zahlen wie ein kleines o)
+\usepackage{sansmath}          % Mathe-Modus auch in Sans-Serif
+\sansmath
+\linespread{0.9} % Etwas engere Zeilen für mehr Kompaktheit bei 10pt
+
+\usepackage[landscape, a4paper, margin=1.5mm]{geometry}
+\usepackage{microtype}
+\usepackage{multicol}
+
+\usepackage{mathtools}          % Superset von amsmath: DeclarePairedDelimiter, coloneqq, etc.
+\let\Bbbk\relax % Verhindert Konflikt zwischen newpxmath und amssymb
+\usepackage{amssymb}
+\usepackage{siunitx}
+\sisetup{
+  mode=match,
+  propagate-math-font=true,
+  reset-text-family=false,
+  exponent-product = \cdot,
+  output-decimal-marker = {,},
+  per-mode = symbol
+}
+
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{tabularray}
+\usepackage[column=O]{cellspace}
+\usepackage{ragged2e} % Erlaubt Silbentrennung bei linksbündigem/zentriertem Flattersatz in schmalen Spalten
+\usepackage{xstring}
+\usepackage{varwidth}
+
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable, raster}
+
+\usepackage{hyperref}
+\usepackage{enumitem}

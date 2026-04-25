@@ -1,0 +1,122 @@
+\StartChapter{Integrale -- Mehrere Variablen}
+
+\SubsectionBar{Gebietsintegral}
+Beim \ZSFkeyword{Gebietsintegral} integriert man \"uber zwei Variablen. Dadurch kann man sowohl Volumen als auch Fl\"achen berechnen.
+
+Mit Gebietsintegralen k\"onnen Fl\"acheninhalte bestimmt werden. Hier das Beispiel einer Fl\"ache $B$:
+\begin{formulabox}
+    $\displaystyle A_B = \iint_B 1\,dF$
+\end{formulabox}
+
+Durch das Aufsummieren infinitesimaler Quader wird das von zwei Fl\"achen ($B$ und $f(x,y)$) eingeschlossene Volumen berechnet:
+\begin{formulabox}
+    $\displaystyle V = \iint_B f(x,y)\,dF$
+\end{formulabox}
+
+Die Integrationsgrenzen bei der Berechnung eines Volumens werden wie folgt gesetzt:
+\begin{formulabox}
+    $\displaystyle V = \int_a^{\bar a}\int_{b(x)}^{\bar b(x)} f(x,y)\,dy\,dx$
+\end{formulabox}
+\textNachBox{\ZSFdanger{Achtung:} Werden die Integrationsgrenzen in falscher Reihenfolge gesetzt, bleiben im Ergebnis Variablen \"ubrig. Falls alle Grenzen konstant sind, ist die Reihenfolge beliebig austauschbar.}
+
+Anwendungen f\"ur das Gebietsintegral:
+\begin{fulltablebox}{Z{0.8} | Y{1.2}}
+    Fl\"achenschwerpunkte: & $\displaystyle x_S A = \iint_B x\,dA$ \\ \hline
+    \ZSFrowColor
+    Massenschwerpunkte: & $\displaystyle x_S\cdot m = \iint_B x\sigma(x,y)\,dA$ \\ \hline
+    Polares Fl\"achentr\"agheitsmoment: & $\displaystyle J_0 = \iint_B x^2 + y^2\,dA = \iint_B r^3\,dr\,d\varphi$ \\ \hline
+    \ZSFrowColor
+    Polares Massentr\"agheitsmoment: & $\displaystyle I_0 = \iint_B \sigma(x,y)(x^2+y^2)\,dA$
+\end{fulltablebox}
+
+wobei $\sigma(x,y)$ die \ZSFkeyword{Fl\"achendichte in $\left[kg/m^2\right]$} ist.
+
+Beim \ZSFkeyword{Gebietsintegral in Polarkoordinaten} $(\rho\cos(\varphi),\rho\sin(\varphi))$ mit $\varphi \in [0,2\pi]$ muss die Integrationsvariable ver\"andert werden:
+\begin{formulabox}
+    $\displaystyle \iint_{\tilde B} \tilde f(\rho,\varphi)\,\rho\,d\varphi\,d\rho$
+\end{formulabox}
+\textNachBox{wobei $\tilde B$ die Integrationsgrenzen in Polarkoordinaten sind.}
+
+\SubsectionBar{Volumenintegral}
+\textVorBox{Bei einem \ZSFkeyword{Volumenintegral} wird \"uber ein Volumen, also drei Variablen integriert. Das Ergebnis kann ein Volumen sein:}
+\begin{formulabox}
+    $\displaystyle V = \iiint_B 1\,dV$
+\end{formulabox}
+
+\textVorBox{oder eine abstraktere Gr\"osse in 4 Dimensionen:}
+\begin{formulabox}
+    $\displaystyle \iiint_B f(x,y,z)\,dV,\qquad \int_{x_u}^{x_o}\int_{y_u}^{y_o}\int_{z_u}^{z_o} f(x,y,z)\,dz\,dy\,dx$
+\end{formulabox}
+
+\textVorBox{Anwendungen f\"ur das Volumenintegral:}
+\begin{fulltablebox}{Z{0.8} | Y{1.2}}
+    Massentr\"agheitsmoment: & $\displaystyle \theta_z = \iiint_K \rho(x,y,z)(x^2+y^2)\,dx\,dy\,dz$ \\ \hline
+    \ZSFrowColor
+    Schwerpunkte: & $\displaystyle z_S = \frac{1}{V_B}\iiint_B z\,dV$
+\end{fulltablebox}
+
+\textNachBox{wobei $\rho(x,y,z)$ die \ZSFkeyword{Massendichte} ist.}
+
+\textVorBox{Bei einem \ZSFkeyword{Volumenintegral in Zylinderkoordinaten} $(r\cos(\varphi),r\sin(\varphi),z)$ mit $\varphi\in[0,2\pi]$, $r\in[0,R]$ und $z\in[0,h]$ muss die Integrationsvariable ver\"andert werden:}
+\begin{formulabox}
+    $\displaystyle dA = r\,dr\,d\varphi,\qquad dV = r\,dr\,d\varphi\,dz,\qquad dO = R\,d\varphi\,dz$
+\end{formulabox}
+\textNachBox{wobei $\tilde B$ die Integrationsgrenzen in Zylinderkoordinaten sind.}
+
+\textVorBox{Dasselbe gilt f\"ur ein Volumenintegral in \ZSFkeyword{Kugelkoordinaten}
+$(r\sin(\vartheta)\cos(\varphi),r\sin(\vartheta)\sin(\varphi),r\cos(\vartheta))$
+mit $\vartheta\in[0,\pi]$, $\varphi\in[0,2\pi]$ und $r\in[0,R]$:}
+\begin{formulabox}
+    $\displaystyle dA = r^2\sin(\vartheta)\,d\varphi\,d\vartheta,\qquad dV = r^2\sin(\vartheta)\,d\varphi\,d\vartheta\,dr,\qquad dO = R^2\sin(\vartheta)\,d\varphi\,d\vartheta$
+\end{formulabox}
+\textNachBox{wobei $\tilde B$ die Integrationsgrenzen in Kugelkoordinaten sind.}
+\noindent\textit{Notation: }$\vartheta=\theta$, $\varphi=\phi$ und $\rho=\varrho$ bezeichnen jeweils dieselbe mathematische Gr\"osse; hier werden die Varianten $\vartheta,\varphi,\rho$ verwendet.
+
+\SubsectionBar{Allgemeine Koordinatentransformation}
+Das Fl\"achenelement $dF$ bei einer Koordinatentransformation ist abh\"angig von der Determinante der \ZSFkeyword{Jacobi-Matrix}, einem Art Verzerrungsfaktor.
+
+\textVorBox{In 2D lautet die Jacobi-Matrix f\"ur die Transformation
+$\tilde r(u,v)=(x(u,v),y(u,v))$:}
+\begin{formulabox}
+    $\displaystyle J=\begin{pmatrix}
+        x_u & x_v \\
+        y_u & y_v
+    \end{pmatrix}$
+\end{formulabox}
+\textVorBox{und das Fl\"achenelement:}
+\begin{formulabox}
+    $\displaystyle dF=\left|\det(J)\right|\,du\,dv$
+\end{formulabox}
+
+\textVorBox{In 3D lautet die Jacobi-Matrix f\"ur die Transformation
+$\tilde r(u,v,w)=(x(u,v,w),y(u,v,w),z(u,v,w))$:}
+\begin{formulabox}
+    $\displaystyle J=\begin{pmatrix}
+        x_u & x_v & x_w \\
+        y_u & y_v & y_w \\
+        z_u & z_v & z_w
+    \end{pmatrix}$
+\end{formulabox}
+\textVorBox{und das Volumenelement:}
+\begin{formulabox}
+    $\displaystyle dV=\left|\det(J)\right|\,du\,dv\,dw$
+\end{formulabox}
+
+\textNachBox{Zudem m\"ussen die Integrationsgrenzen angepasst werden. Die Umkehrung einer linearen Koordinatentransformation ist ebenfalls linear.}
+
+\SubsectionBar{Integrale mit Parametern}
+\textVorBox{Sei $f:(x,t)\to f(x,t)$ differenzierbar und $f_x$ stetig, so gilt:}
+\begin{formulabox}
+    $\displaystyle \frac{d}{dx}\int_a^b f(x,t)\,dt = \int_a^b f_x(x,t)\,dt$
+\end{formulabox}
+
+\textVorBox{Befindet sich in den Intervallgrenzen ein Parameter, so gilt:}
+\begin{formulabox}
+    $\displaystyle \frac{d}{dx}\int_{u(x)}^{v(x)}f(x,t)\,dt
+    =\int_{u(x)}^{v(x)} f_x(x,t)\,dt + f(x,v(x))v'(x)-f(x,u(x))u'(x)$
+\end{formulabox}
+
+\textVorBox{Wenn $f$ nur von $t$ abh\"angig ist, gilt:}
+\begin{formulabox}
+    $\displaystyle \frac{d}{dx}\int_a^{v(x)} f(t)\,dt = f(v(x))v'(x)$
+\end{formulabox}
