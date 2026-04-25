@@ -94,6 +94,18 @@ sichtbar sind. Standardkommando:
 make build
 ```
 
+## Pruefungskontext Analysis 2 (ETH Zuerich, Maschinenbau)
+
+- `analysis2_fs2026_hliddal.pdf` ist die persoenliche **Zusammenfassung der Vorlesung**
+  (Cheat Sheet) und faellt in die zugelassene Hilfsmittel-Kategorie "Zusammenfassung der Vorlesung".
+- Das Dokument wird waehrend des gesamten Semesters aktiv beim Loesen von Aufgaben verwendet
+  und laufend erweitert, damit der Umgang damit fuer die Pruefung eingespielt ist.
+- Zulaessiger Umfang dieser Kategorie: **bis zu 10 A4 Seiten**
+  (5 Blaetter beidseitig oder 10 Blaetter einseitig).
+- Die Formelsammlung **"Formeln, Tabellen, Begriffe" (FTB)** ist eine **separate**
+  zusaetzlich zugelassene Kategorie und nicht identisch mit diesem PDF.
+- Bei Inhalts- und Layout-Entscheidungen pruefungsrelevanten, schnell auffindbaren Inhalt priorisieren.
+
 ## Formel-Referenzen in Antworten
 
 - Wenn Formeln genannt oder erklärt werden, immer das **genaue Kapitel** angeben (z. B. `chapters/04_differentialrechnung.tex`).
