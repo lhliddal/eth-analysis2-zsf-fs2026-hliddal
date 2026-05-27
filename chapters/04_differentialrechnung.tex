@@ -29,7 +29,8 @@ Die Ableitung einer geraden Funktion ist ungerade und umgekehrt.
 
 \SubsectionBar{Linearisieren \& Fehlerrechnung\ZSFScriptRef{64}}
 
-Die Linearisierung ist ein Verfahren, um eine nichtlineare Funktion an einer Stelle $x_0$ durch eine lineare Funktion zu approximieren.\\
+Die Linearisierung ist ein Verfahren, um eine nichtlineare Funktion an einer Stelle $x_0$ durch eine lineare Funktion zu approximieren.
+
 \textVorBox{Die Formel der \ZSFkeyword{linearen Ersatzfunktion} lautet:}
 
 \begin{formulabox}
@@ -46,8 +47,13 @@ Die Linearisierung ist ein Verfahren, um eine nichtlineare Funktion an einer Ste
 
 \SubsectionBar{Mittelwertsatz \& Satz von Rolle\ZSFScriptRef{64}}
 
-Der \ZSFkeyword{Mittelwertsatz} besagt, dass es zwischen zwei Endpunkten einer Funktion mindestens einen Punkt gibt, in dem die Tangente an die Funktion parallel zur Geraden durch die Endpunkte verläuft.\par
-Der \ZSFkeyword{Satz von Rolle} besagt, dass bei einer differenzierbaren, nicht injektiven Funktion $f: (a, b) \to \R$ ein Punkt existieren muss, dessen Ableitung 0 beträgt.
+\begin{statementbox}[Mittelwertsatz]
+Zwischen zwei Endpunkten einer Funktion existiert mindestens ein Punkt, in dem die Tangente parallel zur Geraden durch die Endpunkte verläuft.
+\end{statementbox}
+
+\begin{statementbox}[Satz von Rolle]
+Bei einer differenzierbaren, nicht injektiven Funktion $f: (a, b) \to \R$ existiert ein Punkt, dessen Ableitung $0$ beträgt.
+\end{statementbox}
 
 \SubsectionBar{Kurvendiskussion\ZSFScriptRef{65}}
 
@@ -89,11 +95,12 @@ Im Gegensatz zu Funktionen können \ZSFkeyword{Kurven} jeden möglichen Verlauf 
     $\displaystyle t \to \vec{r}(t) = (x(t), y(t))$
 \end{formulabox}
 
-\textNachBox{Bei der \ZSFkeyword{impliziten Darstellung} $F(x,y) = 0$ wird die Funktion nicht nach einer der beiden Variablen aufgelöst.\par
-Bei der \ZSFkeyword{expliziten Darstellung} $f(x)$ steht eine Variable allein auf einer Seite des Gleichheitszeichens.
-\begin{itemize}
-    \item[$\Rightarrow$] Bei der Umrechnung von der Parameter- in die explizite Darstellung nach $t$ auflösen und gleichsetzen.
-\end{itemize}}
+\begin{factlist}
+    \ZSFFact{implizit}{$F(x,y) = 0$, nicht nach einer der beiden Variablen aufgelöst.}
+    \ZSFFact{explizit}{$f(x)$, eine Variable steht allein auf einer Seite.}
+\end{factlist}
+
+$\Rightarrow$ Bei der Umrechnung von der Parameter- in die explizite Darstellung nach $t$ auflösen und gleichsetzen.
 
 \textVorBox{Kurven können in \ZSFkeyword{polaren Koordinaten} ($\cos(\varphi) \cdot \rho(\varphi),\, \sin(\varphi) \cdot \rho(\varphi)$) dargestellt werden:}
 
@@ -106,8 +113,6 @@ Bei der \ZSFkeyword{expliziten Darstellung} $f(x)$ steht eine Variable allein au
 \begin{formulabox}
     $\displaystyle \rho(\varphi) = \sqrt{x(\varphi)^2 + y(\varphi)^2}, \quad \varphi = \arctan\left(\frac{y(\varphi)}{x(\varphi)}\right)$
 \end{formulabox}
-
-\columnbreak
 
 \SubsectionBar{Ebene Kurven (S.67,68,69)}
 

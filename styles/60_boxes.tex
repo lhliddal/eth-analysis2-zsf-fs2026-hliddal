@@ -6,6 +6,20 @@
   \par\penalty0\vspace{0pt plus \ZSFbreakThreshold}\penalty-100\vspace{0pt plus -\ZSFbreakThreshold}\relax
 }
 
+% Einheitlicher Top-Spacing-Kontrakt fuer Titelbalken.
+% Reihenfolge ist kritisch: \addvspace MUSS vor \BreakIfNotEnoughSpace stehen,
+% damit es per Max-Semantik mit dem after-skip der Vorbox kollabiert. Stuende
+% es danach, faende \addvspace nur noch die Stretch-Reste (lastskip natural=0)
+% und wuerde additiv arbeiten -> Vorbox-After-Skip + Bar-Before-Skip stapeln
+% sich, was zu sichtbar variablem Abstand ueber Titelbalken fuehrt.
+% Tcolorbox-Definitionen, die diesen Helper aufrufen, MUESSEN before skip=0pt
+% setzen, damit das Spacing nicht doppelt eingerechnet wird.
+\newcommand{\ZSFTitleBarTopSpacing}[1]{%
+  \par
+  \addvspace{#1}%
+  \BreakIfNotEnoughSpace
+}
+
 \newtcolorbox{chapterbar}[1][] {
   enhanced jigsaw,
   breakable=false,
@@ -17,8 +31,8 @@
   right=\ZSFspaceS,
   top=\ZSFspaceS,
   bottom=\ZSFspaceS,
-  before skip=\ZSFspaceM,
-  after skip=\ZSFspaceS,
+  before skip=\ZSFspaceL,
+  after skip=\ZSFchapterBarAfterSkip,
   fontupper=\ZSFfontChapter,
   #1
 }
@@ -39,12 +53,12 @@
   colframe=ChapterColor0,
   boxrule=0pt,
   boxsep=0pt,
-  left=\ZSFspaceS,
-  right=\ZSFspaceS,
-  top=0.8pt,
-  bottom=0.8pt,
+  left=\ZSFspaceM,
+  right=\ZSFspaceM,
+  top=\ZSFspaceS,
+  bottom=\ZSFspaceS,
   before skip=0pt,
-  after skip=0pt,
+  after skip=\ZSFspaceXS,
   halign=center,
   #1
 }
@@ -52,8 +66,9 @@
   \penalty-500
   \begin{zsftitleheader}
     \sffamily
-    {\color{white}\fontsize{7.5bp}{8bp}\bfseries\selectfont #1\,%
-    \color{white!85}\fontsize{5.8bp}{6bp}\mdseries\itshape\selectfont \textemdash{}~von~#2\par}%
+    {\color{white}\fontsize{11bp}{12.5bp}\bfseries\selectfont #1\par}%
+    \vspace{1pt}%
+    {\color{white!88}\fontsize{6.7bp}{7.5bp}\itshape\selectfont von~#2\par}%
   \end{zsftitleheader}
   \penalty10000
 }
@@ -69,15 +84,16 @@
   right=\ZSFspaceS,
   top=\ZSFspaceS,
   bottom=\ZSFspaceS,
-  before skip=\ZSFsubsectionBarBeforeSkip,
-  after skip=\ZSFspaceS,
+  % before skip wird vom Wrapper (\ZSFTitleBarTopSpacing) verwaltet.
+  before skip=0pt,
+  after skip=\ZSFsubsectionAfterGap,
   fontupper=\ZSFfontSection,
   #1
 }
 \makeatletter
 \newcommand{\SubsectionBar}{\@ifstar{\SubsectionBarStar}{\SubsectionBarNumbered}}
 \newcommand{\SubsectionBarNumbered}[2][]{
-  \BreakIfNotEnoughSpace
+  \ZSFTitleBarTopSpacing{\ZSFsubsectionBarBeforeSkip}
   \penalty-500
   \ZSFCollapseAfterChapterBar
   \refstepcounter{subsection}
@@ -86,9 +102,10 @@
   \textcolor{white}{\thesubsection. #2}
   \end{subsectionbar}
   \penalty10000
+  \ZSFMarkAfterSubsectionBar
 }
 \newcommand{\SubsectionBarStar}[2][]{
-  \BreakIfNotEnoughSpace
+  \ZSFTitleBarTopSpacing{\ZSFsubsectionBarBeforeSkip}
   \penalty-500
   \ZSFCollapseAfterChapterBar
   \if\relax\detokenize{#1}\relax\else\label{#1}\fi
@@ -96,6 +113,17 @@
   \textcolor{white}{#2}
   \end{subsectionbar}
   \penalty10000
+  \ZSFMarkAfterSubsectionBar
+}
+% Variante: Abschnitt auf neuer Spalte beginnen (ersetzt rohes \columnbreak)
+\newcommand{\SubsectionBarOnNewColumn}{\@ifstar{\SubsectionBarOnNewColumnStar}{\SubsectionBarOnNewColumnNumbered}}
+\newcommand{\SubsectionBarOnNewColumnNumbered}[2][]{%
+  \columnbreak
+  \SubsectionBarNumbered[#1]{#2}%
+}
+\newcommand{\SubsectionBarOnNewColumnStar}[2][]{%
+  \columnbreak
+  \SubsectionBarStar[#1]{#2}%
 }
 \makeatother
 
@@ -123,15 +151,16 @@
   titlerule=0pt,
   boxsep=0pt,
   arc=1pt, outer arc=1pt,
-  before skip=\ZSFspaceS,
+  before skip=\ZSFBoxBeforeSkip,
   after skip=\ZSFspaceS,
+  before={\ZSFConsumeAfterSubsectionBar},
   zsftitlebar,
 }}
 
 % Gemeinsamer Basis-Stil fuer alle Titelboxen (defbox, tablebox, figbox)
 \tcbset{zsftitlebox/.style={
   enhanced jigsaw,
-  breakable,
+  breakable=false,
   colback=\BoxBackColor,
   colbacktitle=\BoxTitleColor,
   colframe=\BoxFrameColor,
@@ -139,13 +168,14 @@
   boxrule=0.5pt,
   titlerule=0pt,
   boxsep=0pt,
-  before skip=\ZSFspaceS,
+  before skip=\ZSFBoxBeforeSkip,
   after skip=\ZSFspaceS,
+  before={\ZSFConsumeAfterSubsectionBar},
   zsftitlebar,
   before upper={\parskip=\ZSFspaceS\relax},
 }}
 
-\newtcolorbox{defbox}[1][]{zsftitlebox, before skip=\ZSFspaceS, left=\ZSFspaceS, right=\ZSFspaceS, top=\ZSFspaceS, bottom=\ZSFspaceS, title={#1}}
+\newtcolorbox{defbox}[1][]{zsftitlebox, before skip=\ZSFBoxBeforeSkip, left=\ZSFspaceS, right=\ZSFspaceS, top=\ZSFspaceS, bottom=\ZSFspaceS, title={#1}}
 \newtcolorbox{tablebox}[1][]{zsftitlebox, unbreakable, title={#1}}
 \newtcolorbox{figbox}[1][]{zsftitlebox, unbreakable, title={#1}}
 
@@ -186,8 +216,9 @@
   right=\ZSFspaceS,
   top=\ZSFspaceS,
   bottom=\ZSFspaceS,
-  before skip=\ZSFspaceS,
+  before skip=\ZSFBoxBeforeSkip,
   after skip=\ZSFspaceS,
+  before={\ZSFConsumeAfterSubsectionBar},
   before upper={\parskip=\ZSFspaceS\centering},
   after upper={\par},
   middle=\ZSFspaceSep,
@@ -196,7 +227,7 @@
 
 \newtcolorbox{goalbox}[1][]{
   zsfpanelbox,
-  breakable,
+  breakable=false,
   colback=white,
   left=\ZSFspaceS,
   right=\ZSFspaceS,
@@ -314,6 +345,78 @@
 
 
 
+
+% ------------------------------------------------------------
+% Aussagen (statementbox) und Verfahren (procedure)
+% ------------------------------------------------------------
+% statementbox: dezente Box mit linkem Farbbalken in Kapitelfarbe.
+% Optional fetter Titel in Kapitelfarbe. Fuer Saetze, Definitionen
+% und sonstige in sich geschlossene Aussagen, wenn `defbox` mit
+% Titelleiste zu schwer wirkt.
+\tcbset{zsfstatementstyle/.style={
+  enhanced jigsaw,
+  breakable=false,
+  colback=white,
+  colframe=white,
+  frame hidden,
+  borderline west={\ZSFstatementBarWidth}{0pt}{\StatementBarColor},
+  boxrule=0pt,
+  arc=0pt, outer arc=0pt,
+  left=\ZSFstatementLeftPad,
+  right=\ZSFspaceS,
+  top=\ZSFspaceXS,
+  bottom=\ZSFspaceXS,
+  before skip=\ZSFBoxBeforeSkip,
+  after skip=\ZSFspaceS,
+  before={\ZSFConsumeAfterSubsectionBar},
+}}
+
+\NewDocumentEnvironment{statementbox}{O{}}
+  {\begin{tcolorbox}[zsfstatementstyle]%
+   \if\relax\detokenize{#1}\relax\else
+     {\bfseries\color{\StatementTitleColor}#1}\par\vspace{\ZSFspaceXS}%
+   \fi\ignorespaces}
+  {\end{tcolorbox}}
+
+% procedure: nummerierte Schritt-Liste in einer statementbox.
+% Jeder Schritt = fetter Titel + eigene Zeile mit Beschreibung.
+% Verwendung: \ProcStep{Titel}{Beschreibung}
+\NewDocumentEnvironment{procedure}{O{}}
+  {\begin{statementbox}[#1]%
+   \begin{enumerate}[leftmargin=1.6em,labelsep=0.4em,itemsep=\ZSFprocItemSep,topsep=0pt,parsep=0pt,partopsep=0pt]}
+  {\end{enumerate}\end{statementbox}}
+
+\newcommand{\ProcStep}[2]{\item {\bfseries #1}\\[\ZSFprocStepGap]#2}
+
+% factlist: rahmenlose Liste von Definitions-/Eigenschaftsfakten.
+% Farbiger Bullet, fetter Lead-in, em-dash, Beschreibung.
+% Verwendung: \ZSFFact{Lead-in}{Beschreibung} - oder rohes \item.
+\NewDocumentEnvironment{factlist}{}
+  {\begin{itemize}[
+     leftmargin=1.2em,
+     labelsep=0.4em,
+     label={\textcolor{\StatementBarColor}{\textbullet}},
+     itemsep=\ZSFprocItemSep,
+     topsep=\ZSFspaceXS,
+     parsep=0pt,
+     partopsep=0pt
+   ]}
+  {\end{itemize}}
+
+% propertylist: gruppierte Charakterisierungen in einer statementbox.
+% Wie factlist, aber zusammengefasst unter optionalem Titel.
+\NewDocumentEnvironment{propertylist}{O{}}
+  {\begin{statementbox}[#1]\begin{itemize}[
+     leftmargin=1.2em,
+     labelsep=0.4em,
+     itemsep=\ZSFprocItemSep,
+     topsep=0pt,
+     parsep=0pt,
+     partopsep=0pt
+   ]}
+  {\end{itemize}\end{statementbox}}
+
+\newcommand{\ZSFFact}[2]{\item \textbf{#1}\,---\,#2}
 
 \newtcbox{\ZSFdanger}{colback=red!80!black, colframe=red!80!black, coltext=white, on line, boxsep=\ZSFspaceXS, left=\ZSFspaceS, right=\ZSFspaceS, top=\ZSFspaceXS, bottom=\ZSFspaceXS, boxrule=0pt, arc=1pt, fontupper=\sffamily\bfseries}
 

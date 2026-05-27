@@ -68,6 +68,10 @@
 \newcommand{\BoxBackColor}{\chaptercolorlight!8}
 \newcommand{\BoxFrameColor}{\chaptercolorlight!25}
 
+% Aussagen-/Verfahrens-Boxen (statementbox, procedure)
+\newcommand{\StatementBarColor}{\chaptercolor}
+\newcommand{\StatementTitleColor}{\chaptercolor}
+
 \newcommand{\GoalConditionBackColor}{StaticSubBoxBack}
 \newcommand{\GoalConditionFrameColor}{StaticSubBoxBorder}
 \newcommand{\GoalTargetBackColor}{StaticBoxTitleBack}
@@ -95,8 +99,20 @@
 \newif\ifzsfAfterChapterBar
 \zsfAfterChapterBarfalse
 \newcommand{\ZSFMarkAfterChapterBar}{\global\zsfAfterChapterBartrue}
+
+\newif\ifzsfAfterSubsectionBar
+\zsfAfterSubsectionBarfalse
+\newcommand{\ZSFMarkAfterSubsectionBar}{\global\zsfAfterSubsectionBartrue}
+% Reduzierter "before skip" fuer Boxen, die direkt nach einer SubsectionBar
+% stehen. Das Flag wird per `before app` der Box wieder geloescht.
+\newcommand{\ZSFBoxBeforeSkip}{%
+  \ifzsfAfterSubsectionBar\ZSFsubsectionAfterGap\else\ZSFspaceS\fi
+}
+\newcommand{\ZSFConsumeAfterSubsectionBar}{\global\zsfAfterSubsectionBarfalse}
 % Kollabiert den before-skip der SubsectionBar auf \ZSFsubsectionAfterChapterGap,
 % wenn sie direkt nach einer ChapterBar steht. Reset nach Verwendung.
+% Hinweis: Wegen tcolorbox \addvspace-Semantik nur SubsectionBar before-skip
+% subtrahieren (ChapterBar after-skip wird durch das addvspace verschluckt).
 \newcommand{\ZSFCollapseAfterChapterBar}{%
   \ifzsfAfterChapterBar
     \vspace*{\dimexpr\ZSFsubsectionAfterChapterGap-\ZSFsubsectionBarBeforeSkip\relax}%

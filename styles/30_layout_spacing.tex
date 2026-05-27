@@ -2,7 +2,7 @@
 % LAYOUT AND SPACING
 % ============================================================
 
-\setlength{\parskip}{2.5pt plus 1pt minus 0.5pt}
+\setlength{\parskip}{3.5pt plus 1pt minus 0.5pt}
 \setlength{\parindent}{0pt}
 
 \widowpenalty=10000
@@ -15,12 +15,12 @@
 
 % Kompakte Spacing-Skala (4 Stufen)
 \newlength{\ZSFspaceXS}          \setlength{\ZSFspaceXS}{1pt}
-\newlength{\ZSFspaceS}           \setlength{\ZSFspaceS}{2pt}
-\newlength{\ZSFspaceM}           \setlength{\ZSFspaceM}{4pt}
-\newlength{\ZSFspaceL}           \setlength{\ZSFspaceL}{8pt}
+\newlength{\ZSFspaceS}           \setlength{\ZSFspaceS}{4pt}
+\newlength{\ZSFspaceM}           \setlength{\ZSFspaceM}{7pt}
+\newlength{\ZSFspaceL}           \setlength{\ZSFspaceL}{10pt}
 
 % Abstand ober-/unterhalb von TextBlocks und Trennlinien
-\newlength{\ZSFspaceOuter}        \setlength{\ZSFspaceOuter}{3pt}
+\newlength{\ZSFspaceOuter}        \setlength{\ZSFspaceOuter}{7pt}
 \newlength{\ZSFspaceSep}          \setlength{\ZSFspaceSep}{3pt}
 
 \setlength{\ZSFtextMinPad}{\ZSFspaceXS}
@@ -28,18 +28,35 @@
 \setlength{\columnsep}{\ZSFspaceL} % Konsistent mit Skala
 \setlength{\multicolsep}{\ZSFspaceS}
 \setlength{\emergencystretch}{2em}
-\newlength{\ZSFbreakThreshold}   \setlength{\ZSFbreakThreshold}{4\baselineskip} % Mindesthöhe für BreakIfNotEnoughSpace
+\newlength{\ZSFbreakThreshold}   \setlength{\ZSFbreakThreshold}{3\baselineskip} % Mindesthöhe für BreakIfNotEnoughSpace
 \newlength{\ZSFpostChapterNudge} \setlength{\ZSFpostChapterNudge}{0pt}  % Korrektur nach Kapitelbalken (bei Bedarf anpassen)
 \newlength{\ZSFtitleBarHeight}    \setlength{\ZSFtitleBarHeight}{9.2pt}  % feste Hoehe aller Titelbalken
-\newlength{\ZSFsubsectionBarBeforeSkip}\setlength{\ZSFsubsectionBarBeforeSkip}{5pt}     % Standard-Abstand vor SubsectionBar
-\newlength{\ZSFsubsectionAfterChapterGap}\setlength{\ZSFsubsectionAfterChapterGap}{1pt} % Restabstand wenn SubsectionBar direkt nach ChapterBar steht
+\newlength{\ZSFsubsectionBarBeforeSkip}\setlength{\ZSFsubsectionBarBeforeSkip}{\ZSFspaceL}     % Standard-Abstand vor SubsectionBar
+\newlength{\ZSFsubsectionAfterChapterGap}\setlength{\ZSFsubsectionAfterChapterGap}{\ZSFspaceXS} % Restabstand wenn SubsectionBar direkt nach ChapterBar steht
+\newlength{\ZSFsubsectionAfterGap}       \setlength{\ZSFsubsectionAfterGap}{\ZSFspaceXS}        % Restabstand wenn Box direkt nach SubsectionBar steht
+% Bewusste Feinjustierung zwischen XS und S: nicht in Skala, weil der Abstand
+% i.d.R. durch \addvspace der SubsectionBar absorbiert wird und nur in den
+% Sonderfällen ohne nachfolgende SubsectionBar visuell auftaucht.
+\newlength{\ZSFchapterBarAfterSkip}      \setlength{\ZSFchapterBarAfterSkip}{2pt} % Standard-Abstand nach ChapterBar
+
+% Tokens fuer statementbox / procedure (Aussagen & Verfahren)
+\newlength{\ZSFstatementBarWidth} \setlength{\ZSFstatementBarWidth}{2pt}   % Breite des linken Akzentstreifens
+\newlength{\ZSFstatementLeftPad}  \setlength{\ZSFstatementLeftPad}{\ZSFspaceM} % Abstand Streifen -> Text
+\newlength{\ZSFprocStepGap}       \setlength{\ZSFprocStepGap}{\ZSFspaceXS} % Abstand Schritt-Titel -> Beschreibung
+\newlength{\ZSFprocItemSep}       \setlength{\ZSFprocItemSep}{\ZSFspaceXS} % Abstand zwischen Schritten
 
 % ============================================================
 % TEXT-BOX-BINDUNGEN (Klassen für Abstände)
 \newcommand{\ZSFRobustUnskip}{%
-  \ifdim\lastskip>0pt\relax\unskip\fi
-  \ifnum\lastpenalty=0\else\unpenalty\fi
-  \ifdim\lastskip>0pt\relax\unskip\fi
+  \ifvmode
+    \ifdim\lastskip>0pt\relax\vskip-\lastskip\fi
+    \ifnum\lastpenalty=0\else\unpenalty\fi
+    \ifdim\lastskip>0pt\relax\vskip-\lastskip\fi
+  \else
+    \ifdim\lastskip>0pt\relax\unskip\fi
+    \ifnum\lastpenalty=0\else\unpenalty\fi
+    \ifdim\lastskip>0pt\relax\unskip\fi
+  \fi
 }
 
 % Text, der zur Box DARÜBER gehört (Post-Box Text)
@@ -66,6 +83,7 @@
     \nopagebreak
     \vspace{\ZSFspaceXS}% Unser exakter Soll-Abstand
     \vspace{-\ZSFspaceS}% Kompensiert den kommenden Box-Abstand
+    \nopagebreak% Kein Spaltenumbruch nach negativem Glue (verhindert Überlappung in multicols)
 }
 
 % ============================================================

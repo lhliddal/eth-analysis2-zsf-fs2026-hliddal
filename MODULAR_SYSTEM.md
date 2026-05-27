@@ -18,6 +18,22 @@ Das Layout- und Formel-System ist strikt modular aufgebaut. Diese Modularität i
 - Neue Inhalte müssen die zentralen Makros verwenden.
 - Ziel: Die 50+ Kapitel sollen sich vollständig auf den physikalischen/mathematischen Inhalt fokussieren. Das Layouting wird im Hintergrund durch die globale Präambel dynamisch angewendet.
 
+## Build-Pflicht
+
+**Nach jeder Änderung muss `make build` laufen** — Layout-, Spacing-, Makro- oder Inhaltsänderungen werden grundsätzlich gebaut und das PDF überprüft, bevor weitergearbeitet wird. Direkte Aufrufe von `latexmk` oder `pdflatex` aus dem Repo-Root sind verboten; das PDF wird ausschliesslich über `make build` erzeugt.
+
+Gründe:
+- `make build` schreibt alle Aux-Artefakte (`*.aux`, `*.fls`, `*.log`, `*.fdb_latexmk`, `*.synctex.gz`, …) ins `build/`-Verzeichnis. Direkte `latexmk`-Aufrufe verschmutzen den Repo-Root und brechen `make check-root-clean`.
+- `make build` injiziert `\ZSFBuildStamp` und `\ZSFGitCommit` per `LATEX_DEFS` in das Dokument. Ohne diese Defs sind Build-Stempel und Commit-Referenz im PDF leer / undefiniert.
+- `make build` kopiert das Resultat deterministisch nach `analysis2_fs2026_hliddal.pdf` (plus SyncTeX). Manuelle Builds erzeugen `main.pdf` im Root, was nicht der Release-Artefakt ist.
+
+Verbindliche Befehle:
+- `make build` — einziger erlaubter Weg, das PDF zu erzeugen.
+- `make check` — vor jedem Commit ausführen (lint + Strukturtests + PDF-Identität).
+- `make clean` — vor Pull/Branch-Wechsel oder bei verschmutztem Root.
+
+Falls direkte `latexmk`-Artefakte im Root auftauchen (`main.aux`, `main.log`, `main.pdf`, …), ist das ein Fehler — `make clean` ausführen und nur noch `make build` verwenden.
+
 ## Projektstruktur & "Single Source of Truth"
 
 Die Konfiguration ist in Modulen organisiert, um einen unübersichtlichen Monolithen zu vermeiden:
@@ -35,6 +51,10 @@ Die Konfiguration ist in Modulen organisiert, um einen unübersichtlichen Monoli
   - `70_document_settings.tex`: Sonstige LaTeX-Meta-Settings.
 
 **WICHTIG:** Wenn etwas nicht passt, ändere *nicht* die Kapiteldatei und *nicht* `preamble.tex`, sondern das entsprechende Modul im `styles/` Ordner.
+
+## Layout-Overrides (Escape Hatches)
+
+Lokale Spacing-Hacks in Kapiteln (`\vspace`, `\columnbreak`, `\nopagebreak`, etc.) sind verboten. Aktuell existiert kein zentraler Override-Marker. Wenn ein Layout-Sonderfall wiederholt auftritt, wird ein neuer benannter Marker im `styles/`-Modul ergänzt — **niemals** ein roher `\vspace`/`\nopagebreak`/`\columnbreak` ins Kapitel.
 
 ## Verbindliche Nutzungsregeln (Best Practices)
 
@@ -86,7 +106,65 @@ Herleitungen mit markiertem Ziel werden über `Goal...`-Makros aufgebaut.
   {Rechts Titel}{Rechts Bedingung}{}{Rechts Ziel}
 ```
 
-### 4. Text-Box-Bindungen (Spacing)
+### 4. Aussagen & Verfahren (`statementbox`, `procedure`)
+
+Für textlastige Stellen gibt es zwei semantische Primitive, die `defbox` (Titelleiste, schwerer) ergänzen:
+
+**`statementbox`** — dezente Box mit linkem Farbbalken in Kapitelfarbe. Für Sätze, Bemerkungen oder kompakte Definitionen, bei denen eine volle Titelleiste zu viel wäre. Optionaler Titel wird fett in Kapitelfarbe gesetzt.
+
+```tex
+\begin{statementbox}[Satz des Maximums]
+Für eine beschränkte Fläche $A \subseteq D(f) \subseteq \R^2$ ...
+\end{statementbox}
+
+\begin{statementbox} % ohne Titel
+Bemerkung: ...
+\end{statementbox}
+```
+
+**`procedure`** — nummerierte Schritt-Liste in einer `statementbox`. Jeder Schritt besteht aus fettem Titel und einer Beschreibung in eigener Zeile. Verwendung statt einer langen `enumerate`, wenn jeder Schritt mehrere Wörter Erklärung braucht.
+
+```tex
+\begin{procedure}[Vorgehen: Extremalstellen finden]
+  \ProcStep{Definitionsgebiet}{Skizze des Bereichs zeichnen.}
+  \ProcStep{Inneres}{$f_x = 0$, $f_y = 0$ setzen und nach $x,y$ auflösen.}
+  \ProcStep{Rand}{Parametrisieren, $f$ einsetzen, nach $t$ ableiten.}
+  \ProcStep{Eckpunkte}{Separat untersuchen.}
+  \ProcStep{Vergleich}{Funktionswerte aller Kandidaten berechnen und vergleichen.}
+\end{procedure}
+```
+
+**`factlist`** — rahmenlose Liste für Stapel von Definitions-/Eigenschaftsfakten im Fließtext. Farbiger Bullet (Kapitelfarbe), fetter Lead-in, em-dash, Beschreibung. Für Stellen, wo mehrere kurze Fakten hintereinander als Prosa erschlagend wirken.
+
+```tex
+\begin{factlist}
+  \ZSFFact{Grad}{Größter Exponent eines Polynoms.}
+  \ZSFFact{Nullstellen}{Polynom vom Grad $n$ hat $n$ Nullstellen.}
+  \ZSFFact{Vielfachheit}{Eine NS kann einfach, doppelt, …, $n$-fach vorkommen.}
+\end{factlist}
+```
+
+**`propertylist`** — gruppierte Charakterisierungen / Eigenschaften unter optionalem Titel, eingefasst in eine `statementbox`. Wie `procedure`, aber unnummeriert (Eigenschaften sind nicht sequenziell). Items entweder als rohes `\item` oder mit `\ZSFFact{Lead}{Body}`.
+
+```tex
+\begin{propertylist}[Charakterisierungen konservativer Felder]
+  \item Arbeit entlang aller geschlossenen Wege $\oint \vec v\,d\vec r=0$.
+  \item Vektorfeld ist ein \ZSFkeyword{Potentialfeld}.
+\end{propertylist}
+```
+
+**Faustregel**:
+- Aussage / Satz / Definition (kompakt) → `statementbox`
+- Definition mit Hervorhebung im Inhaltsfluss → weiterhin `defbox`
+- Schritt-für-Schritt-Anleitung → `procedure`
+- Gruppierte Eigenschaften / Charakterisierungen → `propertylist`
+- Stapel kurzer Fakten im Fluss → `factlist`
+- Wenn-dann-Vergleich (Bedingung → Konsequenz) → `fulltablebox` mit zwei Spalten
+- Reine Aufzählung ohne Erklärungstext pro Item → normales `enumerate`/`itemize`
+
+Tokens (`30_layout_spacing.tex`): `\ZSFstatementBarWidth`, `\ZSFstatementLeftPad`, `\ZSFprocStepGap`, `\ZSFprocItemSep`. Farben (`40_colors_structure.tex`): `\StatementBarColor`, `\StatementTitleColor` — beide an `\chaptercolor` gebunden, also automatisch pro Kapitel passend.
+
+### 5. Text-Box-Bindungen (Spacing)
 Um zu definieren, ob ein Textabschnitt zur Box darüber/darunter oder zu einer abgesetzten Formel gehört, existieren semantische Spacing-Makros. Sie berechnen Layout-Abstände deterministisch, blockieren Seitenumbruche und erfordern keine manuellen `\vspace`-Hacks.
 
 - `\textVorBox{...}` & `\textNachBox{...}`: Ziehen erklärenden Text untrennbar (`1pt` Abstand) an das zugehörige UI-Element (Boxen, Custom-Umgebungen).
@@ -149,5 +227,28 @@ Nach jedem Edit bitte manuell den Build triggern (bzw. den VS Code Task "LaTeX: 
 latexmk -synctex=1 -interaction=nonstopmode -file-line-error -pdf -outdir=build -auxdir=build main.tex
 ```
 
+## Anhang-Sonderregelung (PFLICHT)
+
+**Der Anhang (`chapters/11_anhang.tex`) wird ab jetzt NUR auf expliziten Befehl des Nutzers verändert.** Solange der Nutzer nicht ausdrücklich "Anhang", "11_anhang" oder eine konkrete Anhang-Stelle nennt, darf der Anhang weder inhaltlich noch im Header (`% ANHANG-SCOPE: SEPARATE REGELN`) angefasst werden — auch nicht "im Vorbeigehen" bei globalen Style-Refactorings.
+
+**Bei globalen Änderungen** (Spacing-Skala, Box-Definitionen, Bar-Skips, Typografie etc.) gilt:
+
+1. Globale Änderung im jeweiligen `styles/`-Modul vornehmen.
+2. Sicherstellen, dass der Anhang-Header in `chapters/11_anhang.tex` die Änderung lokal kompensiert (Spacing-Reset, breakable-Override etc. sind dort bereits etabliert).
+3. Anhang nach dem Build **visuell verifizieren**: Spaltenfüllung, Box-Umbrüche über Spalten/Seiten, enge Pack-Dichte müssen erhalten bleiben.
+4. **Falls der Anhang regressiert:** zurück zur globalen Änderung, nicht den Anhang umschreiben. Lieber globale Änderung anpassen oder eine neue lokale Kompensation in den Anhang-Header (oben in `11_anhang.tex`) ergänzen — niemals die Anhang-Inhalte verändern.
+
+### Verbindliche Anhang-Regeln (technisch):
+
+1. **Boxen müssen über Spalten-/Seitengrenzen brechen können.** Im Rest des Dokuments sind Boxen unbreakable (Blöcke nicht zerschnitten). Im Anhang gilt das Gegenteil — `\tcbset{breakable}` am Kapitel-Anfang.
+2. **Keine `\BreakIfNotEnoughSpace`-Reserven** im Anhang (kein Whitespace am Spaltenende, dichter Satz erwünscht). `\renewcommand{\BreakIfNotEnoughSpace}{}` am Kapitel-Anfang.
+3. **Spacing-Skala lokal auf dichte Originalwerte zurücksetzen** (`ZSFspaceS=2pt`, `ZSFspaceM=4pt`, `ZSFspaceL=8pt`). Wenn die globalen Werte für die Theoriekapitel angepasst werden, ändert sich der Anhang **nicht** mit.
+4. **Manuelle Page-/Column-Breaks sind im Anhang erlaubt** (z. B. `\clearpage` vor "Hliddal's Anhang"); im Rest des Dokuments sind sie verboten.
+5. `\allowdisplaybreaks[4]` für freie Display-Math-Umbrüche.
+
+Diese Regeln sind als Kommentar oben in `chapters/11_anhang.tex` dokumentiert. **Bei Refactorings am Style-System: Anhang nach jedem Build visuell verifizieren** — Spaltenfüllung, Box-Umbrüche und enge Pack-Dichte müssen erhalten bleiben.
+
 ## Hinweis für neue Chats (AI Agents)
 Bei Rückfragen oder neuen Aufgaben immer zuerst diese Datei und die relevanten Module in `styles/` beachten. Die modulare Struktur hat höchste Priorität vor kurzfristigen Einzel-Hacks.
+
+**Anhang-Sonderregelung (siehe oben) ist verbindlich:** `chapters/11_anhang.tex` wird ausschliesslich auf expliziten Befehl des Nutzers angefasst. Bei globalen Style-Änderungen NIE den Anhang "mit-refaktorieren" — stattdessen nach dem Build visuell verifizieren und ggf. nur den Header (Kompensations-Block) erweitern.

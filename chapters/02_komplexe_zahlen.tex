@@ -1,4 +1,4 @@
-\StartChapterOnNewColumn{Komplexe Zahlen\ZSFScriptRef{14,18,19}}
+\StartChapter{Komplexe Zahlen\ZSFScriptRef{14,18,19}}
 
 \SubsectionBar{Eigenschaften}
 
@@ -49,7 +49,8 @@ Die Darstellung $z = r(\cos(\varphi) + i\sin(\varphi))$ nennt man \ZSFkeyword{Po
     Potenz: & \displaystyle z^n = r^n e^{in\varphi} \\ \hline
     \ZSFrowColor Wurzel: & \displaystyle \sqrt[n]{z} = \sqrt[n]{r} e^{i\left(\frac{\varphi + 2k\pi}{n}\right)} \\
 \end{fulltablebox}
-\textNachBox{wobei $k = 0, 1, 2, \dots, n-1$ \newline Alle Wurzeln liegen auf Kreis mit Radius $\sqrt[n]{r}$}
+\textNachBox{wobei $k = 0, 1, 2, \dots, n-1$}
+\textNachBox{Alle Wurzeln liegen auf Kreis mit Radius $\sqrt[n]{r}$}
 
 \SubsectionBar{Polynome\ZSFScriptRef{21,57}}
 
@@ -59,13 +60,12 @@ Die Darstellung $z = r(\cos(\varphi) + i\sin(\varphi))$ nennt man \ZSFkeyword{Po
 \end{formulabox}
 \textNachBox{$x$ wird als \ZSFkeyword{Nullstelle} des Polynoms $p$ bezeichnet, wenn $p(x) = 0$.}
 
-Der \ZSFkeyword{Grad} eines Polynoms ist dessen grösster Exponent (oben $n$).
-
-Ein Polynom vom Grad $n$ hat $n$ Nullstellen.
-
-Ein Polynom kann reelle und komplexe Nullstellen besitzen. Diese können einfach ($p(x) = 0$), doppelt ($p(x) = 0$, $p'(x) = 0$), dreifach ($p(x) = 0$, $p'(x) = 0$, $p''(x) = 0$), bis $n$-fach vorkommen.
-
-Komplexe Nullstellen kommen immer paarweise vor ($z, \bar{z}$). Ein Polynom mit ungeradem Grad besitzt mindestens eine reelle Nullstelle. Eine einfach komplexe Nullstelle entspricht zwei Nullstellen. Eine doppelt komplexe Nullstelle entspricht vier Nullstellen.
+\begin{factlist}
+    \ZSFFact{Grad}{Größter Exponent eines Polynoms (oben $n$).}
+    \ZSFFact{Anzahl Nullstellen}{Ein Polynom vom Grad $n$ hat $n$ Nullstellen.}
+    \ZSFFact{Vielfachheit}{Eine Nullstelle kann einfach ($p=0$), doppelt ($p=0$, $p'=0$), dreifach ($p=p'=p''=0$), bis $n$-fach vorkommen.}
+    \ZSFFact{Komplexe Nullstellen}{Treten paarweise auf ($z,\bar{z}$). Eine einfach komplexe Nullstelle entspricht zwei, eine doppelt komplexe vier Nullstellen. Ein Polynom mit ungeradem Grad besitzt mindestens eine reelle Nullstelle.}
+\end{factlist}
 
 \textVorBox{Es gelten folgende Regeln für den Grad eines Polynoms:}
 \begin{formulabox}

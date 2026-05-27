@@ -51,4 +51,4 @@ clean:
 	rm -f *.aux *.fdb_latexmk *.fls *.log *.out *.synctex.gz *.toc *.bbl *.blg *.bcf *.run.xml
 	rm -f *.pdf
 
-all: build check
+all: check build

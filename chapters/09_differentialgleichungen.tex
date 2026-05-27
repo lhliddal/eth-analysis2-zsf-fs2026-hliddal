@@ -1,41 +1,45 @@
-\StartChapter{Differentialgleichungen (S.81,82,142)}
+\StartChapterOnNewColumn{Differentialgleichungen (S.81,82,142)}
 
 \SubsectionBar{Eigenschaften}
-\textVorBox{Eine \ZSFkeyword{Differentialgleichung} enth\"alt Funktionen und deren Ableitungen.
-Eine \ZSFkeyword{gew\"ohnliche Differentialgleichung (DGL)} h\"angt nur von einer Variablen (z.B. $x$) ab und ist von der Form:}
+\textVorBox{Eine \ZSFkeyword{Differentialgleichung} enthält Funktionen und deren Ableitungen.
+Eine \ZSFkeyword{gewöhnliche Differentialgleichung (DGL)} hängt nur von einer Variablen (z.B. $x$) ab und ist von der Form:}
 \begin{formulabox}
     $\displaystyle F(C,x,y'(x),y''(x),\ldots,y^{(n)}(x))=0$
 \end{formulabox}
-\textNachBox{wobei $C$ eine Konstante und $y$ eine Funktion in $x$ ist. Die h\"ochste Ableitung gibt die \ZSFkeyword{Ordnung der DGL} an.}
+\textNachBox{wobei $C$ eine Konstante und $y$ eine Funktion in $x$ ist. Die höchste Ableitung gibt die \ZSFkeyword{Ordnung der DGL} an.}
 
-Die Menge der L\"osungen einer solchen Gleichung wird als die \ZSFkeyword{allgemeine L\"osung} der DGL bezeichnet. Sie bildet eine Schar von Funktionen mit einem \ZSFkeyword{Scharparameter} $C$.
+Die Menge der Lösungen einer solchen Gleichung wird als die \ZSFkeyword{allgemeine Lösung} der DGL bezeichnet. Sie bildet eine Schar von Funktionen mit einem \ZSFkeyword{Scharparameter} $C$.
 
-Bei einer bekannten Bedingung $y(x_0)=y_0$, man spricht von einem \ZSFkeyword{Anfangswertproblem (AWP)}, kann der Scharparameter $C$ bestimmt werden. Die zugeh\"orige L\"osung der DGL wird als \ZSFkeyword{spezielle L\"osung} bezeichnet.
+Bei einer bekannten Bedingung $y(x_0)=y_0$, man spricht von einem \ZSFkeyword{Anfangswertproblem (AWP)}, kann der Scharparameter $C$ bestimmt werden. Die zugehörige Lösung der DGL wird als \ZSFkeyword{spezielle Lösung} bezeichnet.
 
 \SubsectionBar{Differentialgleichungen 1. Ordnung}
-Sei $f(x,y)$ eine stetige und nach $y$ partiell stetig differenzierbare Funktion. Der \ZSFkeyword{Existenzsatz} besagt, dass f\"ur jeden Punkt $(x_0,y_0)$ genau eine Funktion $y(x)$ mit $y'=f(x,y)$ und $y(x_0)=y_0$ existiert. Graphisch bedeutet dies, dass die Graphen verschiedener Anfangswertprobleme entweder identisch sind oder sich nicht kreuzen.
+\begin{statementbox}[Existenzsatz]
+Sei $f(x,y)$ stetig und nach $y$ partiell stetig differenzierbar. Dann existiert für jeden Punkt $(x_0,y_0)$ genau eine Funktion $y(x)$ mit $y'=f(x,y)$ und $y(x_0)=y_0$.
 
-\ZSFdanger{Achtung:} Ist $f(x,y)$ \textit{nicht} nach $y$ partiell stetig differenzierbar, k\"onnen zwei Funktionen $y(x)$ existieren, die $y'=f(x,y)$ erf\"ullen.
-Eine DGL 1. Ordnung ist \ZSFkeyword{separierbar}, wenn sie in die folgende Form \"uberf\"uhrt werden kann:
+Graphisch: Die Graphen verschiedener Anfangswertprobleme sind entweder identisch oder kreuzen sich nicht.
+\end{statementbox}
+
+\ZSFdanger{Achtung:} Ist $f(x,y)$ \textit{nicht} nach $y$ partiell stetig differenzierbar, können zwei Funktionen $y(x)$ existieren, die $y'=f(x,y)$ erfüllen.
+Eine DGL 1. Ordnung ist \ZSFkeyword{separierbar}, wenn sie in die folgende Form überführt werden kann:
 \begin{formulabox}
     $\displaystyle y' = f(x,y) = \frac{g(x)}{h(y)}$
 \end{formulabox}
 
-Einige DGLs lassen sich nur durch Substitution separieren:
-\begin{enumerate}
-    \item W\"ahle eine Substitution $u(x,y)$ und stelle nach $y$ um
-    \item Leite den umgestellten Term nach $x$ ab (kann zu $u'$ Term f\"uhren) und setze $y'$ mit dem urspr\"unglichen Term gleich
-    \item Die entstandene DGL 1. Ordnung enth\"alt $u'$ und $u$, die mittels Integration nach $u(x)$ aufgel\"ost werden kann
-    \item Nun den urspr\"unglichen Term $u(x,y)$ mit $u(x)$ gleichsetzen und dann nach $y$ aufl\"osen
-\end{enumerate}
+Einige DGLs lassen sich nur durch Substitution separieren.
+\begin{procedure}[Substitution zur Separierung]
+    \ProcStep{Substitution ansetzen}{Wähle $u(x,y)$ und stelle nach $y$ um.}
+    \ProcStep{Ableiten}{Den umgestellten Term nach $x$ ableiten (kann zu einem $u'$-Term führen) und $y'$ mit dem ursprünglichen Term gleichsetzen.}
+    \ProcStep{DGL in $u$ lösen}{Die entstandene DGL 1.\ Ordnung enthält $u'$ und $u$ und kann mittels Integration nach $u(x)$ aufgelöst werden.}
+    \ProcStep{Rücksubstitution}{Den ursprünglichen Term $u(x,y)$ mit $u(x)$ gleichsetzen und nach $y$ auflösen.}
+\end{procedure}
 
-\SubsectionBar{Vektorfeld}
+\SubsectionBarOnNewColumn{Vektorfeld}
 \textVorBox{In einem \ZSFkeyword{Richtungsfeld} (z.B. einem Vektorfeld $\vec v$) wird jedem Punkt $(x_0,y_0)$ eine Steigung $y'=f(x_0,y_0)$ zugewiesen:}
 \begin{formulabox}
     \includegraphics[width=\linewidth,keepaspectratio,trim=80 190 90 45,clip]{graphics/media/richtungsfeld_skizze.png}
 \end{formulabox}
 
-Fixiert man eine der Variablen (z.B. $x_0$) und variiert die andere (z.B. $y\in\R$), so erh\"alt man eine \ZSFkeyword{Kurvenschar}, eine Menge von Kurven. Solch eine \ZSFkeyword{einparametrige} Kurvenschar nennt man \ZSFkeyword{regul\"ar}, wenn sie keine Kreuzungspunkte aufweist.
+Fixiert man eine der Variablen (z.B. $x_0$) und variiert die andere (z.B. $y\in\R$), so erhält man eine \ZSFkeyword{Kurvenschar}, eine Menge von Kurven. Solch eine \ZSFkeyword{einparametrige} Kurvenschar nennt man \ZSFkeyword{regulär}, wenn sie keine Kreuzungspunkte aufweist.
 
 \textVorBox{Die Steigung im Richtungsfeld berechnet sich mit:}
 \begin{formulabox}
@@ -44,23 +48,25 @@ Fixiert man eine der Variablen (z.B. $x_0$) und variiert die andere (z.B. $y\in\
 
 \SubsectionBar{Lineare Differentialgleichungen}
 
-\textVorBox{In einer \ZSFkeyword{linearen DGL 1. Ordnung (I)} d\"urfen $y$ und $y'$ nur als lineare Terme vorkommen:}
+\textVorBox{In einer \ZSFkeyword{linearen DGL 1. Ordnung (I)} dürfen $y$ und $y'$ nur als lineare Terme vorkommen:}
 \begin{formulabox}
     $\displaystyle y'(x)=p(x)y(x)+q(x)$
 \end{formulabox}
-\textNachBox{Dabei ist $q(x)$ der \ZSFkeyword{inhomogene Teil}. Die zugeh\"orige \ZSFkeyword{homogene DGL (H)} lautet:
+\textNachBox{Dabei ist $q(x)$ der \ZSFkeyword{inhomogene Teil}. Die zugehörige \ZSFkeyword{homogene DGL (H)} lautet:
 \[
     y'(x)=p(x)\,y(x).
 \]
 \ZSFdanger{Achtung:} Nicht erlaubt sind Terme wie $\cos(y')$, $y'y$ oder $y^2$.
 Erlaubt sind hingegen lineare Terme wie $\sin(x)\cdot y$.}
 
-Die allgemeine L\"osung von $I$ ist die Summe einer speziellen L\"osung (\ZSFkeyword{partikul\"are L\"osung} $y_p$) und der allgemeinen L\"osung $y_h$ von $H$.
+\textit{Notation:} $I$ bezeichnet die lineare DGL \emph{mit} \ZSFkeyword{Störglied} $q(x)$, $H$ dieselbe Struktur \emph{ohne} Störglied, also $q(x)=0$.
 
-\textVorBox{Ein erstes L\"osungsverfahren lautet:}
+Die allgemeine Lösung von $I$ ist die Summe einer speziellen Lösung (\ZSFkeyword{partikuläre Lösung} $y_p$) und der allgemeinen Lösung $y_h$ von $H$.
+
+\textVorBox{Ein erstes Lösungsverfahren lautet:}
 \begin{fulltablebox}{Z{1.0} | Z{1.0}}
     \ZSFrowColor
-    \textbf{St\"orglied $q(x)$} & \textbf{Ansatz f\"ur $y_p$} \\ \hline
+    \textbf{Störglied $q(x)$} & \textbf{Ansatz für $y_p$} \\ \hline
     Konstante & $C$ \\ \hline
     \ZSFrowColor
     Lineare Funktion & $C_1x + C_2$ \\ \hline
@@ -70,21 +76,27 @@ Die allgemeine L\"osung von $I$ ist die Summe einer speziellen L\"osung (\ZSFkey
     $C_1\cdot e^{bx}$ & $C_2\cdot e^{bx}$ \\
 \end{fulltablebox}
 
-\begin{enumerate}
-    \item Bestimme $y_h$ und w\"ahle ein $y_p$ mit passendem Ansatz
-    \item Setze die Ableitungen von $y_p$ in $I$ ein
-    \item Bestimme die Konstanten durch Koeffizientenvergleich
-    \item Die allgemeine L\"osung ist $y(x)=y_p+y_h$
-\end{enumerate}
+\begin{fulltablebox}{Z{1.0} | Z{1.0}}
+    \ZSFrowColor
+    \ZSFkeyword{Resonanz} & wenn Standard-$y_p$ bereits in $y_h$ liegt \\ \hline
+    \textbf{Dann} & \shortstack[l]{gesamten Ansatz $\cdot x$ \\
+        noch Überlappung $\Rightarrow x^2,x^3,\ldots$}%
+\end{fulltablebox}
 
-\textVorBox{Ein zweites L\"osungsverfahren ist das nach Lagrange:}
-\begin{enumerate}
-    \item Bestimme $y_h$
-    \item F\"uhre in $y_p=y(x)\cdot y_h(x)$ ein
-    \item Leite $y_p$ ab und setze in $I$ ein
-    \item Bestimme $y(x)$
-    \item Die allgemeine L\"osung betr\"agt $y(x)=y_p+y_h$
-\end{enumerate}
+\begin{procedure}[Lösungsverfahren mit Ansatz]
+    \ProcStep{Ansatz wählen}{$y_h$ festlegen und $y_p$ wie Tabelle; bei \ZSFkeyword{Resonanz} zweite Tabelle darunter.}
+    \ProcStep{Einsetzen}{Die Ableitungen von $y_p$ in $I$ einsetzen.}
+    \ProcStep{Koeffizienten}{Die Konstanten durch Koeffizientenvergleich bestimmen.}
+    \ProcStep{Allgemeine Lösung}{$y(x)=y_p+y_h$.}
+\end{procedure}
+
+\begin{procedure}[Lösungsverfahren nach Lagrange]
+    \ProcStep{Homogene Lösung}{$y_h$ bestimmen.}
+    \ProcStep{Variation}{Ansatz $y_p=v(x)\,y_h(x)$ mit unbekannter Funktion $v(x)$ einführen.}
+    \ProcStep{Einsetzen}{$y_p$ ableiten und in $I$ einsetzen.}
+    \ProcStep{Auflösen}{$v(x)$ bestimmen.}
+    \ProcStep{Allgemeine Lösung}{$y(x)=y_p+y_h$.}
+\end{procedure}
 
 \SubsectionBar{Niveaulinien, Orth. trajektorien, Enveloppen}
 
@@ -96,7 +108,7 @@ Die allgemeine L\"osung von $I$ ist die Summe einer speziellen L\"osung (\ZSFkey
 \[
     g_x(x,y)+y'(x)\,g_y(x,y)=0 \;\text{ mit }\; g_x=\psi_x.
 \]
-Die L\"osung ist die Schar von Niveaulinien $g(x,y)=C$.}
+Die Lösung ist die Schar von Niveaulinien $g(x,y)=C$.}
 
 Die Niveaulinien von $g(x,y)$ stehen senkrecht auf den Feldlinien von $\nabla g(x,y)$, den sogenannten \ZSFkeyword{Orthogonaltrajektorien}.
 
@@ -105,23 +117,21 @@ Die Niveaulinien von $g(x,y)$ stehen senkrecht auf den Feldlinien von $\nabla g(
     $\displaystyle y_{\mathrm{or}}'(x)=-\frac{1}{y'(x)}$
 \end{formulabox}
 
-\textVorBox{Ein L\"osungsverfahren f\"ur Orthogonaltrajektorien lautet:}
-\begin{enumerate}
-    \item Schar nach $C$ umformen
-    \item Urspr\"ungliche Schar nach $x$ ableiten und nach $y'$ aufl\"osen: $y'=f(x,y,C)$
-    \item $C$ in abgeleiteter Schar durch Umformung aus (1) ersetzen
-    \item $y'=f(x,y)$ in Formel f\"ur $y_{\mathrm{or}}'(x)$ einsetzen und die neue DGL l\"osen
-\end{enumerate}
+\begin{procedure}[Lösungsverfahren: Orthogonaltrajektorien]
+    \ProcStep{Schar umformen}{Schar nach $C$ umformen.}
+    \ProcStep{Ableiten}{Ursprüngliche Schar nach $x$ ableiten und nach $y'$ auflösen: $y'=f(x,y,C)$.}
+    \ProcStep{$C$ ersetzen}{$C$ in abgeleiteter Schar durch Umformung aus (1) ersetzen.}
+    \ProcStep{Neue DGL}{$y'=f(x,y)$ in die Formel für $y_{\mathrm{or}}'(x)$ einsetzen und die neue DGL lösen.}
+\end{procedure}
 
-Die \ZSFkeyword{Enveloppe} einer Kurvenschar ist diejenige Kurve, die an jedem ihrer Punkte tangential zur Kurvenschar steht. Die zugeh\"orige L\"osung der DGL wird als \ZSFkeyword{singul\"are L\"osung} bezeichnet.
+Die \ZSFkeyword{Enveloppe} einer Kurvenschar ist diejenige Kurve, die an jedem ihrer Punkte tangential zur Kurvenschar steht. Die zugehörige Lösung der DGL wird als \ZSFkeyword{singuläre Lösung} bezeichnet.
 
-\textVorBox{Ein L\"osungsverfahren f\"ur Enveloppen lautet:}
-\begin{enumerate}
-    \item Sei die allgemeine L\"osung einer DGL $y=f(x,C)$ gegeben
-    \item Nach $F(x,y,C)=0$ umstellen
-    \item Mittels $F_C(x,y,C)=0$ den Scharparameter $C$ bestimmen
-    \item Ausdruck f\"ur $C$ aus (3) in $F(x,y,C)=0$ einsetzen
-\end{enumerate}
+\begin{procedure}[Lösungsverfahren: Enveloppen]
+    \ProcStep{Allgemeine Lösung}{Sei die allgemeine Lösung einer DGL $y=f(x,C)$ gegeben.}
+    \ProcStep{Umstellen}{Nach $F(x,y,C)=0$ umstellen.}
+    \ProcStep{$C$ bestimmen}{Mittels $F_C(x,y,C)=0$ den Scharparameter $C$ bestimmen.}
+    \ProcStep{Einsetzen}{Ausdruck für $C$ aus (3) in $F(x,y,C)=0$ einsetzen.}
+\end{procedure}
 
 \SubsectionBar{Clairaut'sche Differentialgleichung}
 
@@ -129,37 +139,64 @@ Die \ZSFkeyword{Enveloppe} einer Kurvenschar ist diejenige Kurve, die an jedem i
 \begin{formulabox}
     $\displaystyle y = y'\cdot x + g(y')$
 \end{formulabox}
-\textNachBox{L\"osungen sind Geraden, eine singul\"are L\"osung und Kombinationen davon.}
+\textNachBox{Lösungen sind Geraden, eine singuläre Lösung und Kombinationen davon.}
 
-\textVorBox{Ein L\"osungsverfahren f\"ur Clairaut'sche DGL lautet:}
-\begin{enumerate}
-    \item Setze $y'=C$ und erhalte die allgemeine L\"osung $y=Cx+g(C)$
-    \item Leite nach $C$ ab und l\"ose nach $C$ auf
-    \item Setze den Ausdruck aus (2) in die allgemeine L\"osung ein
-\end{enumerate}
+\begin{procedure}[Lösungsverfahren: Clairaut'sche DGL]
+    \ProcStep{Ansatz}{$y'=C$ setzen, das ergibt die allgemeine Lösung $y=Cx+g(C)$.}
+    \ProcStep{Ableiten}{Nach $C$ ableiten und nach $C$ auflösen.}
+    \ProcStep{Einsetzen}{Den Ausdruck aus (2) in die allgemeine Lösung einsetzen.}
+\end{procedure}
 
-\SubsectionBar{Differentialgleichungen h\"oherer Ordnung}
+\SubsectionBar{Differentialgleichungen höherer Ordnung}
 
-\textVorBox{Eine \ZSFkeyword{Differentialgleichung h\"oherer Ordnung} ist von der Form:}
+\textVorBox{Eine \ZSFkeyword{Differentialgleichung höherer Ordnung} ist von der Form:}
 \begin{formulabox}
     $\displaystyle F\!\left(x,y,y'(x),y''(x),\ldots,y^{(n)}(x)\right)=0$
 \end{formulabox}
 
-Der Existenzsatz besagt, dass ein stetig differenzierbarer Anfangswert eine eindeutige L\"osung besitzt, durch jeden Punkt geht also genau eine Kurve ("regul\"ar").
+\begin{statementbox}[Existenzsatz (höhere Ordnung)]
+Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- durch jeden Punkt geht genau eine Kurve („regulär").
 
-\textNachBox{\ZSFdanger{Achtung:} Ist $f(x,y)$ nicht nach $y^{(1)}$ partiell stetig differenzierbar, hat die Funktion f\"ur ein AWP keine eindeutige L\"osung.}
+\ZSFdanger{Achtung:} Ist $f(x,y)$ nicht nach $y^{(1)}$ partiell stetig differenzierbar, hat die Funktion für ein AWP keine eindeutige Lösung.
+\end{statementbox}
 
-\textVorBox{Eine \ZSFkeyword{lineare DGL h\"oherer Ordnung} ist von der Form:}
+\textVorBox{Eine \ZSFkeyword{lineare DGL höherer Ordnung} ist von der Form:}
 \begin{formulabox}
     $\displaystyle y^{(n)}(x)+p_{n-1}(x)y^{(n-1)}(x)+\dots+p_0(x)y(x)=q(x)$
 \end{formulabox}
 \textNachBox{Dabei sind $p_i(x)$ und $q(x)$ Funktionen.}
 
-\begin{enumerate}
-    \item Die lineare DGL ist \ZSFkeyword{homogen (H)}, wenn $q(x)=0$
-    \item Linearkombinationen der L\"osungen von $H$ sind ebenfalls L\"osungen von $H$
-    \item Die allgemeine L\"osung von $I$ ist eine Linearkombination aller linear unabh\"angigen L\"osungen von $H$
-\end{enumerate}
+\begin{factlist}
+    \ZSFFact{Homogenität}{Die DGL ist \ZSFkeyword{homogen (H)}, wenn $q(x)=0$.}
+    \ZSFFact{Linearkombination}{Linearkombinationen der Lösungen von $H$ sind ebenfalls Lösungen von $H$.}
+    \ZSFFact{Allgemeine Lösung}{Die allgemeine Lösung von $H$ ist eine Linearkombination aller linear unabhängigen Lösungen von $H$.}
+\end{factlist}
+
+\textVorBox{\ZSFkeyword{Variation der Konstanten}\ (2.\ Ordnung): $y_1,y_2$ sind zwei linear unabhängige Lösungen der homogenen DGL~\emph{H} (\ZSFkeyword{Fundamentalsystem}), dieselben wie im Ansatz. Dann $c_1',c_2'$ aus Nebenbedingung und zweiter Gleichung bestimmen --- oder direkt unten über~$W$:}
+\begin{fulltablebox}{Z{1.0} | Z{1.0}}
+    \ZSFrowColor
+    \textbf{Ansatz} & $y=c_1(x)y_1+c_2(x)y_2$ \\ \hline
+    \textbf{Nebenb.} & $c_1'y_1+c_2'y_2=0$ \\ \hline
+    \ZSFrowColor
+    \textbf{DGL} & $c_1'y_1'+c_2'y_2'=q(x)$
+\end{fulltablebox}
+\textVorBox{\textbf{Was ist $W$?} $W$ ist eine \ZSFkeyword{Hilfsgröße} (nicht die Lösung der DGL): die \ZSFkeyword{Wronski-Determinante} der beiden homogenen Lösungen. Man setzt $y_1,y_2$ und $y_1',y_2'$ in eine $2\times 2$-Determinante ein, kurz $W=y_1y_2'-y_2y_1'$. Ist $W\neq 0$, lassen sich $c_1',c_2'$ sofort hinschreiben:}
+\begin{fulltablebox}{Z{1.0} | Z{1.0}}
+    \ZSFrowColor
+    \textbf{Wronski $W$} & $y_1y_2'-y_2y_1'$ \\ \hline
+    \ZSFrowColor
+    \textbf{$c_1'$} & $-y_2\,q(x)/W$ \\ \hline
+    \textbf{$c_2'$} & $y_1\,q(x)/W$ \\
+\end{fulltablebox}
+
+\begin{procedure}[Lösungsverfahren: Variation der Konstanten (2.\ Ordnung)]
+    \ProcStep{Fundamentalsystem}{$y_1,y_2$ linear unabhängige Lösungen von $H$ bestimmen.}
+    \ProcStep{Wronski}{$W=y_1y_2'-y_2y_1'$ berechnen; brauchbar nur wenn $W\neq 0$.}
+    \ProcStep{$c_i'$ integrieren}{$c_1',c_2'$ aus Tabelle; integrieren (Konstanten $=0$ für $y_p$).}
+    \ProcStep{Allgemeine Lösung}{$y=y_h+y_p$ mit $y_h=C_1y_1+C_2y_2$ und $y_p=c_1y_1+c_2y_2$.}
+\end{procedure}
+
+\textNachBox{$W$ ist nur diese \ZSFkeyword{Hilfsgröße}, nicht die allgemeine Lösung. Normalform $y''+p_1y'+p_0y=q$ (vgl.\ unten); sonst durch Koeffizienten von $y''$ teilen. Reihenfolge von $y_1,y_2$ durchgängig gleich lassen (Vertauschen kehrt $W$ um). Beispiel $y''+\omega^2y=q$: $y_1=\sin(\omega x)$, $y_2=\cos(\omega x)$ $\Rightarrow$ $W=-\omega$. Inhomogen mit speziellem $q(x)$: Ansatzverfahren wie bei \emph{Linearen Differentialgleichungen} (Tabelle + \ZSFkeyword{Resonanz}).}
 
 \SubsectionBar{Homogene lineare DGL mit konst. Koeffizienten}
 
@@ -176,7 +213,7 @@ Der Existenzsatz besagt, dass ein stetig differenzierbarer Anfangswert eine eind
 \textNachBox{Durch $P(\lambda)=0$ ergeben sich die Nullstellen.}
 
 \begin{fulltablebox}{Z{0.8} | Y{1.2}}
-    \ZSFrowColor \textbf{Nullstellen} & \textbf{L\"osungen} \\ \hline
+    \ZSFrowColor \textbf{Nullstellen} & \textbf{Lösungen} \\ \hline
     Einfach reell & $y(x)=e^{\lambda x}$ \\ \hline
     \ZSFrowColor
     Einfach komplex $(a=\alpha\pm ib)$ & \shortstack[l]{$e^{\alpha x}\cos(bx),$\\$e^{\alpha x}\sin(bx)$} \\ \hline
@@ -185,7 +222,14 @@ Der Existenzsatz besagt, dass ein stetig differenzierbarer Anfangswert eine eind
     k-fach komplex $(a=\alpha\pm ib)$ & \shortstack[l]{$e^{\alpha x}\cos(bx),$\\$e^{\alpha x}\sin(bx),$\\$\ldots,$\\$x^{k-1}e^{\alpha x}\sin(bx)$} \\
 \end{fulltablebox}
 
-Die allgemeine L\"osung $y$ der homogenen DGL ist eine Linearkombination der einzelnen L\"osungen $y_i$:
+\begin{procedure}[Lösungsverfahren: Homogene DGL mit konst. Koeffizienten]
+    \ProcStep{Char.\ Polynom}{$P(\lambda)=\lambda^n+a_{n-1}\lambda^{n-1}+\dots+a_0$ aufstellen.}
+    \ProcStep{Nullstellen}{$P(\lambda)=0$ lösen.}
+    \ProcStep{Basisfunktionen}{Je nach Fall (einfach/k-fach, reell/komplex) $y_i$ aus Tabelle wählen.}
+    \ProcStep{Allgemeine Lösung}{$y_h=C_1y_1+C_2y_2+\dots+C_iy_i$.}
+\end{procedure}
+
+\textVorBox{Die allgemeine Lösung $y$ der homogenen DGL ist eine Linearkombination der einzelnen Lösungen $y_i$:}
 \begin{formulabox}
     $\displaystyle y=C_1y_1+C_2y_2+\dots+C_iy_i$
 \end{formulabox}
@@ -196,9 +240,9 @@ Die allgemeine L\"osung $y$ der homogenen DGL ist eine Linearkombination der ein
 \begin{formulabox}
     $\displaystyle a_n y^{(n)}(x)+\frac{a_{n-1}}{x}y^{(n-1)}(x)+\dots+\frac{a_0}{x^n}y(x)=q(x)$
 \end{formulabox}
-\textNachBox{Dabei sind $a_i$ Konstanten.}
+\textNachBox{Dabei sind $a_i$ Konstanten. Alternative: Substitution $x=e^t$ ($t=\ln x$) führt die Euler-DGL in eine DGL mit konst.\ Koeffizienten (vgl.\ oben) über.}
 
-\textVorBox{Das \ZSFkeyword{charakteristische Polynom} einer solchen DGL lautet:}
+\textVorBox{Das \ZSFkeyword{charakteristische Polynom} erhält man durch $y=x^{\lambda}$ in $H$ einsetzen und Ausklammern von $x^{\lambda-n}$:}
 \begin{formulabox}
     $\displaystyle P(\lambda)=a_n\lambda(\lambda-1)\cdots(\lambda-n+1)+a_{n-1}\lambda(\lambda-1)\cdots(\lambda-n+2)+\dots+a_2\lambda(\lambda-1)+a_1\lambda+a_0$
 \end{formulabox}
@@ -206,7 +250,7 @@ Die allgemeine L\"osung $y$ der homogenen DGL ist eine Linearkombination der ein
 
 \textVorBox{Folgendes gilt:}
 \begin{fulltablebox}{Z{0.8} | Y{1.2}}
-    \ZSFrowColor \textbf{Nullstellen} & \textbf{L\"osungen} \\ \hline
+    \ZSFrowColor \textbf{Nullstellen} & \textbf{Lösungen} \\ \hline
     Einfach reell & $y(x)=x^{\lambda}$ \\ \hline
     \ZSFrowColor
     Einfach komplex $(a=\alpha\pm ib)$ & \shortstack[l]{$x^{\alpha}\cos(b\ln(x)),$\\$x^{\alpha}\sin(b\ln(x))$} \\ \hline
@@ -215,31 +259,57 @@ Die allgemeine L\"osung $y$ der homogenen DGL ist eine Linearkombination der ein
     k-fach komplex $(a=\alpha\pm ib)$ & \shortstack[l]{$x^{\alpha}\cos(b\ln(x)),$\\$x^{\alpha}\sin(b\ln(x)),$\\$\ldots,$\\$\ln(x)^{k-1}x^{\alpha}\sin\!\bigl(b\ln(x)\bigr)$} \\
 \end{fulltablebox}
 
-Die allgemeine L\"osung $y$ der homogenen Euler'schen DGL ist die Summe aus $y_h$ und $y_p$. Die homogene L\"osung ist eine Linearkombination der oben berechneten Terme $y_i$:
+\textVorBox{Ansätze für $y_p$ bei speiellem $q(x)$:}
+\begin{fulltablebox}{Z{1.0} | Z{1.0}}
+    \ZSFrowColor
+    \textbf{Störglied $q(x)$} & \textbf{Ansatz für $y_p$} \\ \hline
+    Konstante & $C$ \\ \hline
+    \ZSFrowColor
+    $x^m$ & $C x^m$ \\ \hline
+    Polynom Grad $n$ & $C_1 x^n + C_2 x^{n-1} + \dots$ \\ \hline
+    \ZSFrowColor
+    $C_1\sin(b\ln x)+C_2\cos(b\ln x)$ & $C_3\sin(b\ln x)+C_4\cos(b\ln x)$ \\ \hline
+    Allgemein (Probe) & $Aq(x)+B$
+\end{fulltablebox}
+
+\begin{fulltablebox}{Z{1.0} | Z{1.0}}
+    \ZSFrowColor
+    \ZSFkeyword{Resonanz} & wenn Standard-$y_p$ bereits in $y_h$ liegt \\ \hline
+    \textbf{Dann} & \shortstack[l]{gesamten Ansatz $\cdot\ln x$ \\
+        noch Überlappung $\Rightarrow \ln^2 x,\ln^3 x,\ldots$}%
+\end{fulltablebox}
+\textNachBox{Alternativ: $x=e^t$ $\Rightarrow$ Ansatz wie bei \emph{Linearen Differentialgleichungen}.}
+
+\begin{procedure}[Lösungsverfahren: Euler-DGL]
+    \ProcStep{Char.\ Polynom}{$y=x^{\lambda}$ in $H$ einsetzen, $x^{\lambda-n}$ ausklammern $\Rightarrow$ $P(\lambda)$ wie oben.}
+    \ProcStep{Nullstellen}{$P(\lambda)=0$ lösen; $y_i$ aus Tabelle wählen.}
+    \ProcStep{$y_h$}{$y_h=C_1y_1+\dots+C_iy_i$.}
+    \ProcStep{$y_p$ (inhomogen)}{$y_p$ wie Tabelle; Koeffizientenvergleich; bei \ZSFkeyword{Resonanz} zweite Tabelle.}
+\end{procedure}
+
+\textVorBox{Die homogene Lösung ist eine Linearkombination der oben berechneten Terme $y_i$:}
 \begin{formulabox}
     $\displaystyle y_h=C_1y_1+C_2y_2+\dots+C_iy_i$
 \end{formulabox}
+\textNachBox{Allgemeine Lösung: $y=y_h+y_p$.}
 
-\textVorBox{Ein Ansatz f\"ur die partikul\"are L\"osung einer DGL der obigen Form ist:}
-\begin{formulabox}
-    $\displaystyle y_p=Aq(x)+B$
-\end{formulabox}
-\textVorBox{F\"ur die alternative Schreibweise $a_n\cdot x^n\cdot y^{(n)}(x)+\dots+a_0\cdot y(x)=q(x)$ kann man auch den folgenden Ansatz probieren:}
-\begin{formulabox}
-    $\displaystyle y_p=Aq(x)+B$
-\end{formulabox}
+\SubsectionBar{Taylorreihen für DGLs}
 
-\textNachBox{$A$ und $B$ werden durch Einsetzen von $y_p$ in die DGL und einen anschliessenden Koeffizientenvergleich gefunden.}
-
-\SubsectionBar{Taylorreihen f\"ur DGLs}
 \textVorBox{Sei $y(x)$ eine Funktion mit Potenzreihe:}
 \begin{formulabox}
-    $\displaystyle y(x)=\sum_{n=0}^{\infty} c_nx^n$
+    $\displaystyle y(x)=\ZSFsumAuto{n=0}{\infty}c_nx^n$
 \end{formulabox}
-\textNachBox{So liefert ein Koeffizientenvergleich die L\"osung zugeh\"origer DGLs.}
+\textNachBox{So liefert ein Koeffizientenvergleich die Lösung zugehöriger DGLs.}
 
 \textVorBox{Sei die folgende DGL 2. Ordnung:}
 \begin{formulabox}
     $\displaystyle y''+p_1(x)y'+p_0(x)y=q(x)$
 \end{formulabox}
-\textNachBox{Wenn $p_1$ und $p_0$ eine konvergierende Potenzreihenentwicklung um $x_0$ haben, dann gilt dies auch f\"ur $y(x)$.}
+\textNachBox{Wenn $p_1$ und $p_0$ eine konvergierende Potenzreihenentwicklung um $x_0$ haben, dann gilt dies auch für $y(x)$.}
+
+\begin{procedure}[Lösungsverfahren: Taylorreihe]
+    \ProcStep{Reihe ansetzen}{$y(x)=\ZSFsumAuto{n=0}{\infty}c_n(x-x_0)^{n}$ (oft $x_0=0$).}
+    \ProcStep{Einsetzen}{Ableitungen in die DGL einsetzen.}
+    \ProcStep{Rekursion}{Koeffizientenvergleich $\Rightarrow$ Rekursionsformel für $c_n$.}
+    \ProcStep{AWP}{Anfangsbedingungen für $c_0,c_1,\ldots$ bestimmen.}
+\end{procedure}

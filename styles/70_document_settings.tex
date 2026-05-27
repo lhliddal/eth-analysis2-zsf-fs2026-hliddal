@@ -4,6 +4,16 @@
 
 \hypersetup{colorlinks=true, linkcolor=ChapterColor0, urlcolor=ChapterColor2}
 
+% Seitenzahl unten rechts (overlay, layout-neutral)
+\usepackage{eso-pic}
+\AddToShipoutPictureFG{%
+  \AtPageLowerLeft{%
+    \put(\dimexpr\paperwidth-1.5em\relax,1.2ex){%
+      \makebox(0,0)[rb]{\sffamily\fontsize{6.5pt}{7pt}\selectfont\color{black!55}\thepage}%
+    }%
+  }%
+}
+
 \AtBeginDocument{
   \setlength{\abovedisplayskip}{\ZSFspaceXS}
   \setlength{\belowdisplayskip}{\ZSFspaceXS}

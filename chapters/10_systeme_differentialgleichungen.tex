@@ -12,7 +12,7 @@
 \end{formulabox}
 \textNachBox{Dabei sind $y_1$ und $y_2$ Funktionen in $x$.}
 
-Wenn $f_1$ und $f_2$ in $x$ stetig und nach $y_1$ und $y_2$ stetig differenzierbar sind, dann hat das AWP $y_1(x_0)=y_{1,0}$, $y_2(x_0)=y_{2,0}$ eine L\"osung.
+Wenn $f_1$ und $f_2$ in $x$ stetig und nach $y_1$ und $y_2$ stetig differenzierbar sind, dann hat das AWP $y_1(x_0)=y_{1,0}$, $y_2(x_0)=y_{2,0}$ eine Lösung.
 
 \textVorBox{Ein \ZSFkeyword{autonomes System} ist von der Form:}
 \begin{formulabox}
@@ -22,7 +22,7 @@ Wenn $f_1$ und $f_2$ in $x$ stetig und nach $y_1$ und $y_2$ stetig differenzierb
         y_2' = f_2(y_1,y_2,b_2)
     \end{cases}$
 \end{formulabox}
-\textNachBox{Dabei erfolgt die einzige Abh\"angigkeit von der Variablen $x$ indirekt \"uber $y_1(x)$ und $y_2(x)$.}
+\textNachBox{Dabei erfolgt die einzige Abhängigkeit von der Variablen $x$ indirekt über $y_1(x)$ und $y_2(x)$.}
 
 Eine \ZSFkeyword{Trajektorie} ist die durch $(x_0,y_0)$ gehende Feldlinie. Die Schar aller Trajektorien ist das \ZSFkeyword{Phasenportrait}, ein Vektorfeld:
 \begin{formulabox}
@@ -55,14 +55,13 @@ Eine \ZSFkeyword{Trajektorie} ist die durch $(x_0,y_0)$ gehende Feldlinie. Die S
     \end{cases}$
 \end{formulabox}
 
-\textVorBox{Ein L\"osungsverfahren f\"ur homogene DGLs lautet:}
-\begin{enumerate}
-    \item Matrix $A$ und Vektoren $\dot{\vec x}$, $\vec x$ und $\vec b$ aufstellen: $\dot{\vec x}=A\vec x$
-    \item Eigenwerte $\lambda_i$ und Eigenvektoren $\vec v_i$ bestimmen
-    \item $\vec x=\sum_i C_i\cdot e^{\lambda_i t}\cdot \vec v_i$ liefert die homogene L\"osung
-\end{enumerate}
+\begin{procedure}[Lösungsverfahren: Homogene DGL-Systeme]
+    \ProcStep{System aufstellen}{Matrix $A$ und Vektoren $\dot{\vec x}$, $\vec x$, $\vec b$ aufstellen: $\dot{\vec x}=A\vec x$.}
+    \ProcStep{Eigenwerte/-vektoren}{Eigenwerte $\lambda_i$ und Eigenvektoren $\vec v_i$ bestimmen.}
+    \ProcStep{Homogene Lösung}{$\vec x=\sum_i C_i\cdot e^{\lambda_i t}\cdot \vec v_i$.}
+\end{procedure}
 
-\textVorBox{Bei einem imagin\"aren Eigenwertepaar $\lambda_{1,2}=a\pm bi$ gilt in reeller Darstellung:}
+\textVorBox{Bei einem imaginären Eigenwertepaar $\lambda_{1,2}=a\pm bi$ gilt in reeller Darstellung:}
 \begin{formulabox}
     $\displaystyle
     \vec x=
@@ -81,17 +80,17 @@ Eine \ZSFkeyword{Trajektorie} ist die durch $(x_0,y_0)$ gehende Feldlinie. Die S
 \end{formulabox}
 
 \textVorBox{Wenn die Matrix $A$ nicht diagonalisierbar ist oder das DGLS inhomogen ist, eignet sich das \ZSFkeyword{Eliminationsverfahren}:}
-\begin{enumerate}
-    \item $x_1'$ oder $x_2'$ zu $x_1''$ bzw. $x_2''$ ableiten
-    \item $x_1'$ bzw. $x_2'$ im abgeleiteten Term durch die urspr\"ungliche Gleichung von $x_1'$ bzw. $x_2'$ ersetzen
-    \item $x_1$ bzw. $x_2$ mit Hilfe der urspr\"unglichen Gleichung eliminieren
-    \item Zu bekannter DGL umformen und Nullstellen bestimmen
-    \item Aus $x_1$ bzw. $x_2$ die zweite Funktion $x_2$ bzw. $x_1$ bestimmen
-\end{enumerate}
+\begin{procedure}
+    \ProcStep{Zweite Ableitung}{$x_1'$ oder $x_2'$ zu $x_1''$ bzw. $x_2''$ ableiten.}
+    \ProcStep{Ersetzen}{$x_1'$ bzw. $x_2'$ im abgeleiteten Term durch die ursprüngliche Gleichung ersetzen.}
+    \ProcStep{Eliminieren}{$x_1$ bzw. $x_2$ mit Hilfe der ursprünglichen Gleichung eliminieren.}
+    \ProcStep{DGL lösen}{Zu bekannter DGL umformen und Nullstellen bestimmen.}
+    \ProcStep{Zweite Funktion}{Aus $x_1$ bzw. $x_2$ die zweite Funktion bestimmen.}
+\end{procedure}
 
 \SubsectionBar{Gleichgewichtspunkte}
 
-\textVorBox{Wenn die beiden konstanten Funktionen $x_1(t)=c_1$ und $x_2(t)=c_2$ das autonome System l\"osen:}
+\textVorBox{Wenn die beiden konstanten Funktionen $x_1(t)=c_1$ und $x_2(t)=c_2$ das autonome System lösen:}
 \begin{formulabox}
     $\displaystyle
     \begin{cases}
@@ -101,11 +100,12 @@ Eine \ZSFkeyword{Trajektorie} ist die durch $(x_0,y_0)$ gehende Feldlinie. Die S
 \end{formulabox}
 \textNachBox{Dann ist $(c_1,c_2)$ ein \ZSFkeyword{Gleichgewichtspunkt} des DGL-Systems.}
 
-Um einen Gleichgewichtspunkt zu finden, setze $x_1'=x_2'=0$ und l\"ose nach $x_1$ und $x_2$ auf.
+\begin{propertylist}[Gleichgewichtspunkt finden]
+    \item \textbf{DGL-System:} $x_1'=x_2'=0$ setzen und nach $x_1, x_2$ auflösen.
+    \item \textbf{Gewöhnliche DGL:} $y'=f(y(t))$ mit $f(y_g)=0$ --- das AWP $y(t_0)=y_g$ hat die konstante Lösung $y(t)=y_g$.
+\end{propertylist}
 
-Das gleiche gilt f\"ur eine gew\"ohnliche Differentialgleichung $y'=f(y(t))$, wenn $f(y_g)=0$. Das AWP $y(t_0)=y_g$ hat dann die konstante L\"osung $y(t)=y_g$ und ist ein Gleichgewichtspunkt.
-
-Die Gleichungssysteme lassen sich umschreiben zu $\dot{\vec x}=A\vec x$. Die Eigenwerte $\lambda_i$ von $A$ geben Aufschluss \"uber die Art des Gleichgewichtspunkts:
+Die Gleichungssysteme lassen sich umschreiben zu $\dot{\vec x}=A\vec x$. Die Eigenwerte $\lambda_i$ von $A$ geben Aufschluss über die Art des Gleichgewichtspunkts:
 \begin{fulltablebox}{Z{0.85} | Z{1.15}}
     \ZSFrowColor
     Asymptotisch stabil: & Alle Eigenwerte von $A$ haben negativen Realteil \\ \hline

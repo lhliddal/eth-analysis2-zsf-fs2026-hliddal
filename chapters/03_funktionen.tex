@@ -1,4 +1,4 @@
-\StartChapterOnNewColumn{Funktionen}
+\StartChapter{Funktionen}
 
 \SubsectionBar{Eigenschaften\ZSFScriptRef{54}}
 
@@ -10,11 +10,11 @@ Eine \ZSFkeyword{Funktion} $f: D(f) \to Z(f)$ bildet eine Menge auf einer andere
     $\displaystyle f(-x) = f(x)$ & $\displaystyle f(-x) = -f(x)$ \\
 \end{fulltablebox}
 
-Eine Funktion ist \ZSFkeyword{surjektiv}, wenn jeder Wert im Zielbereich angenommen wird: $Z(f) = W(f)$
-
-Eine Funktion ist \ZSFkeyword{injektiv}, wenn jede Horizontale den Graphen höchstens einmal schneidet: $f(x_1) = f(x_2) \Rightarrow x_1 = x_2$
-
-$\Rightarrow$ Eine Funktion ist \ZSFkeyword{bijektiv}, wenn sie injektiv und surjektiv ist. Bijektive Funktionen besitzen eine \ZSFkeyword{Umkehrfunktion / Inverse} mit $W(f^{-1}) = D(f)$ und $D(f^{-1}) = W(f)$
+\begin{factlist}
+    \ZSFFact{surjektiv}{Jeder Wert im Zielbereich wird angenommen: $Z(f) = W(f)$.}
+    \ZSFFact{injektiv}{Jede Horizontale schneidet den Graphen höchstens einmal: $f(x_1) = f(x_2) \Rightarrow x_1 = x_2$.}
+    \ZSFFact{bijektiv}{Injektiv und surjektiv. Bijektive Funktionen besitzen eine \ZSFkeyword{Umkehrfunktion / Inverse} mit $W(f^{-1}) = D(f)$ und $D(f^{-1}) = W(f)$.}
+\end{factlist}
 
 \textVorBox{Eine Funktion $f(x)$ ist \ZSFkeyword{stetig} im Punkt $x = \xi$, wenn:}
 
@@ -23,8 +23,6 @@ $\Rightarrow$ Eine Funktion ist \ZSFkeyword{bijektiv}, wenn sie injektiv und sur
 \end{formulabox}
 
 \SubsectionBar{Trigonometrische Funktionen\ZSFScriptRef{58,97,98,99}}
-
-\ZSFkeyword{Trigonometrische Funktionen} beschreiben Zusammenhänge zwischen Winkeln und Seitenverhältnissen.
 
 \begin{fulltablebox}{Z{1.6} | Y{0.9} | Y{0.9} | Y{0.9} | Y{0.9} | Y{0.9} | Y{0.9}}
     $\alpha(^\circ)$ & $0^\circ$ & $30^\circ$ & $45^\circ$ & $60^\circ$ & $90^\circ$ & $180^\circ$ \\ 
@@ -198,12 +196,11 @@ Der \ZSFkeyword{Limes / Grenzwert} entspricht dem Funktionswert, dem sich eine F
     \end{longformula}
 \end{formulabox}
 
-\textVorBox{Vorgehen beim Berechnen von Grenzwerten:
-\begin{enumerate}
-    \item Konstanten können vor den Grenzwert gezogen werden
-    \item Bei gewissen Termen (z.B. bei Ausdrücken im Argument eines Sinus oder Cosinus) lohnt es sich zu substituieren
-    \item Falls $\ZSFlimAuto{x \to \infty} f(x) = 0$ und $\ZSFlimAuto{x \to \infty} g(x) = 0$ (oder $\pm\infty$), darf man \ZSFkeyword{Bernoulli-L'Hôpital} anwenden:
-\end{enumerate}}
+\begin{procedure}[Vorgehen: Grenzwerte berechnen]
+    \ZSFFact{Konstanten}{Können vor den Grenzwert gezogen werden.}
+    \ZSFFact{Substituieren}{Bei gewissen Termen (z.\,B. Argumente von $\sin$/$\cos$) lohnt es sich.}
+    \ZSFFact{Bernoulli-L'Hôpital}{Falls $\ZSFlimAuto{x \to \infty} f(x) = 0$ und $\ZSFlimAuto{x \to \infty} g(x) = 0$ (oder $\pm\infty$):}
+\end{procedure}
 
 \begin{formulabox}
     $\displaystyle \ZSFlimAuto{x \to \infty} \frac{f(x)}{g(x)} = \ZSFlimAuto{x \to \infty} \frac{f'(x)}{g'(x)}$

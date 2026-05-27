@@ -7,6 +7,9 @@ main.synctex.gz
 # Scratch / Experimente (nie committen)
 _scratch/
 
+# Editor / IDE (lokal, nicht versionieren)
+.cursor/
+
 # macOS
 .DS_Store
 
