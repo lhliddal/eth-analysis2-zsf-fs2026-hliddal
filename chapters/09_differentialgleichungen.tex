@@ -196,7 +196,7 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
     \ProcStep{Allgemeine Lösung}{$y=y_h+y_p$ mit $y_h=C_1y_1+C_2y_2$ und $y_p=c_1y_1+c_2y_2$.}
 \end{procedure}
 
-\textNachBox{$W$ ist nur diese \ZSFkeyword{Hilfsgröße}, nicht die allgemeine Lösung. Normalform $y''+p_1y'+p_0y=q$ (vgl.\ unten); sonst durch Koeffizienten von $y''$ teilen. Reihenfolge von $y_1,y_2$ durchgängig gleich lassen (Vertauschen kehrt $W$ um). Beispiel $y''+\omega^2y=q$: $y_1=\sin(\omega x)$, $y_2=\cos(\omega x)$ $\Rightarrow$ $W=-\omega$. Inhomogen mit speziellem $q(x)$: Ansatzverfahren wie bei \emph{Linearen Differentialgleichungen} (Tabelle + \ZSFkeyword{Resonanz}).}
+\textNachBox{$W$ ist nur diese \ZSFkeyword{Hilfsgröße}, nicht die allgemeine Lösung. Normalform $y''+p_1y'+p_0y=q$ (vgl.\ [9.8]); sonst durch Koeffizienten von $y''$ teilen. Reihenfolge von $y_1,y_2$ durchgängig gleich lassen (Vertauschen kehrt $W$ um). Beispiel $y''+\omega^2y=q$: $y_1=\sin(\omega x)$, $y_2=\cos(\omega x)$ $\Rightarrow$ $W=-\omega$. Inhomogen mit speziellem $q(x)$: Ansatzverfahren wie bei \emph{Linearen Differentialgleichungen} [9.4] (Tabelle + \ZSFkeyword{Resonanz}).}
 
 \SubsectionBar{Homogene lineare DGL mit konst. Koeffizienten}
 
@@ -225,9 +225,9 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
 \begin{procedure}[Lösungsverfahren: Homogene DGL mit konst. Koeffizienten]
     \ProcStep{Char.\ Polynom}{$P(\lambda)=\lambda^n+a_{n-1}\lambda^{n-1}+\dots+a_0$ aufstellen.}
     \ProcStep{Nullstellen}{$P(\lambda)=0$ lösen.}
-    \ProcStep{Basisfunktionen}{Je nach Fall (einfach/k-fach, reell/komplex) $y_i$ aus Tabelle wählen.}
+    \ProcStep{Basisfunktionen}{Je nach Fall (einfach/k-fach, reell/komplex) $y_i$ aus Tabelle [9.8] wählen.}
     \ProcStep{Homogene Lösung}{$y_h=C_1y_1+C_2y_2+\dots+C_iy_i$.}
-    \ProcStep{Inhomogene Lösung}{$y_p$ wie bei \emph{Linearen Differentialgleichungen}; Koeffizientenvergleich; bei \ZSFkeyword{Resonanz} Tabelle dort.}
+    \ProcStep{Inhomogene Lösung}{$y_p$ wie bei \emph{Linearen Differentialgleichungen} [9.4]; Koeffizientenvergleich; bei \ZSFkeyword{Resonanz} Tabelle [9.4].}
     \ProcStep{Allgemeine Lösung}{$y=y_h+y_p$.}
 \end{procedure}
 
@@ -242,7 +242,7 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
 \begin{formulabox}
     $\displaystyle a_n y^{(n)}(x)+\frac{a_{n-1}}{x}y^{(n-1)}(x)+\dots+\frac{a_0}{x^n}y(x)=q(x)$
 \end{formulabox}
-\textNachBox{Dabei sind $a_i$ Konstanten. Alternative: Substitution $x=e^t$ ($t=\ln x$) führt die Euler-DGL in eine DGL mit konst.\ Koeffizienten (vgl.\ oben) über.}
+\textNachBox{Dabei sind $a_i$ Konstanten. Alternative: Substitution $x=e^t$ ($t=\ln x$) führt die Euler-DGL in eine DGL mit konst.\ Koeffizienten (vgl.\ [9.8]) über.}
 
 \textVorBox{Das \ZSFkeyword{charakteristische Polynom} erhält man durch $y=x^{\lambda}$ in $H$ einsetzen und Ausklammern von $x^{\lambda-n}$:}
 \begin{formulabox}
@@ -280,20 +280,20 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
     \textbf{Dann} & \shortstack[l]{gesamten Ansatz $\cdot\ln x$ \\
         noch Überlappung $\Rightarrow \ln^2 x,\ln^3 x,\ldots$}%
 \end{fulltablebox}
-\textNachBox{Alternativ: $x=e^t$ $\Rightarrow$ Ansatz wie bei \emph{Linearen Differentialgleichungen}.}
+\textNachBox{Alternativ: $x=e^t$ $\Rightarrow$ Ansatz wie bei \emph{Linearen Differentialgleichungen} [9.4].}
 
 \begin{procedure}[Lösungsverfahren: Euler-DGL]
-    \ProcStep{Char.\ Polynom}{$y=x^{\lambda}$ in $H$ einsetzen, $x^{\lambda-n}$ ausklammern $\Rightarrow$ $P(\lambda)$ wie oben.}
-    \ProcStep{Nullstellen}{$P(\lambda)=0$ lösen; $y_i$ aus Tabelle wählen.}
-    \ProcStep{$y_h$}{$y_h=C_1y_1+\dots+C_iy_i$.}
-    \ProcStep{$y_p$ (inhomogen)}{$y_p$ wie Tabelle; Koeffizientenvergleich; bei \ZSFkeyword{Resonanz} zweite Tabelle.}
+    \ProcStep{Char.\ Polynom}{$y=x^{\lambda}$ in $H$ einsetzen, $x^{\lambda-n}$ ausklammern $\Rightarrow$ $P(\lambda)$ wie oben [9.9].}
+    \ProcStep{Nullstellen}{$P(\lambda)=0$ lösen; $y_i$ aus Tabelle [9.9] wählen.}
+    \ProcStep{Homogene Lösung}{$y_h=C_1y_1+\dots+C_iy_i$.}
+    \ProcStep{Inhomogene Lösung}{$y_p$ wie Tabelle [9.9]; Koeffizientenvergleich; bei \ZSFkeyword{Resonanz} Resonanz-Tabelle [9.9]. Alternativ: $x=e^t$ $\Rightarrow$ [9.4].}
+    \ProcStep{Allgemeine Lösung}{$y=y_h+y_p$.}
 \end{procedure}
 
 \textVorBox{Die homogene Lösung ist eine Linearkombination der oben berechneten Terme $y_i$:}
 \begin{formulabox}
     $\displaystyle y_h=C_1y_1+C_2y_2+\dots+C_iy_i$
 \end{formulabox}
-\textNachBox{Allgemeine Lösung: $y=y_h+y_p$.}
 
 \SubsectionBar{Taylorreihen für DGLs}
 
