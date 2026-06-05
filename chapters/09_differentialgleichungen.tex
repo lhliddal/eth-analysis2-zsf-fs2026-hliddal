@@ -297,21 +297,39 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
 
 \SubsectionBar{Taylorreihen für DGLs}
 
-\textVorBox{Sei $y(x)$ eine Funktion mit Potenzreihe:}
+\textVorBox{Ansatz zur Lösung einer DGL als \ZSFkeyword{Potenzreihe} um $x_0=0$:}
 \begin{formulabox}
-    $\displaystyle y(x)=\ZSFsumAuto{n=0}{\infty}c_nx^n$
+    $\displaystyle y(x) = \ZSFsumAuto{n=0}{\infty} c_n x^n = c_0 + c_1 x + c_2 x^2 + c_3 x^3 + c_4 x^4 + \dots$\par
+    \formulasep
+    \text{Die Koeffizienten ergeben sich zu:}\quad $\displaystyle c_n = \frac{y^{(n)}(0)}{n!}$
 \end{formulabox}
-\textNachBox{So liefert ein Koeffizientenvergleich die Lösung zugehöriger DGLs.}
+\textNachBox{Je nach Aufgabentyp wählt man in der Prüfung eine der folgenden Methoden:}
 
-\textVorBox{Sei die folgende DGL 2. Ordnung:}
+\textVorBox{\textbf{Methode 1: Erste Koeffizienten gesucht} ($c_n$ bis z.\,B. $c_3$ oder $c_4$).\\
+Das \ZSFkeyword{direkte Ableiten} der DGL am Punkt $x=0$ ist am schnellsten:}
 \begin{formulabox}
-    $\displaystyle y''+p_1(x)y'+p_0(x)y=q(x)$
+    $\displaystyle c_0 = y(0)$ \quad und \quad $\displaystyle c_1 = y'(0)$ \qquad (aus AWP oder DGL)\par
+    \formulasep
+    $\displaystyle c_2 = \frac{y''(0)}{2} \quad \implies \text{$y''(0)$ durch Einsetzen von $x=0$ in DGL bestimmen}$\par
+    $\displaystyle c_3 = \frac{y'''(0)}{6} \quad \implies \frac{d}{dx}[\text{DGL}] \text{ bilden \& } x=0 \text{ einsetzen}$\par
+    $\displaystyle c_4 = \frac{y^{(4)}(0)}{24} \quad \implies \frac{d^2}{dx^2}[\text{DGL}] \text{ bilden \& } x=0 \text{ einsetzen}$
 \end{formulabox}
-\textNachBox{Wenn $p_1$ und $p_0$ eine konvergierende Potenzreihenentwicklung um $x_0$ haben, dann gilt dies auch für $y(x)$.}
 
-\begin{procedure}[Lösungsverfahren: Taylorreihe]
-    \ProcStep{Reihe ansetzen}{$y(x)=\ZSFsumAuto{n=0}{\infty}c_n(x-x_0)^{n}$ (oft $x_0=0$).}
-    \ProcStep{Einsetzen}{Ableitungen in die DGL einsetzen.}
-    \ProcStep{Rekursion}{Koeffizientenvergleich $\Rightarrow$ Rekursionsformel für $c_n$.}
-    \ProcStep{AWP}{Anfangsbedingungen für $c_0,c_1,\ldots$ bestimmen.}
-\end{procedure}
+\textVorBox{\textbf{Methode 2: Reihenansatz \& Koeffizientenvergleich}\\
+Ersetze die Terme in der DGL durch diesen \ZSFkeyword{ausgeschriebenen Spickzettel}:}
+\begin{formulabox}
+    $\displaystyle y = c_0 + c_1 x + c_2 x^2 + c_3 x^3 + c_4 x^4 + \dots + c_n x^n$\par
+    $\displaystyle y' = c_1 + 2c_2 x + 3c_3 x^2 + 4c_4 x^3 + 5c_5 x^4 + \dots + (n+1) c_{n+1} x^n$\par
+    $\displaystyle y'' = 2c_2 + 6c_3 x + 12c_4 x^2 + 20c_5 x^3 + 30c_6 x^4 + \dots + (n+2)(n+1) c_{n+2} x^n$\par
+    \formulasep
+    $\displaystyle x y' = c_1 x + 2c_2 x^2 + 3c_3 x^3 + 4c_4 x^4 + \dots + n c_n x^n$\par
+    $\displaystyle x^2 y'' = 2c_2 x^2 + 6c_3 x^3 + 12c_4 x^4 + \dots + n(n-1) c_n x^n$
+\end{formulabox}
+\textNachBox{Tipp: Vertikal pro Potenz ($x^0, x^1 \dots$) gruppieren und $= 0$ setzen. Der \textbf{letzte Term} (mit $n$) liefert direkt die allgemeine \ZSFkeyword{Rekursionsformel}.}
+
+\begin{statementbox}[Beispiel Koeffizientenvergleich: $y'' + x y' + y = 0$]
+    Reihen aus dem Spickzettel einsetzen und pro Potenz sortieren:\par
+    $x^0: \quad 2c_2 + 0 + c_0 = 0 \implies c_2 = -\frac{1}{2} c_0$\par
+    $x^1: \quad 6c_3 + c_1 + c_1 = 0 \implies c_3 = -\frac{1}{3} c_1$\par
+    $x^n: \quad \underbrace{(n+2)(n+1)c_{n+2}}_{y''} + \underbrace{n c_n}_{x y'} + \underbrace{c_n}_{y} = 0 \implies c_{n+2} = -\frac{c_n}{n+2}$
+\end{statementbox}

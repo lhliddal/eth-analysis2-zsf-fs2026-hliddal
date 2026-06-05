@@ -176,6 +176,15 @@ Um zu definieren, ob ein Textabschnitt zur Box darüber/darunter oder zu einer a
 
 > **Rollout abgeschlossen:** Das Text-Box-Bindungssystem ist in allen Kapiteln (ausser Anhang) ausgerollt. Die Farben sind als semantische Token `TextVorBoxColor` (sehr dunkles Blau) und `TextNachBoxColor` (sehr dunkles Grün) in `40_colors_structure.tex` definiert.
 
+### 6. Typografie & Vermeidung von Text-Lücken (Anti-Stretching)
+
+Da das Dokument ein extrem schmales 4-Spalten-Layout nutzt, kommt es bei normalem Blocksatz schnell zu unschönen, riesigen Lücken zwischen Wörtern. Um dies zu verhindern, gelten folgende Regeln:
+
+- **Telegrammstil:** Schreibe so kompakt und stichwortartig wie möglich. Vermeide lange, ausformulierte Schachtelsätze.
+- **`babel` für Silbentrennung:** Das Paket `babel` mit Option `ngerman` ist zwingend erforderlich, damit LaTeX lange deutsche Fachbegriffe (z. B. *Gleichgewichtspunkt*) korrekt trennen kann.
+- **Inline-Formeln schützen:** Wenn LaTeX eine Formel im Text (z. B. am `=`) umbricht, entstehen riesige Lücken. Schütze kurze, wichtige Inline-Formeln durch Klammerung: `${\dot{\vec x}=A\vec x}$` oder `\mbox{$\dot{\vec x}=A\vec x$}`.
+- **Saubere Absatzenden vor Boxen:** Nutze **immer** `\textVorBox{...}` vor einer Box/Tabelle. Steht normaler Text direkt vor einer Box (ohne Leerzeile oder `\textVorBox`), interpretiert LaTeX dies nicht als Absatzende und dehnt die Zeile im Blocksatz über die volle Breite.
+
 ## Kapitel-Farbpalette
 
 Jedes Kapitel bekommt automatisch eine eigene Farbe (`\chaptercolor`) und eine abgestimmte helle Variante (`\chaptercolorlight`). Diese Farben werden dynamisch von allen abhängigen Makros genutzt: `\ChapterBar`, `\SubsectionBar`, `\BoxTitleColor`, `\FormulaboxBackColor`, Tabellen-Row-Colors etc. Dadurch sieht das gesamte Dokument pro Kapitel visuell konsistent aus, ohne dass in den Kapiteldateien je eine Farbe gesetzt werden muss.

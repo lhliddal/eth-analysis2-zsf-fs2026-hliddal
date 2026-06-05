@@ -24,7 +24,7 @@ Wenn $f_1$ und $f_2$ in $x$ stetig und nach $y_1$ und $y_2$ stetig differenzierb
 \end{formulabox}
 \textNachBox{Dabei erfolgt die einzige Abhängigkeit von der Variablen $x$ indirekt über $y_1(x)$ und $y_2(x)$.}
 
-Eine \ZSFkeyword{Trajektorie} ist die durch $(x_0,y_0)$ gehende Feldlinie. Die Schar aller Trajektorien ist das \ZSFkeyword{Phasenportrait}, ein Vektorfeld:
+\textVorBox{Eine \ZSFkeyword{Trajektorie} ist die durch $(x_0,y_0)$ gehende Feldlinie. Die Schar aller Trajektorien ist das \ZSFkeyword{Phasenportrait}, ein Vektorfeld:}
 \begin{formulabox}
     $\displaystyle
     \begin{cases}
@@ -57,7 +57,7 @@ Eine \ZSFkeyword{Trajektorie} ist die durch $(x_0,y_0)$ gehende Feldlinie. Die S
 
 \begin{procedure}[Lösungsverfahren: Homogene DGL-Systeme]
     \ProcStep{System aufstellen}{Matrix $A$ und Vektoren $\dot{\vec x}$, $\vec x$, $\vec b$ aufstellen: $\dot{\vec x}=A\vec x$.}
-    \ProcStep{Eigenwerte/-vektoren}{Eigenwerte $\lambda_i$ und Eigenvektoren $\vec v_i$ bestimmen.}
+    \ProcStep{Eigenwerte/-vektoren}{Eigenwerte $\lambda_i$ und Eigenvektoren $\vec v_i$ bestimmen (Abkürzung siehe [10.4]).}
     \ProcStep{Homogene Lösung}{$\vec x=\sum_i C_i\cdot e^{\lambda_i t}\cdot \vec v_i$.}
 \end{procedure}
 
@@ -79,7 +79,25 @@ Eine \ZSFkeyword{Trajektorie} ist die durch $(x_0,y_0)$ gehende Feldlinie. Die S
     \end{pmatrix}$
 \end{formulabox}
 
-\textVorBox{Wenn die Matrix $A$ nicht diagonalisierbar ist oder das DGLS inhomogen ist, eignet sich das \ZSFkeyword{Eliminationsverfahren}:}
+\textVorBox{\textbf{Pragmatischere Formel für die Prüfung:}\\
+Eigenvektor $\vec v = \vec u \pm i \vec w$ in Realteil $\vec u$ und Imaginärteil $\vec w$ aufteilen. Die reelle Lösung ist dann direkt:}
+\begin{formulabox}
+    $\displaystyle \vec x = C_1 e^{at} \Big( \vec u \cos(bt) - \vec w \sin(bt) \Big) + C_2 e^{at} \Big( \vec u \sin(bt) + \vec w \cos(bt) \Big)$
+\end{formulabox}
+
+\textVorBox{Ist Matrix $A$ \ZSFkeyword{nicht diagonalisierbar} (nur ein Eigenvektor $\vec v$), bestimme den \ZSFkeyword{Hauptvektor} $\vec h$ via $(A - \lambda I)\vec h = \vec v$:}
+\begin{formulabox}
+    $\displaystyle \vec x = C_1 e^{\lambda t} \vec v + C_2 e^{\lambda t} (\vec h + t \vec v)$
+\end{formulabox}
+
+\textVorBox{Bei einem \ZSFkeyword{inhomogenen} System $\dot{\vec x} = A\vec x + \vec b(t)$ wählt man einen vektoriellen Ansatz (Koeffizientenvergleich):}
+\begin{formulabox}
+    \textbf{Konstantes Störglied} $\vec b$: \quad $\vec x_p = \vec c \implies A \vec c + \vec b = 0$\par
+    \formulasep
+    \textbf{Exp. Störglied} $\vec b \cdot e^{\mu t}$: \quad $\vec x_p = \vec c \cdot e^{\mu t} \implies (\mu I - A) \vec c = \vec b$
+\end{formulabox}
+
+\textVorBox{Alternativ (als Notnagel) eignet sich das \ZSFkeyword{Eliminationsverfahren}:}
 \begin{procedure}
     \ProcStep{Zweite Ableitung}{$x_1'$ oder $x_2'$ zu $x_1''$ bzw. $x_2''$ ableiten.}
     \ProcStep{Ersetzen}{$x_1'$ bzw. $x_2'$ im abgeleiteten Term durch die ursprüngliche Gleichung ersetzen.}
@@ -105,7 +123,8 @@ Eine \ZSFkeyword{Trajektorie} ist die durch $(x_0,y_0)$ gehende Feldlinie. Die S
     \item \textbf{Gewöhnliche DGL:} $y'=f(y(t))$ mit $f(y_g)=0$ --- das AWP $y(t_0)=y_g$ hat die konstante Lösung $y(t)=y_g$.
 \end{propertylist}
 
-Die Gleichungssysteme lassen sich umschreiben zu $\dot{\vec x}=A\vec x$. Die Eigenwerte $\lambda_i$ von $A$ geben Aufschluss über die Art des Gleichgewichtspunkts:
+System umschreiben zu ${\dot{\vec x}=A\vec x}$. Eigenwerte $\lambda_i$ von $A$ (vgl. [10.4]) bestimmen Typ des Gleichgewichtspunkts:
+
 \begin{fulltablebox}{Z{0.85} | Z{1.15}}
     \ZSFrowColor
     Asymptotisch stabil: & Alle Eigenwerte von $A$ haben negativen Realteil \\ \hline
@@ -113,3 +132,15 @@ Die Gleichungssysteme lassen sich umschreiben zu $\dot{\vec x}=A\vec x$. Die Eig
     \ZSFrowColor
     Instabil: & Der Realteil von mindestens einem Eigenwert ist positiv \\
 \end{fulltablebox}
+
+\SubsectionBar{Eigenwerte \& Eigenvektoren}
+
+\textVorBox{Die Berechnung von Eigenwerten $\lambda$ und Eigenvektoren $\vec v$ einer Matrix $A$ ist das Fundament zur Lösung von DGL-Systemen.}
+\begin{procedure}[Abkürzung für $2\times 2$-Matrizen]
+    \ProcStep{Eigenwerte berechnen}{Eigentlich via $\det(A - \lambda I) = 0$. Für $A = \begin{pmatrix} a & b \\ c & d \end{pmatrix}$ gilt aber direkt diese Abkürzung:
+    \[ \lambda^2 - \underbrace{(a+d)}_{\text{Summe Diagonale}}\lambda + \underbrace{(ad-bc)}_{\text{Determinante}} = 0 \]
+    Mit der Mitternachtsformel auflösen liefert die Eigenwerte $\lambda_1, \lambda_2$.}
+    \ProcStep{Eigenvektoren bestimmen}{Für jedes $\lambda_i$ die Matrix $(A - \lambda_i I)$ berechnen.
+    Man wählt eine \emph{beliebige nicht-Null-Zeile} $(\alpha, \beta)$ der Matrix. Der Eigenvektor $\vec v$ ergibt sich durch Vertauschen der Einträge und Setzen \emph{eines} Minuszeichens:
+    \[ \text{Zeile: } (\alpha, \beta) \quad \implies \quad \vec v = \begin{pmatrix} -\beta \\ \alpha \end{pmatrix} \quad \text{oder} \quad \begin{pmatrix} \beta \\ -\alpha \end{pmatrix} \]}
+\end{procedure}

@@ -23,6 +23,17 @@
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 
+% --- Pfeile (Fix für sansmath Überlappungen) ---
+% Da sansmath/Carlito bei zusammengesetzten langen Pfeilen (wie \Longrightarrow) 
+% unschöne Überlappungen erzeugt, biegen wir diese auf die sauberen kurzen Pfeile um.
+% Das spart auf dem Cheat Sheet zudem Platz.
+\renewcommand{\implies}{\;\Rightarrow\;}
+\renewcommand{\iff}{\;\Leftrightarrow\;}
+\renewcommand{\Longrightarrow}{\Rightarrow}
+\renewcommand{\Longleftrightarrow}{\Leftrightarrow}
+\renewcommand{\longrightarrow}{\rightarrow}
+\renewcommand{\longleftarrow}{\leftarrow}
+
 % --- Summen/Limes-Mode-System ---
 \newcommand{\ZSFsumMode}{auto}
 \newcommand{\SetZSFsumMode}[1]{\renewcommand{\ZSFsumMode}{#1}}
