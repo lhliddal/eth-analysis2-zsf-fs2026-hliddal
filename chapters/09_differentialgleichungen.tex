@@ -318,12 +318,18 @@ Das \ZSFkeyword{direkte Ableiten} der DGL am Punkt $x=0$ ist am schnellsten:}
 \textVorBox{\textbf{Methode 2: Reihenansatz \& Koeffizientenvergleich}\\
 Ersetze die Terme in der DGL durch diesen \ZSFkeyword{ausgeschriebenen Spickzettel}:}
 \begin{formulabox}
-    $\displaystyle y = c_0 + c_1 x + c_2 x^2 + c_3 x^3 + c_4 x^4 + \dots + c_n x^n$\par
-    $\displaystyle y' = c_1 + 2c_2 x + 3c_3 x^2 + 4c_4 x^3 + 5c_5 x^4 + \dots + (n+1) c_{n+1} x^n$\par
-    $\displaystyle y'' = 2c_2 + 6c_3 x + 12c_4 x^2 + 20c_5 x^3 + 30c_6 x^4 + \dots + (n+2)(n+1) c_{n+2} x^n$\par
-    \formulasep
-    $\displaystyle x y' = c_1 x + 2c_2 x^2 + 3c_3 x^3 + 4c_4 x^4 + \dots + n c_n x^n$\par
-    $\displaystyle x^2 y'' = 2c_2 x^2 + 6c_3 x^3 + 12c_4 x^4 + \dots + n(n-1) c_n x^n$
+    \footnotesize
+    \thickmuskip=3mu
+    \medmuskip=2mu
+    \thinmuskip=1.5mu
+    $\begin{alignedat}{8}
+        y      &= c_0  &&{}+ c_1 x   &&{}+ c_2 x^2   &&{}+ c_3 x^3   &&{}+ c_4 x^4   &&{}+ \dots &&{}+ c_n x^n \\
+        y'     &= c_1  &&{}+ 2c_2 x  &&{}+ 3c_3 x^2  &&{}+ 4c_4 x^3  &&{}+ 5c_5 x^4  &&{}+ \dots &&{}+ (n+1)c_{n+1} x^n \\
+        y''    &= 2c_2 &&{}+ 6c_3 x  &&{}+ 12c_4 x^2 &&{}+ 20c_5 x^3 &&{}+ 30c_6 x^4 &&{}+ \dots &&{}+ (n+2)(n+1)c_{n+2} x^n \\
+        \noalign{\vskip-2.5pt\textcolor{black!30}{\hrule height 0.5pt}\vskip2.5pt}
+        x y'   &=      &&   c_1 x   &&{}+ 2c_2 x^2  &&{}+ 3c_3 x^3  &&{}+ 4c_4 x^4  &&{}+ \dots &&{}+ n c_n x^n \\
+        x^2 y''&=      &&           &&   2c_2 x^2  &&{}+ 6c_3 x^3  &&{}+ 12c_4 x^4 &&{}+ \dots &&{}+ n(n-1)c_n x^n
+    \end{alignedat}$
 \end{formulabox}
 \textNachBox{Tipp: Vertikal pro Potenz ($x^0, x^1 \dots$) gruppieren und $= 0$ setzen. Der \textbf{letzte Term} (mit $n$) liefert direkt die allgemeine \ZSFkeyword{Rekursionsformel}.}
 
