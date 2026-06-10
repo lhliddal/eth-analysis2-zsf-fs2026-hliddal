@@ -17,7 +17,10 @@ allowed_files=(
   ".latexindent.yaml"
   ".pre-commit-config.yaml"
   ".cursorrules"
+  "CLAUDE.md"
+  "AGENTS.md"
   "MODULAR_SYSTEM.md"
+  "ZSF_DIDAKTIK_PRINZIP.md"
   "README.md"
 )
 
@@ -26,6 +29,8 @@ allowed_dirs=(
   "styles"
   "tests"
   "scripts"
+  "tools"
+  "rules"
   "graphics"
   "build"
   "_scratch"

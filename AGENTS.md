@@ -1,4 +1,4 @@
-# ZSF Analysis 2 — MODULAR_SYSTEM.md
+# ZSF Analysis 2 — AGENTS.md
 
 > AUTO-GENERATED — rules-hash:5326ae517bc4ec9e
 >
@@ -6,7 +6,7 @@
 > Nicht direkt bearbeiten. Änderungen: `rules/*.md` editieren → `make sync-rules`.
 > Drift-Check: `make check-rules`.
 
-Kompiliertes Regelwerk für Menschen (Pflichtdokumentation). Diese Datei ist eigenständig — sie enthält alle Projekt-Regeln für Tools, die nur `MODULAR_SYSTEM.md` lesen.
+Kompiliertes Regelwerk für Codex / OpenAI Agents. Diese Datei ist eigenständig — sie enthält alle Projekt-Regeln für Tools, die nur `AGENTS.md` lesen.
 
 ## Source of Truth
 
