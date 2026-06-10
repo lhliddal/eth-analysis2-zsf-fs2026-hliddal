@@ -47,9 +47,10 @@ Niemals `\section` / `\subsection` / `\chapter` direkt verwenden.
 
 ## Inline-Marker
 
-- `\ZSFkeyword{Fachbegriff}` — zentrale Fachbegriffe im Fließtext. Sparsam (1–3 pro `runintext`, ca. 8–14 pro Kapitel). Nicht in Formeln, Notizen oder Überschriften.
+- `\ZSFkeyword{Fachbegriff}` — zentrale Fachbegriffe als **primäre Scan-Anker**, im Fließtext und direkt in Box-Inhalten. Sparsam pro Block (1–3 pro `runintext`, ca. 8–14 pro Kapitel). Nicht in Formeln, Notizen oder Überschriften.
 - `\ZSFdanger{Achtung-Text}` — Inline-Pill für Stolperfallen / kritische Ausnahmen.
 - `\ZSFconclusion{Folgerung}` — leitet eine Folgerung ein (gerendert als $\Rightarrow$).
+- `\ZSFref{label}` — Querverweis, gerendert als `(→ 6.6)` in der Farbe des Zielkapitels. **Neue** Querverweise nur, wenn ein Schritt ein Verfahren aus einem **anderen** Kapitel delegiert — nicht für elementare Operationen. Hartcodierte Abschnittsnummern (z. B. `[9.8]`) sind verboten — jeder Nummern-Verweis läuft über `\ZSFref`, auch innerhalb desselben Kapitels. Ziel-Label via `\SubsectionBar[sec:...]{Titel}`.
 - **Formatierungs-Verbot:** Niemals `\textbf{}` / `\textit{}` zur semantischen Hervorhebung — immer die obigen Marker.
 
 ## Farb-Palette

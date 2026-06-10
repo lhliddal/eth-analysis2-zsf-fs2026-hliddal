@@ -1,6 +1,6 @@
 # ZSF Analysis 2 — AGENTS.md
 
-> AUTO-GENERATED — rules-hash:5326ae517bc4ec9e
+> AUTO-GENERATED — rules-hash:78c1d91dfa4e67af
 >
 > Quelle: `rules/*.md` (mit YAML-Frontmatter).
 > Nicht direkt bearbeiten. Änderungen: `rules/*.md` editieren → `make sync-rules`.
@@ -45,7 +45,7 @@ Bei Konflikt zwischen dieser Datei und `rules/*.md` gewinnen die Quelldateien.
 - `50_math.md` — Scoped; gilt bei Änderungen an `chapters/**/*.tex`, `styles/10_math.tex` — Math-Makros: Mengen (R,C,N,Z,Q), Differential, sum/lim-Modi (ZSFsumAuto/ZSFlimAuto), gepaarte Begrenzer (abs/norm) — keine rohen \\mathbb in Kapiteln
 - `60_workflow.md` — Project-wide — Build-/Check-Workflow (make build/check/sync-rules/check-rules), Agent-Build-Pflicht nach jeder Änderung, Datei-Platzierung
 - `70_github.md` — Scoped; gilt bei Änderungen an `.github/**`, `Makefile`, `tests/**`, `styles/75_pdf_identity.tex`, `README.md` — Naming-Konventionen (Repo, PDF, Tags), GitHub Actions (CI Build, Release), PDF-Identity als Single Source of Truth
-- `80_didaktik.md` — Project-wide; besonders relevant für `chapters/**/*.tex` — Didaktisches Prinzip für Inhalt/Erklärungen: nützlicher + intuitiver statt korrekter, Rezept-Charakter, Stolperfallen — keine eigenmächtigen Präzisierungen
+- `80_didaktik.md` — Project-wide; besonders relevant für `chapters/**/*.tex` — Didaktisches Prinzip für Inhalt/Erklärungen: nützlicher + intuitiver statt korrekter, Rezept-Charakter, Stolperfallen, scannbares Design + Übersichtlichkeit — keine eigenmächtigen Präzisierungen
 
 ## Compiled Rules
 
@@ -163,9 +163,10 @@ Niemals `\section` / `\subsection` / `\chapter` direkt verwenden.
 
 ##### Inline-Marker
 
-- `\ZSFkeyword{Fachbegriff}` — zentrale Fachbegriffe im Fließtext. Sparsam (1–3 pro `runintext`, ca. 8–14 pro Kapitel). Nicht in Formeln, Notizen oder Überschriften.
+- `\ZSFkeyword{Fachbegriff}` — zentrale Fachbegriffe als **primäre Scan-Anker**, im Fließtext und direkt in Box-Inhalten. Sparsam pro Block (1–3 pro `runintext`, ca. 8–14 pro Kapitel). Nicht in Formeln, Notizen oder Überschriften.
 - `\ZSFdanger{Achtung-Text}` — Inline-Pill für Stolperfallen / kritische Ausnahmen.
 - `\ZSFconclusion{Folgerung}` — leitet eine Folgerung ein (gerendert als $\Rightarrow$).
+- `\ZSFref{label}` — Querverweis, gerendert als `(→ 6.6)` in der Farbe des Zielkapitels. **Neue** Querverweise nur, wenn ein Schritt ein Verfahren aus einem **anderen** Kapitel delegiert — nicht für elementare Operationen. Hartcodierte Abschnittsnummern (z. B. `[9.8]`) sind verboten — jeder Nummern-Verweis läuft über `\ZSFref`, auch innerhalb desselben Kapitels. Ziel-Label via `\SubsectionBar[sec:...]{Titel}`.
 - **Formatierungs-Verbot:** Niemals `\textbf{}` / `\textit{}` zur semantischen Hervorhebung — immer die obigen Marker.
 
 ##### Farb-Palette
@@ -334,7 +335,7 @@ Naming-Patterns immer konsistent halten in: `Makefile`, `tests/check_root_clean.
 
 - Quelle: `rules/80_didaktik.md`
 - Scope: Project-wide; besonders relevant für `chapters/**/*.tex`
-- Beschreibung: Didaktisches Prinzip für Inhalt/Erklärungen: nützlicher + intuitiver statt korrekter, Rezept-Charakter, Stolperfallen — keine eigenmächtigen Präzisierungen
+- Beschreibung: Didaktisches Prinzip für Inhalt/Erklärungen: nützlicher + intuitiver statt korrekter, Rezept-Charakter, Stolperfallen, scannbares Design + Übersichtlichkeit — keine eigenmächtigen Präzisierungen
 - Zuletzt aktualisiert: 2026-06-10 (loris)
 
 Diese Regel betrifft **was** drinsteht und **wie** erklärt wird (nicht das Layout). Vollständige Leitlinie: `ZSF_DIDAKTIK_PRINZIP.md`.
@@ -352,6 +353,12 @@ Nicht der Maßstab ist Vollständigkeit, Allgemeinheit oder lückenlose Strenge.
 - **Ungenauigkeiten auf Kursniveau sind toleriert**, solange sie intuitiv tragfähig sind.
 - **Sonderfälle/Präzisierungen hinzuzufügen ist ein Fehler**, wenn sie die Aussage nur „wasserdicht", aber schwerer lesbar machen. Regel: nicht „korrekter" machen — sondern **nützlicher und intuitiver**.
 - Gute Erklärung: Rezept-Charakter (`procedure` + `\ProcStep`), konkretes Zahlenbeispiel, Intuition in einem Satz, Stolperfallen via `\ZSFdanger`, Querchecks zur Selbstkontrolle.
+
+##### Scannbarkeit & Übersichtlichkeit
+
+- **Scannbares Design ist Pflicht:** In der Prüfung wird nicht gelesen, sondern gesucht. Jede Information muss in Sekunden auffindbar sein — über Boxen, Titel, Marker und visuelle Struktur statt Fließtext.
+- **Übersichtlichkeit schlägt Dichte:** Lieber klar gegliederte Blöcke (Box pro Aussage, Tabelle statt Aufzählung im Text) als kompakte, aber unstrukturierte Absätze.
+- Lange Fließtext-Passagen sind ein Warnsignal — Inhalt in `procedure`, `factlist`, Tabellen oder einzelne Boxen umstrukturieren, sodass das Auge beim Überfliegen hängen bleibt.
 
 ##### Konsequenz für KI-Assistenten
 

@@ -57,7 +57,7 @@ Wenn $f_1$ und $f_2$ in $x$ stetig und nach $y_1$ und $y_2$ stetig differenzierb
 
 \begin{procedure}[Lösungsverfahren: Homogene DGL-Systeme]
     \ProcStep{System aufstellen}{Matrix $A$ und Vektoren $\dot{\vec x}$, $\vec x$, $\vec b$ aufstellen: $\dot{\vec x}=A\vec x$.}
-    \ProcStep{Eigenwerte/-vektoren}{Eigenwerte $\lambda_i$ und Eigenvektoren $\vec v_i$ bestimmen (Abkürzung siehe [10.4]).}
+    \ProcStep{Eigenwerte/-vektoren}{Eigenwerte $\lambda_i$ und Eigenvektoren $\vec v_i$ bestimmen; Abkürzung \ZSFref{sec:eigenvalues}.}
     \ProcStep{Homogene Lösung}{$\vec x=\sum_i C_i\cdot e^{\lambda_i t}\cdot \vec v_i$.}
 \end{procedure}
 
@@ -123,7 +123,7 @@ Eigenvektor $\vec v = \vec u \pm i \vec w$ in Realteil $\vec u$ und Imaginärtei
     \item \textbf{Gewöhnliche DGL:} $y'=f(y(t))$ mit $f(y_g)=0$ --- das AWP $y(t_0)=y_g$ hat die konstante Lösung $y(t)=y_g$.
 \end{propertylist}
 
-System umschreiben zu ${\dot{\vec x}=A\vec x}$. Eigenwerte $\lambda_i$ von $A$ (vgl. [10.4]) bestimmen Typ des Gleichgewichtspunkts:
+System umschreiben zu ${\dot{\vec x}=A\vec x}$. Eigenwerte $\lambda_i$ von $A$ \ZSFref{sec:eigenvalues} bestimmen Typ des Gleichgewichtspunkts:
 
 \begin{fulltablebox}{Z{0.85} | Z{1.15}}
     \ZSFrowColor
@@ -133,7 +133,7 @@ System umschreiben zu ${\dot{\vec x}=A\vec x}$. Eigenwerte $\lambda_i$ von $A$ (
     Instabil: & Der Realteil von mindestens einem Eigenwert ist positiv \\
 \end{fulltablebox}
 
-\SubsectionBar{Eigenwerte \& Eigenvektoren}
+\SubsectionBar[sec:eigenvalues]{Eigenwerte \& Eigenvektoren}
 
 \textVorBox{Die Berechnung von Eigenwerten $\lambda$ und Eigenvektoren $\vec v$ einer Matrix $A$ ist das Fundament zur Lösung von DGL-Systemen.}
 \begin{procedure}[Abkürzung für $2\times 2$-Matrizen]
