@@ -48,25 +48,25 @@ Fixiert man eine der Variablen (z.B. $x_0$) und variiert die andere (z.B. $y\in\
 
 \SubsectionBar[sec:linear-dgl]{Lineare Differentialgleichungen}
 
-\textVorBox{In einer \ZSFkeyword{linearen DGL 1. Ordnung (I)} dürfen $y$ und $y'$ nur als lineare Terme vorkommen:}
+\textVorBox{In einer \ZSFkeyword{linearen DGL 1. Ordnung} ($\ZSFmhlA{I}$) dürfen $y$ und $y'$ nur als lineare Terme vorkommen:}
 \begin{formulabox}
-    $\displaystyle y'(x)=p(x)y(x)+q(x)$
+    $\displaystyle \ZSFmhlA{I:}\quad y'(x)=p(x)y(x)+\ZSFmhlA{q(x)}$
 \end{formulabox}
-\textNachBox{Dabei ist $q(x)$ der \ZSFkeyword{inhomogene Teil}. Die zugehörige \ZSFkeyword{homogene DGL (H)} lautet:
+\textNachBox{Dabei ist $\ZSFmhlA{q(x)}$ der \ZSFkeyword{inhomogene Teil}. Die zugehörige \ZSFkeyword{homogene DGL} ($\ZSFmhlB{H}$) lautet:
 \[
-    y'(x)=p(x)\,y(x).
+    \ZSFmhlB{H:}\quad y'(x)=p(x)\,y(x).
 \]
 \ZSFdanger{Achtung:} Nicht erlaubt sind Terme wie $\cos(y')$, $y'y$ oder $y^2$.
 Erlaubt sind hingegen lineare Terme wie $\sin(x)\cdot y$.}
 
-\textit{Notation:} $I$ bezeichnet die lineare DGL \emph{mit} \ZSFkeyword{Störglied} $q(x)$, $H$ dieselbe Struktur \emph{ohne} Störglied, also $q(x)=0$.
+\textit{Notation:} $\ZSFmhlA{I}$ bezeichnet die lineare DGL \emph{mit} \ZSFkeyword{Störglied} $\ZSFmhlA{q(x)}$, $\ZSFmhlB{H}$ dieselbe Struktur \emph{ohne} Störglied, also $q(x)=0$.
 
-Die allgemeine Lösung von $I$ ist die Summe einer speziellen Lösung (\ZSFkeyword{partikuläre Lösung} $y_p$) und der allgemeinen Lösung $y_h$ von $H$.
+Die allgemeine Lösung von $\ZSFmhlA{I}$ ist die Summe einer speziellen Lösung (\ZSFkeyword{partikuläre Lösung} $\ZSFmhlA{y_p}$) und der allgemeinen Lösung $\ZSFmhlB{y_h}$ von $\ZSFmhlB{H}$.
 
 \textVorBox{Ein erstes Lösungsverfahren lautet:}
 \begin{fulltablebox}{Z{1.0} | Z{1.0}}
     \ZSFrowColor
-    \textbf{Störglied $q(x)$} & \textbf{Ansatz für $y_p$} \\ \hline
+    \textbf{Störglied $\ZSFmhlA{q(x)}$} & \textbf{Ansatz für $\ZSFmhlA{y_p}$} \\ \hline
     Konstante & $C$ \\ \hline
     \ZSFrowColor
     Lineare Funktion & $C_1x + C_2$ \\ \hline
@@ -78,29 +78,29 @@ Die allgemeine Lösung von $I$ ist die Summe einer speziellen Lösung (\ZSFkeywo
 
 \begin{fulltablebox}{Z{1.0} | Z{1.0}}
     \ZSFrowColor
-    \ZSFkeyword{Resonanz} & wenn Standard-$y_p$ bereits in $y_h$ liegt \\ \hline
+    \ZSFkeyword{Resonanz} & wenn Standard-$\ZSFmhlA{y_p}$ bereits in $\ZSFmhlB{y_h}$ liegt \\ \hline
     \textbf{Dann} & \shortstack[l]{gesamten Ansatz $\cdot x$ \\
         noch Überlappung $\Rightarrow x^2,x^3,\ldots$}%
 \end{fulltablebox}
 
 \begin{procedure}[Lösungsverfahren mit Ansatz]
-    \ProcStep{Ansatz wählen}{$y_h$ festlegen und $y_p$ wie Tabelle; bei \ZSFkeyword{Resonanz} zweite Tabelle darunter.}
-    \ProcStep{Einsetzen}{Die Ableitungen von $y_p$ in $I$ einsetzen.}
+    \ProcStep{Ansatz wählen}{$\ZSFmhlB{y_h}$ festlegen und $\ZSFmhlA{y_p}$ wie Tabelle; bei \ZSFkeyword{Resonanz} zweite Tabelle darunter.}
+    \ProcStep{Einsetzen}{Die Ableitungen von $\ZSFmhlA{y_p}$ in $\ZSFmhlA{I}$ einsetzen.}
     \ProcStep{Koeffizienten}{Die Konstanten durch Koeffizientenvergleich bestimmen.}
-    \ProcStep{Allgemeine Lösung}{$y(x)=y_p+y_h$.}
+    \ProcStep{Allgemeine Lösung}{$y(x)=\ZSFmhlA{y_p}+\ZSFmhlB{y_h}$.}
 \end{procedure}
 
 \begin{procedure}[Lösungsverfahren nach Lagrange]
-    \ProcStep{Homogene Lösung}{$y_h$ bestimmen.}
-    \ProcStep{Variation}{Ansatz $y_p=v(x)\,y_h(x)$ mit unbekannter Funktion $v(x)$ einführen.}
-    \ProcStep{Einsetzen}{$y_p$ ableiten und in $I$ einsetzen.}
+    \ProcStep{Homogene Lösung}{$\ZSFmhlB{y_h}$ bestimmen.}
+    \ProcStep{Variation}{Ansatz $\ZSFmhlA{y_p}=v(x)\,\ZSFmhlB{y_h}(x)$ mit unbekannter Funktion $v(x)$ einführen.}
+    \ProcStep{Einsetzen}{$\ZSFmhlA{y_p}$ ableiten und in $\ZSFmhlA{I}$ einsetzen.}
     \ProcStep{Auflösen}{$v(x)$ bestimmen.}
-    \ProcStep{Allgemeine Lösung}{$y(x)=y_p+y_h$.}
+    \ProcStep{Allgemeine Lösung}{$y(x)=\ZSFmhlA{y_p}+\ZSFmhlB{y_h}$.}
 \end{procedure}
 
 \SubsectionBar{Niveaulinien, Orth. trajektorien, Enveloppen}
 
-\textVorBox{Sei $g(x,y)=C$ eine Schar von \ZSFkeyword{Niveaulinien}, so gilt:}
+\textVorBox{Sei $\ZSFmhlA{g(x,y)=C}$ eine \ZSFmhlA{Schar} von \ZSFkeyword{Niveaulinien}, so gilt:}
 \begin{formulabox}
     $\displaystyle y'(x)=-\frac{g_x(x,y)}{g_y(x,y)}$
 \end{formulabox}
@@ -108,7 +108,7 @@ Die allgemeine Lösung von $I$ ist die Summe einer speziellen Lösung (\ZSFkeywo
 \[
     g_x(x,y)+y'(x)\,g_y(x,y)=0 \;\text{ mit }\; g_x=\psi_x.
 \]
-Die Lösung ist die Schar von Niveaulinien $g(x,y)=C$.}
+Die Lösung ist die \ZSFmhlA{Schar} von Niveaulinien $\ZSFmhlA{g(x,y)=C}$.}
 
 Die Niveaulinien von $g(x,y)$ stehen senkrecht auf den Feldlinien von $\nabla g(x,y)$, den sogenannten \ZSFkeyword{Orthogonaltrajektorien}.
 
@@ -118,9 +118,9 @@ Die Niveaulinien von $g(x,y)$ stehen senkrecht auf den Feldlinien von $\nabla g(
 \end{formulabox}
 
 \begin{procedure}[Lösungsverfahren: Orthogonaltrajektorien]
-    \ProcStep{Schar umformen}{Schar nach $C$ umformen.}
-    \ProcStep{Ableiten}{Ursprüngliche Schar nach $x$ ableiten und nach $y'$ auflösen: $y'=f(x,y,C)$.}
-    \ProcStep{$C$ ersetzen}{$C$ in abgeleiteter Schar durch Umformung aus (1) ersetzen.}
+    \ProcStep{Schar umformen}{Ursprüngliche Kurvenschar nach $C$ umformen: $\ZSFmhlA{F(x,y,C)=0}$.}
+    \ProcStep{Ableiten}{\ZSFmhlA{Ursprüngliche Schar} $\ZSFmhlA{F(x,y,C)=0}$ nach $x$ ableiten und nach $y'$ auflösen: $\ZSFmhlB{y'=f(x,y,C)}$.}
+    \ProcStep{$C$ ersetzen}{$C$ in \ZSFmhlB{abgeleiteter Schar} durch Umformung aus (1) ersetzen.}
     \ProcStep{Neue DGL}{$y'=f(x,y)$ in die Formel für $y_{\mathrm{or}}'(x)$ einsetzen und die neue DGL lösen.}
 \end{procedure}
 
@@ -167,12 +167,12 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
 \textNachBox{Dabei sind $p_i(x)$ und $q(x)$ Funktionen.}
 
 \begin{factlist}
-    \ZSFFact{Homogenität}{Die DGL ist \ZSFkeyword{homogen (H)}, wenn $q(x)=0$.}
-    \ZSFFact{Linearkombination}{Linearkombinationen der Lösungen von $H$ sind ebenfalls Lösungen von $H$.}
-    \ZSFFact{Allgemeine Lösung}{Die allgemeine Lösung von $H$ ist eine Linearkombination aller linear unabhängigen Lösungen von $H$.}
+    \ZSFFact{Homogenität}{Die DGL ist \ZSFkeyword{homogen} ($\ZSFmhlB{H}$), wenn $q(x)=0$.}
+    \ZSFFact{Linearkombination}{Linearkombinationen der Lösungen von $\ZSFmhlB{H}$ sind ebenfalls Lösungen von $\ZSFmhlB{H}$.}
+    \ZSFFact{Allgemeine Lösung}{Die allgemeine Lösung von $\ZSFmhlB{H}$ ist eine Linearkombination aller linear unabhängigen Lösungen von $\ZSFmhlB{H}$.}
 \end{factlist}
 
-\textVorBox{\ZSFkeyword{Variation der Konstanten}\ (2.\ Ordnung): $y_1,y_2$ sind zwei linear unabhängige Lösungen der homogenen DGL~\emph{H} (\ZSFkeyword{Fundamentalsystem}), dieselben wie im Ansatz. Dann $c_1',c_2'$ aus Nebenbedingung und zweiter Gleichung bestimmen --- oder direkt unten über~$W$:}
+\textVorBox{\ZSFkeyword{Variation der Konstanten}\ (2.\ Ordnung): $y_1,y_2$ sind zwei linear unabhängige Lösungen der homogenen DGL~$\ZSFmhlB{H}$ (\ZSFkeyword{Fundamentalsystem}), dieselben wie im Ansatz. Dann $c_1',c_2'$ aus Nebenbedingung und zweiter Gleichung bestimmen --- oder direkt unten über~$W$:}
 \begin{fulltablebox}{Z{1.0} | Z{1.0}}
     \ZSFrowColor
     \textbf{Ansatz} & $y=c_1(x)y_1+c_2(x)y_2$ \\ \hline
@@ -190,10 +190,10 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
 \end{fulltablebox}
 
 \begin{procedure}[Lösungsverfahren: Variation der Konstanten (2.\ Ordnung)]
-    \ProcStep{Fundamentalsystem}{$y_1,y_2$ linear unabhängige Lösungen von $H$ bestimmen.}
+    \ProcStep{Fundamentalsystem}{$y_1,y_2$ linear unabhängige Lösungen von $\ZSFmhlB{H}$ bestimmen.}
     \ProcStep{Wronski}{$W=y_1y_2'-y_2y_1'$ berechnen; brauchbar nur wenn $W\neq 0$.}
-    \ProcStep{$c_i'$ integrieren}{$c_1',c_2'$ aus Tabelle; integrieren (Konstanten $=0$ für $y_p$).}
-    \ProcStep{Allgemeine Lösung}{$y=y_h+y_p$ mit $y_h=C_1y_1+C_2y_2$ und $y_p=c_1y_1+c_2y_2$.}
+    \ProcStep{$c_i'$ integrieren}{$c_1',c_2'$ aus Tabelle; integrieren (Konstanten $=0$ für $\ZSFmhlA{y_p}$).}
+    \ProcStep{Allgemeine Lösung}{$y=\ZSFmhlB{y_h}+\ZSFmhlA{y_p}$ mit $\ZSFmhlB{y_h}=C_1y_1+C_2y_2$ und $\ZSFmhlA{y_p}=c_1y_1+c_2y_2$.}
 \end{procedure}
 
 \textNachBox{$W$ ist nur diese \ZSFkeyword{Hilfsgröße}, nicht die allgemeine Lösung. Normalform $y''+p_1y'+p_0y=q$ \ZSFref{sec:const-coeff}; sonst durch Koeffizienten von $y''$ teilen. Reihenfolge von $y_1,y_2$ durchgängig gleich lassen (Vertauschen kehrt $W$ um). Beispiel $y''+\omega^2y=q$: $y_1=\sin(\omega x)$, $y_2=\cos(\omega x)$ $\Rightarrow$ $W=-\omega$. Inhomogen mit speziellem $q(x)$: Ansatzverfahren wie bei \emph{Linearen Differentialgleichungen} \ZSFref{sec:linear-dgl} (Tabelle + \ZSFkeyword{Resonanz}).}
@@ -226,9 +226,9 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
     \ProcStep{Char.\ Polynom}{$P(\lambda)=\lambda^n+a_{n-1}\lambda^{n-1}+\dots+a_0$ aufstellen.}
     \ProcStep{Nullstellen}{$P(\lambda)=0$ lösen.}
     \ProcStep{Basisfunktionen}{Je nach Fall (einfach/k-fach, reell/komplex) $y_i$ aus Tabelle \ZSFref{sec:const-coeff} wählen.}
-    \ProcStep{Homogene Lösung}{$y_h=C_1y_1+C_2y_2+\dots+C_iy_i$.}
-    \ProcStep{Inhomogene Lösung}{$y_p$ wie bei \emph{Linearen Differentialgleichungen} \ZSFref{sec:linear-dgl}; Koeffizientenvergleich; bei \ZSFkeyword{Resonanz} Tabelle \ZSFref{sec:linear-dgl}.}
-    \ProcStep{Allgemeine Lösung}{$y=y_h+y_p$.}
+    \ProcStep{Homogene Lösung}{$\ZSFmhlB{y_h}=C_1y_1+C_2y_2+\dots+C_iy_i$.}
+    \ProcStep{Inhomogene Lösung}{$\ZSFmhlA{y_p}$ wie bei \emph{Linearen Differentialgleichungen} \ZSFref{sec:linear-dgl}; Koeffizientenvergleich; bei \ZSFkeyword{Resonanz} Tabelle \ZSFref{sec:linear-dgl}.}
+    \ProcStep{Allgemeine Lösung}{$y=\ZSFmhlB{y_h}+\ZSFmhlA{y_p}$.}
 \end{procedure}
 
 \textVorBox{Die allgemeine Lösung $y$ der homogenen DGL ist eine Linearkombination der einzelnen Lösungen $y_i$:}
@@ -244,7 +244,7 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
 \end{formulabox}
 \textNachBox{Dabei sind $a_i$ Konstanten. Alternative: Substitution $x=e^t$ ($t=\ln x$) führt die Euler-DGL in eine DGL mit konst.\ Koeffizienten \ZSFref{sec:const-coeff} über.}
 
-\textVorBox{Das \ZSFkeyword{charakteristische Polynom} erhält man durch $y=x^{\lambda}$ in $H$ einsetzen und Ausklammern von $x^{\lambda-n}$:}
+\textVorBox{Das \ZSFkeyword{charakteristische Polynom} erhält man durch $y=x^{\lambda}$ in $\ZSFmhlB{H}$ einsetzen und Ausklammern von $x^{\lambda-n}$:}
 \begin{formulabox}
     $\displaystyle P(\lambda)=a_n\lambda(\lambda-1)\cdots(\lambda-n+1)+a_{n-1}\lambda(\lambda-1)\cdots(\lambda-n+2)+\dots+a_2\lambda(\lambda-1)+a_1\lambda+a_0$
 \end{formulabox}
@@ -261,10 +261,10 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
     k-fach komplex $(a=\alpha\pm ib)$ & \shortstack[l]{$x^{\alpha}\cos(b\ln(x)),$\\$x^{\alpha}\sin(b\ln(x)),$\\$\ldots,$\\$\ln(x)^{k-1}x^{\alpha}\sin\!\bigl(b\ln(x)\bigr)$} \\
 \end{fulltablebox}
 
-\textVorBox{Ansätze für $y_p$ bei speiellem $q(x)$:}
+\textVorBox{Ansätze für $\ZSFmhlA{y_p}$ bei speiellem $\ZSFmhlA{q(x)}$:}
 \begin{fulltablebox}{Z{1.0} | Z{1.0}}
     \ZSFrowColor
-    \textbf{Störglied $q(x)$} & \textbf{Ansatz für $y_p$} \\ \hline
+    \textbf{Störglied $\ZSFmhlA{q(x)}$} & \textbf{Ansatz für $\ZSFmhlA{y_p}$} \\ \hline
     Konstante & $C$ \\ \hline
     \ZSFrowColor
     $x^m$ & $C x^m$ \\ \hline
@@ -276,18 +276,18 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
 
 \begin{fulltablebox}{Z{1.0} | Z{1.0}}
     \ZSFrowColor
-    \ZSFkeyword{Resonanz} & wenn Standard-$y_p$ bereits in $y_h$ liegt \\ \hline
+    \ZSFkeyword{Resonanz} & wenn Standard-$\ZSFmhlA{y_p}$ bereits in $\ZSFmhlB{y_h}$ liegt \\ \hline
     \textbf{Dann} & \shortstack[l]{gesamten Ansatz $\cdot\ln x$ \\
         noch Überlappung $\Rightarrow \ln^2 x,\ln^3 x,\ldots$}%
 \end{fulltablebox}
 \textNachBox{Alternativ: $x=e^t$ $\Rightarrow$ Ansatz wie bei \emph{Linearen Differentialgleichungen} \ZSFref{sec:linear-dgl}.}
 
 \begin{procedure}[Lösungsverfahren: Euler-DGL]
-    \ProcStep{Char.\ Polynom}{$y=x^{\lambda}$ in $H$ einsetzen, $x^{\lambda-n}$ ausklammern $\Rightarrow$ $P(\lambda)$ wie oben \ZSFref{sec:euler-dgl}.}
+    \ProcStep{Char.\ Polynom}{$y=x^{\lambda}$ in $\ZSFmhlB{H}$ einsetzen, $x^{\lambda-n}$ ausklammern $\Rightarrow$ $P(\lambda)$ wie oben \ZSFref{sec:euler-dgl}.}
     \ProcStep{Nullstellen}{$P(\lambda)=0$ lösen; $y_i$ aus Tabelle \ZSFref{sec:euler-dgl} wählen.}
-    \ProcStep{Homogene Lösung}{$y_h=C_1y_1+\dots+C_iy_i$.}
-    \ProcStep{Inhomogene Lösung}{$y_p$ wie Tabelle \ZSFref{sec:euler-dgl}; Koeffizientenvergleich; bei \ZSFkeyword{Resonanz} Resonanz-Tabelle \ZSFref{sec:euler-dgl}. Alternativ: $x=e^t$ $\Rightarrow$ \ZSFref{sec:linear-dgl}.}
-    \ProcStep{Allgemeine Lösung}{$y=y_h+y_p$.}
+    \ProcStep{Homogene Lösung}{$\ZSFmhlB{y_h}=C_1y_1+\dots+C_iy_i$.}
+    \ProcStep{Inhomogene Lösung}{$\ZSFmhlA{y_p}$ wie Tabelle \ZSFref{sec:euler-dgl}; Koeffizientenvergleich; bei \ZSFkeyword{Resonanz} Resonanz-Tabelle \ZSFref{sec:euler-dgl}. Alternativ: $x=e^t$ $\Rightarrow$ \ZSFref{sec:linear-dgl}.}
+    \ProcStep{Allgemeine Lösung}{$y=\ZSFmhlB{y_h}+\ZSFmhlA{y_p}$.}
 \end{procedure}
 
 \textVorBox{Die homogene Lösung ist eine Linearkombination der oben berechneten Terme $y_i$:}

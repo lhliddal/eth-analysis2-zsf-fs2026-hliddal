@@ -56,3 +56,11 @@
     {auto}{\lim_{#1}}%
   }[\lim_{#1}]%
 }
+
+% --- Semantisches Formel-Highlighting ---
+% Verknuepft visuell zusammengehoerige Teile einer Formel ueber mehrere
+% Umformungsschritte hinweg. Farben zentral in 40_colors_structure.tex.
+\newcommand{\ZSFmhlA}[1]{{\color{MathHLPrimary}#1}}
+\newcommand{\ZSFmhlB}[1]{{\color{MathHLSecondary}#1}}
+\newcommand{\ZSFmhlC}[1]{{\color{MathHLTarget}#1}}
+\newcommand{\ZSFmhlD}[1]{{\color{MathHLTertiary}#1}}

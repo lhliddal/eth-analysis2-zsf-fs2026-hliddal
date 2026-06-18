@@ -1,6 +1,6 @@
 # ZSF Analysis 2 — AGENTS.md
 
-> AUTO-GENERATED — rules-hash:78c1d91dfa4e67af
+> AUTO-GENERATED — rules-hash:fe3c44a317fd71f2
 >
 > Quelle: `rules/*.md` (mit YAML-Frontmatter).
 > Nicht direkt bearbeiten. Änderungen: `rules/*.md` editieren → `make sync-rules`.
@@ -168,6 +168,19 @@ Niemals `\section` / `\subsection` / `\chapter` direkt verwenden.
 - `\ZSFconclusion{Folgerung}` — leitet eine Folgerung ein (gerendert als $\Rightarrow$).
 - `\ZSFref{label}` — Querverweis, gerendert als `(→ 6.6)` in der Farbe des Zielkapitels. **Neue** Querverweise nur, wenn ein Schritt ein Verfahren aus einem **anderen** Kapitel delegiert — nicht für elementare Operationen. Hartcodierte Abschnittsnummern (z. B. `[9.8]`) sind verboten — jeder Nummern-Verweis läuft über `\ZSFref`, auch innerhalb desselben Kapitels. Ziel-Label via `\SubsectionBar[sec:...]{Titel}`.
 - **Formatierungs-Verbot:** Niemals `\textbf{}` / `\textit{}` zur semantischen Hervorhebung — immer die obigen Marker.
+
+##### Semantisches Formel-Highlighting
+
+Experimentelles System, um Zusammenhänge über mehrere Formeln oder Verfahrensschritte hinweg sichtbar zu machen. Es ist bewusst klein gehalten und kann nach praktischer Nutzung noch verbessert werden.
+
+| Makro | Rolle |
+|---|---|
+| `\ZSFmhlA{...}` | Quelle / gegeben / erster Strang |
+| `\ZSFmhlB{...}` | Gegenstück / abgeleitet / zweiter Strang |
+| `\ZSFmhlD{...}` | dritter paralleler Strang, nur wenn wirklich nötig |
+| `\ZSFmhlC{...}` | Ziel / Endform / Resultat |
+
+Nur einsetzen, wenn die farbliche Verbindung mathematisch eindeutig stimmt. `\ZSFmhlD` ist kein Standardmarker; nur verwenden, wenn drei gleichwertige Stränge gleichzeitig verfolgt werden müssen und `\ZSFmhlC` weiterhin als Ziel/Resultat gebraucht wird. Nicht zur allgemeinen Betonung oder Dekoration verwenden; bei Zweifel lieber keine Farbe setzen.
 
 ##### Farb-Palette
 
