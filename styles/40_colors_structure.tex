@@ -46,11 +46,13 @@
 \definecolor{ChapterColor19Light}{HTML}{EEEBD2}
 \definecolor{ETHRot}{HTML}{CC0000}
 
-% Semantisches Formel-Highlighting (kapitelunabhaengig, siehe \ZSFmhlA/B/C/D)
-\colorlet{MathHLPrimary}{ChapterColor4}    % Teal  -- Quelle / gegeben / erster Strang
-\colorlet{MathHLSecondary}{ChapterColor3}  % Orange -- Gegenstueck / abgeleitet / zweiter Strang
-\colorlet{MathHLTertiary}{ChapterColor11}  % Magenta -- dritter paralleler Strang (sparsam)
-\colorlet{MathHLTarget}{ChapterColor18}    % Blau  -- Ziel / Endform / Resultat
+% Semantisches Formel-Highlighting (kapitelunabhaengig, siehe \ZSFmhlA/B/C/D).
+% Dedizierte Farben -- bewusst NICHT aus der Kapitelrotation (ChapterColorN), sonst
+% Kollision mit der Kapitel-Identitaetsfarbe (Section 3 = Orange, Section 4 = Teal).
+\definecolor{MathHLPrimary}{HTML}{00796B}    % Teal    -- Quelle / gegeben / erster Strang
+\definecolor{MathHLSecondary}{HTML}{C2410C}  % Orange  -- Gegenstueck / abgeleitet / zweiter Strang
+\definecolor{MathHLTertiary}{HTML}{A50D68}   % Magenta -- dritter paralleler Strang (sparsam)
+\definecolor{MathHLTarget}{HTML}{1D4ED8}     % Blau    -- Ziel / Endform / Resultat
 
 % Semantische Farben für Text-Box-Bindungen
 \definecolor{TextVorBoxColor}{HTML}{0A0A1E}   % Sehr dunkles Blau (einleitend)

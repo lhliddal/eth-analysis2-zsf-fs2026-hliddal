@@ -128,14 +128,14 @@ Sei $K$ eine parametrisierte Raumkurve $\tilde r(u)=(x(u),y(u),z(u))$, so ist di
 
 \textVorBox{Der \ZSFkeyword{Divergenzsatz von Gauss} besagt, dass ein stetig differenzierbares Vektorfeld (Komponenten sind differenzierbar und die Ableitungen stetig) in einem beschränkten Volumen $B\subset D(\vec v)$ mit Rand $\partial B$ von innen nach aussen den Fluss besitzt:}
 \begin{formulabox}
-    $\displaystyle \Phi=\iint_{\partial B}\vec v\cdot\vec n\,dO=\iiint_B \divg\,\vec v\,dV$
+    $\displaystyle \Phi=\ZSFmhlA{\iint_{\partial B}\vec v\cdot\vec n\,dO}=\ZSFmhlB{\iiint_B \divg\,\vec v\,dV}$
 \end{formulabox}
 \textNachBox{\ZSFdanger{Achtung:} z.B. nicht anwendbar bei einer Kugel im Ursprung mit $D(\vec v)=\R^3\setminus\{(0,0,0)\}$.}
 
 \textVorBox{Für geschlossene Körper mit mehreren Oberflächenstücken (z.B. $S$ und $D$) und Volumen $V$ gilt:}
 \begin{formulabox}
-    $\displaystyle \iiint_V \divg\,\vec v\,dV=\iint_{S\cup D}\vec v\cdot\vec n\,dO
-    =\iint_S \vec v\cdot\vec n\,dO+\iint_D \vec v\cdot\vec n\,dO$
+    $\displaystyle \ZSFmhlB{\iiint_V \divg\,\vec v\,dV}=\ZSFmhlA{\iint_{S\cup D}\vec v\cdot\vec n\,dO}
+    =\ZSFmhlA{\iint_S \vec v\cdot\vec n\,dO}+\ZSFmhlA{\iint_D \vec v\cdot\vec n\,dO}$
 \end{formulabox}
 \textNachBox{wobei $\vec n$ jeweils nach aussen zeigt.}
 
@@ -158,13 +158,17 @@ Sei $K$ eine parametrisierte Raumkurve $\tilde r(u)=(x(u),y(u),z(u))$, so ist di
 
 \textVorBox{Der \ZSFkeyword{Satz von Stokes} besagt, dass für ein stetig differenzierbares Vektorfeld $\vec v$ und eine beschränkte Fläche $S$ mit Rand $\partial S$ gilt:}
 \begin{formulabox}
-    $\displaystyle W=\int_{\partial S}\vec v\,d\vec r=\iint_S \rot\,\vec v\cdot\vec n\,dO$
+    $\displaystyle
+    W=
+    \underbrace{\ZSFmhlA{\int_{\partial S}\vec v\,d\vec r}}_{\text{Arbeit / Umlauf entlang Randkurve}}
+    =
+    \underbrace{\ZSFmhlB{\iint_S \rot\,\vec v\cdot\vec n\,dO}}_{\text{Fluss von }\rot\,\vec v\text{ durch }S}$
 \end{formulabox}
 \textNachBox{$\vec n$ ist normiert und so orientiert, dass $\partial S$ bezüglich $\vec n$ im Gegenuhrzeigersinn durchlaufen wird (rechte Hand Regel).}
 
 \textVorBox{Ist $\rot\,\vec v\cdot\vec n$ konstant und $O$ der Oberflächeninhalt von $S$, so gilt:}
 \begin{formulabox}
-    $\displaystyle W=(\rot\,\vec v\cdot\vec n)\,O$
+    $\displaystyle W=\ZSFmhlB{(\rot\,\vec v\cdot\vec n)\,O}$
 \end{formulabox}
 
 \begin{formulabox}

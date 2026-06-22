@@ -22,6 +22,7 @@ Die Konfiguration ist modular organisiert. Bei Layout-Änderungen NICHT die Kapi
 | Schrift / Semantik | `styles/50_typography_semantics.tex` |
 | Lesbarkeit (Hyphenation/Penalties) | `styles/55_readability.tex` |
 | Box-Umgebungen (tcolorbox) | `styles/60_boxes.tex` |
+| Stichwortverzeichnis / Index-Maschinerie | `styles/65_index.tex` (+ `styles/zsfindex.ist`) |
 | Dokument-Settings | `styles/70_document_settings.tex` |
 | PDF-Identity / Owner-Marker | `styles/75_pdf_identity.tex` |
 | Inhalte | `chapters/XX_*.tex` |

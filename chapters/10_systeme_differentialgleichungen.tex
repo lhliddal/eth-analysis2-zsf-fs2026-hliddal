@@ -80,14 +80,14 @@ Wenn $f_1$ und $f_2$ in $x$ stetig und nach $y_1$ und $y_2$ stetig differenzierb
 \end{formulabox}
 
 \textVorBox{\textbf{Pragmatischere Formel für die Prüfung:}\\
-Eigenvektor $\vec v = \vec u \pm i \vec w$ in Realteil $\vec u$ und Imaginärteil $\vec w$ aufteilen. Die reelle Lösung ist dann direkt:}
+Eigenvektor $\vec v = \ZSFmhlA{\vec u} \pm i \ZSFmhlB{\vec w}$ in Realteil $\ZSFmhlA{\vec u}$ und Imaginärteil $\ZSFmhlB{\vec w}$ aufteilen. Die reelle Lösung ist dann direkt:}
 \begin{formulabox}
-    $\displaystyle \vec x = C_1 e^{at} \Big( \vec u \cos(bt) - \vec w \sin(bt) \Big) + C_2 e^{at} \Big( \vec u \sin(bt) + \vec w \cos(bt) \Big)$
+    $\displaystyle \vec x = C_1 e^{at} \Big( \ZSFmhlA{\vec u} \cos(bt) - \ZSFmhlB{\vec w} \sin(bt) \Big) + C_2 e^{at} \Big( \ZSFmhlA{\vec u} \sin(bt) + \ZSFmhlB{\vec w} \cos(bt) \Big)$
 \end{formulabox}
 
-\textVorBox{Ist Matrix $A$ \ZSFkeyword{nicht diagonalisierbar} (nur ein Eigenvektor $\vec v$), bestimme den \ZSFkeyword{Hauptvektor} $\vec h$ via $(A - \lambda I)\vec h = \vec v$:}
+\textVorBox{Ist Matrix $A$ \ZSFkeyword{nicht diagonalisierbar} (nur ein Eigenvektor $\ZSFmhlA{\vec v}$), bestimme den \ZSFkeyword{Hauptvektor} $\ZSFmhlB{\vec h}$ via $(A - \lambda I)\ZSFmhlB{\vec h} = \ZSFmhlA{\vec v}$:}
 \begin{formulabox}
-    $\displaystyle \vec x = C_1 e^{\lambda t} \vec v + C_2 e^{\lambda t} (\vec h + t \vec v)$
+    $\displaystyle \vec x = C_1 e^{\lambda t} \ZSFmhlA{\vec v} + C_2 e^{\lambda t} (\ZSFmhlB{\vec h} + t \ZSFmhlA{\vec v})$
 \end{formulabox}
 
 \textVorBox{Bei einem \ZSFkeyword{inhomogenen} System $\dot{\vec x} = A\vec x + \vec b(t)$ wählt man einen vektoriellen Ansatz (Koeffizientenvergleich):}
