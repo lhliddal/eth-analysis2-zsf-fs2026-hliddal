@@ -11,6 +11,8 @@ Eine \ZSFkeyword{gewöhnliche Differentialgleichung (DGL)} hängt nur von einer 
 Die Menge der Lösungen einer solchen Gleichung wird als die \ZSFkeyword{allgemeine Lösung} der DGL bezeichnet. Sie bildet eine Schar von Funktionen mit einem \ZSFkeyword{Scharparameter} $C$.
 
 Bei einer bekannten Bedingung $y(x_0)=y_0$, man spricht von einem \ZSFkeyword{Anfangswertproblem (AWP)}, kann der Scharparameter $C$ bestimmt werden. Die zugehörige Lösung der DGL wird als \ZSFkeyword{spezielle Lösung} bezeichnet.
+\ZSFindexsee{AWP}{Anfangswertproblem (AWP)}
+\ZSFindexsee{DGL}{Differentialgleichung}
 
 \SubsectionBar{Differentialgleichungen 1. Ordnung}
 \begin{statementbox}[Existenzsatz]
@@ -18,6 +20,7 @@ Sei $f(x,y)$ stetig und nach $y$ partiell stetig differenzierbar. Dann existiert
 
 Graphisch: Die Graphen verschiedener Anfangswertprobleme sind entweder identisch oder kreuzen sich nicht.
 \end{statementbox}
+\ZSFindex{Existenz- und Eindeutigkeitssatz}
 
 \ZSFdanger{Achtung:} Ist $f(x,y)$ \textit{nicht} nach $y$ partiell stetig differenzierbar, können zwei Funktionen $y(x)$ existieren, die $y'=f(x,y)$ erfüllen.
 Eine DGL 1. Ordnung ist \ZSFkeyword{separierbar}, wenn sie in die folgende Form überführt werden kann:
@@ -39,7 +42,7 @@ Einige DGLs lassen sich nur durch Substitution separieren.
     \includegraphics[width=\linewidth,keepaspectratio,trim=80 190 90 45,clip]{graphics/media/richtungsfeld_skizze.png}
 \end{formulabox}
 
-Fixiert man eine der Variablen (z.B. $x_0$) und variiert die andere (z.B. $y\in\R$), so erhält man eine \ZSFkeyword{Kurvenschar}, eine Menge von Kurven. Solch eine \ZSFkeyword{einparametrige} Kurvenschar nennt man \ZSFkeyword{regulär}, wenn sie keine Kreuzungspunkte aufweist.
+Fixiert man eine der Variablen (z.B. $x_0$) und variiert die andere (z.B. $y\in\R$), so erhält man eine \ZSFkeyword{Kurvenschar}, eine Menge von Kurven. Solch eine \ZSFkeyword*{einparametrige} Kurvenschar nennt man \ZSFkeyword{regulär}, wenn sie keine Kreuzungspunkte aufweist.
 
 \textVorBox{Die Steigung im Richtungsfeld berechnet sich mit:}
 \begin{formulabox}
@@ -48,11 +51,11 @@ Fixiert man eine der Variablen (z.B. $x_0$) und variiert die andere (z.B. $y\in\
 
 \SubsectionBar[sec:linear-dgl]{Lineare Differentialgleichungen}
 
-\textVorBox{In einer \ZSFkeyword{linearen DGL 1. Ordnung} ($\ZSFmhlA{I}$) dürfen $y$ und $y'$ nur als lineare Terme vorkommen:}
+\textVorBox{In einer \ZSFkeyword[lineare DGL 1. Ordnung@lineare DGL 1. Ordnung]{linearen DGL 1. Ordnung} ($\ZSFmhlA{I}$) dürfen $y$ und $y'$ nur als lineare Terme vorkommen:}
 \begin{formulabox}
     $\displaystyle \ZSFmhlA{I:}\quad y'(x)=p(x)y(x)+\ZSFmhlA{q(x)}$
 \end{formulabox}
-\textNachBox{Dabei ist $\ZSFmhlA{q(x)}$ der \ZSFkeyword{inhomogene Teil}. Die zugehörige \ZSFkeyword{homogene DGL} ($\ZSFmhlB{H}$) lautet:
+\textNachBox{Dabei ist $\ZSFmhlA{q(x)}$ der \ZSFkeyword[inhomogener Teil@inhomogener Teil]{inhomogene Teil}. Die zugehörige \ZSFkeyword{homogene DGL} ($\ZSFmhlB{H}$) lautet:
 \[
     \ZSFmhlB{H:}\quad y'(x)=p(x)\,y(x).
 \]
@@ -90,6 +93,7 @@ Die allgemeine Lösung von $\ZSFmhlA{I}$ ist die Summe einer speziellen Lösung 
     \ProcStep{Allgemeine Lösung}{$y(x)=\ZSFmhlA{y_p}+\ZSFmhlB{y_h}$.}
 \end{procedure}
 
+\ZSFindex{Koeffizientenvergleich}
 \begin{procedure}[Lösungsverfahren nach Lagrange]
     \ProcStep{Homogene Lösung}{$\ZSFmhlB{y_h}$ bestimmen.}
     \ProcStep{Variation}{Ansatz $\ZSFmhlA{y_p}=v(x)\,\ZSFmhlB{y_h}(x)$ mit unbekannter Funktion $v(x)$ einführen.}
@@ -100,10 +104,11 @@ Die allgemeine Lösung von $\ZSFmhlA{I}$ ist die Summe einer speziellen Lösung 
 
 \SubsectionBar{Niveaulinien, Orth. trajektorien, Enveloppen}
 
-\textVorBox{Sei $\ZSFmhlA{g(x,y)=C}$ eine \ZSFmhlA{Schar} von \ZSFkeyword{Niveaulinien}, so gilt:}
+\textVorBox{Sei $\ZSFmhlA{g(x,y)=C}$ eine \ZSFmhlA{Schar} von \ZSFkeyword*{Niveaulinien}, so gilt:}
 \begin{formulabox}
     $\displaystyle y'(x)=-\frac{g_x(x,y)}{g_y(x,y)}$
 \end{formulabox}
+\ZSFindex{Niveaulinie}
 \textNachBox{Eine solche DGL nennt man \ZSFkeyword{exakt} und kann umgeformt werden zu:
 \[
     g_x(x,y)+y'(x)\,g_y(x,y)=0 \;\text{ mit }\; g_x=\psi_x.
@@ -134,6 +139,7 @@ Die \ZSFkeyword{Enveloppe} einer Kurvenschar ist diejenige Kurve, die an jedem i
 \end{procedure}
 
 \SubsectionBar{Clairaut'sche Differentialgleichung}
+\ZSFindex{Clairaut'sche Differentialgleichung}
 
 \textVorBox{Clairaut'sche Differentialgleichungen sind von der Form:}
 \begin{formulabox}
@@ -159,6 +165,7 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
 
 \ZSFdanger{Achtung:} Ist $f(x,y)$ nicht nach $y^{(1)}$ partiell stetig differenzierbar, hat die Funktion für ein AWP keine eindeutige Lösung.
 \end{statementbox}
+\ZSFindex{Existenz- und Eindeutigkeitssatz}
 
 \textVorBox{Eine \ZSFkeyword{lineare DGL höherer Ordnung} ist von der Form:}
 \begin{formulabox}
@@ -196,7 +203,7 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
     \ProcStep{Allgemeine Lösung}{$y=\ZSFmhlB{y_h}+\ZSFmhlA{y_p}$ mit $\ZSFmhlB{y_h}=C_1y_1+C_2y_2$ und $\ZSFmhlA{y_p}=c_1y_1+c_2y_2$.}
 \end{procedure}
 
-\textNachBox{$W$ ist nur diese \ZSFkeyword{Hilfsgröße}, nicht die allgemeine Lösung. Normalform $y''+p_1y'+p_0y=q$ \ZSFref{sec:const-coeff}; sonst durch Koeffizienten von $y''$ teilen. Reihenfolge von $y_1,y_2$ durchgängig gleich lassen (Vertauschen kehrt $W$ um). Beispiel $y''+\omega^2y=q$: $y_1=\sin(\omega x)$, $y_2=\cos(\omega x)$ $\Rightarrow$ $W=-\omega$. Inhomogen mit speziellem $q(x)$: Ansatzverfahren wie bei \emph{Linearen Differentialgleichungen} \ZSFref{sec:linear-dgl} (Tabelle + \ZSFkeyword{Resonanz}).}
+\textNachBox{$W$ ist nur diese \ZSFkeyword{Hilfsgröße}, nicht die allgemeine Lösung. Normalform $y''+p_1y'+p_0y=q$ \ZSFref{sec:const-coeff}; sonst durch Koeffizienten von $y''$ teilen. Reihenfolge von $y_1,y_2$ durchgängig gleich lassen (Vertauschen kehrt $W$ um). Beispiel $y''+\omega^2y=q$: $y_1=\sin(\omega x)$, $y_2=\cos(\omega x)$ $\Rightarrow$ $W=-\omega$.\ZSFindexsee{Lagrange}{Variation der Konstanten} Inhomogen mit speziellem $q(x)$: Ansatzverfahren wie bei \emph{Linearen Differentialgleichungen} \ZSFref{sec:linear-dgl} (Tabelle + \ZSFkeyword{Resonanz}).}
 
 \SubsectionBar[sec:const-coeff]{Homogene lineare DGL mit konst. Koeffizienten}
 
@@ -306,7 +313,7 @@ Ein stetig differenzierbarer Anfangswert besitzt eine eindeutige Lösung --- dur
 \textNachBox{Je nach Aufgabentyp wählt man in der Prüfung eine der folgenden Methoden:}
 
 \textVorBox{\textbf{Methode 1: Erste Koeffizienten gesucht} ($c_n$ bis z.\,B. $c_3$ oder $c_4$).\\
-Das \ZSFkeyword{direkte Ableiten} der DGL am Punkt $x=0$ ist am schnellsten:}
+Das \ZSFkeyword*{direkte Ableiten} der DGL am Punkt $x=0$ ist am schnellsten:}
 \begin{formulabox}
     $\displaystyle c_0 = y(0)$ \quad und \quad $\displaystyle c_1 = y'(0)$ \qquad (aus AWP oder DGL)\par
     \formulasep
@@ -315,8 +322,9 @@ Das \ZSFkeyword{direkte Ableiten} der DGL am Punkt $x=0$ ist am schnellsten:}
     $\displaystyle c_4 = \frac{y^{(4)}(0)}{24} \quad \implies \frac{d^2}{dx^2}[\text{DGL}] \text{ bilden \& } x=0 \text{ einsetzen}$
 \end{formulabox}
 
+\ZSFindex{Reihenansatz}
 \textVorBox{\textbf{Methode 2: Reihenansatz \& Koeffizientenvergleich}\\
-Ersetze die Terme in der DGL durch diesen \ZSFkeyword{ausgeschriebenen Spickzettel}:}
+Ersetze die Terme in der DGL durch diesen \ZSFkeyword*{ausgeschriebenen Spickzettel}:}
 \begin{formulabox}
     \footnotesize
     \thickmuskip=3mu

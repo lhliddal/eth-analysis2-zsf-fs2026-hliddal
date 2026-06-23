@@ -35,11 +35,14 @@
 \allowdisplaybreaks[4]
 
 \SubsectionBar*{Anhang 1 -- Integraltabelle}
+\ZSFindex{Integraltabelle}
 \begin{valuegridfive}
     & $\int_{0}^{\pi/4}$ & $\int_{0}^{\pi/2}$ & $\int_{0}^{\pi}$ & $\int_{0}^{2\pi}$ & $\int_{-\pi/2}^{\pi/2}$ \\
     $\sin x$ & $\frac{\sqrt{2}-1}{\sqrt{2}}$ & $1$ & $2$ & $0$ & $0$ \\
     $\sin^2x$ & $\frac{\pi-2}{8}$ & $\frac{\pi}{4}$ & $\frac{\pi}{2}$ & $\pi$ & $\frac{\pi}{2}$ \\
     $\sin^3x$ & $\frac{8-5\sqrt{2}}{12}$ & $\frac{2}{3}$ & $\frac{4}{3}$ & $0$ & $0$ \\
+    $\sin^4x$ & $\frac{3\pi-8}{32}$ & $\frac{3\pi}{16}$ & $\frac{3\pi}{8}$ & $\frac{3\pi}{4}$ & $\frac{3\pi}{8}$ \\
+    $\sin^5x$ & $\frac{64-43\sqrt{2}}{120}$ & $\frac{8}{15}$ & $\frac{16}{15}$ & $0$ & $0$ \\
     $\cos x$ & $\frac{\sqrt{2}}{2}$ & $1$ & $0$ & $0$ & $2$ \\
     $\cos^2x$ & $\frac{2+\pi}{8}$ & $\frac{\pi}{4}$ & $\frac{\pi}{2}$ & $\pi$ & $\frac{\pi}{2}$ \\
     $\cos^3x$ & $\frac{5}{6\sqrt{2}}$ & $\frac{2}{3}$ & $0$ & $0$ & $\frac{4}{3}$ \\
@@ -50,6 +53,7 @@
 \end{valuegridfive}
 
 \SubsectionBar*{Anhang 2 -- Integrale \ZSFScriptRef{72}}
+\ZSFindexsee{Stammfunktionen}{Integraltabelle}
 \begin{formulabox}[breakable]
     \[
     \int x^n\,dx = \frac{1}{n+1}x^{n+1}+C
@@ -171,7 +175,7 @@
     \]
 \end{formulabox}
 
-\begin{formulabox}[breakable]
+\begin{formulabox}[breakable, break at=-\baselineskip/0pt]
     \textVorFormel{Trigonometrische Funktionen}
     \[
     \int \sin(\textcolor{cyan}{a}x)\,dx = -\frac{1}{\textcolor{cyan}{a}}\cos(\textcolor{cyan}{a}x)+C
@@ -199,6 +203,12 @@
     \]
     \[
     \int \sin^n(x)\cos(x)\,dx = \frac{1}{n+1}\sin^{n+1}(x)+C
+    \]
+    \[
+    \int \sin^n(x)\,dx = -\frac{1}{n}\sin^{n-1}(x)\cos(x) + \frac{n-1}{n}\int \sin^{n-2}(x)\,dx
+    \]
+    \[
+    \int \cos^n(x)\,dx = \frac{1}{n}\cos^{n-1}(x)\sin(x) + \frac{n-1}{n}\int \cos^{n-2}(x)\,dx
     \]
     \[
     \int \frac{1}{\cos^2(x)}\,dx = \tan(x)+C
@@ -234,6 +244,7 @@
 \end{formulabox}
 
 \SubsectionBar*{Anhang 3: Reihen fuer $-1<x<1$ \ZSFScriptRef{79}}
+\ZSFindex{Taylorreihe}
 \begin{formulabox}[breakable]
     \[
     \frac{1}{1-x} = \ZSFsumAuto{k=0}{\infty}x^k = 1+x+x^2+x^3+\cdots
@@ -287,6 +298,9 @@
 \end{formulabox}
 
 \SubsectionBar*{Anhang 4.1: Mitternachtsformel}
+\ZSFindex{Mitternachtsformel}
+\ZSFindexsee{abc-Formel}{Mitternachtsformel}
+\ZSFindexsee{pq-Formel}{Mitternachtsformel}
 \begin{formulabox}[breakable]
     \[
     ax^2 + bx + c = 0 \quad \Rightarrow \quad x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
@@ -302,6 +316,9 @@
 \end{valuegridcustom}
 
 \SubsectionBar*{Hliddal's Anhang}
+\ZSFindex{Koordinaten-Umrechnung}
+\ZSFindex{Zylinderkoordinaten}
+\ZSFindex{Kugelkoordinaten}
 
 {\scriptsize
 \begin{fulltablebox}[Koordinaten-Umrechnung]{c | C !{\vrule width 1.1pt} C !{\vrule width 1.1pt} C}
@@ -323,6 +340,7 @@
 }
 
 {\scriptsize
+\ZSFindex{Volumen und Oberflaeche}
 \begin{fulltablebox}[Wichtige Volumen und Oberflaechen]{c | C | C}
     \TableTitle{Koerper} & \TableTitle{Volumen $V$} & \TableTitle{Oberflaeche $O$} \\
     \noalign{\hrule height 1.1pt}

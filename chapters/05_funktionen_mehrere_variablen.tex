@@ -32,6 +32,7 @@ Die \ZSFkeyword{Integrabilitätsbedingungen} besagen, dass für zwei stetige Fun
 \begin{formulabox}
     $\displaystyle \grad(f(x,y)) = \begin{pmatrix} f_x \\ f_y \end{pmatrix} = \nabla f(x,y)$
 \end{formulabox}
+\ZSFindexsee{Nabla-Operator}{Gradient}
 \textbf{Richtung:} Richtung der grössten Steigung. Steht senkrecht zur Niveaulinie und der Tangentialebene.
 
 \textbf{Betrag:} Stärke der Steigung
@@ -40,13 +41,14 @@ Die \ZSFkeyword{Integrabilitätsbedingungen} besagen, dass für zwei stetige Fun
 
 \paragraph*{Linearisierung \& Fehlerrechnung}
 \ZSFindex{Fehlerrechnung}
+\ZSFindex{Linearisierung}
 \textVorBox{Für eine Funktion in zwei Variablen kann eine \ZSFkeyword{Ersatzfunktion} bei $(x_0,y_0)$ aufgestellt werden:}
 \begin{formulabox}
     $\displaystyle t(x,y)=f(x_0,y_0)+f_x(x_0,y_0)(x-x_0)+f_y(x_0,y_0)(y-y_0)$
 \end{formulabox}
 wobei $f(x_0,y_0)$ der Stützpunkt ist.
 
-\textVorBox{Der durch die Linearisierung entstehende \ZSFkeyword{absolute Fehler} beträgt:}
+\textVorBox{Der durch die Linearisierung entstehende \ZSFkeyword[Fehler, absoluter@Fehler, absoluter]{absolute Fehler} beträgt:}
 \begin{formulabox}
     $\displaystyle \Delta f = f(x,y)-f(x_0,y_0) \approx f_x(x_0,y_0)(x-x_0)+f_y(x_0,y_0)(y-y_0)$
 \end{formulabox}
@@ -57,7 +59,7 @@ wobei $f(x_0,y_0)$ der Stützpunkt ist.
 \end{formulabox}
 \textNachBox{Es gilt $df \approx \Delta f$ für kleine $\Delta x$ und $\Delta y$.}
 
-\textVorBox{Die allgemeine Formel für den \ZSFkeyword{relativen Fehler} beträgt:}
+\textVorBox{Die allgemeine Formel für den \ZSFkeyword[Fehler, relativer@Fehler, relativer]{relativen Fehler} beträgt:}
 \begin{formulabox}
     $\displaystyle \left|\frac{\Delta f}{f(x_0,y_0)}\right|
     = \left|\frac{f_x(x_0,y_0)}{f(x_0,y_0)}(x-x_0)
@@ -87,6 +89,7 @@ Für \ZSFkeyword{Extremalstellen} in zwei Variablen gilt:
 \begin{statementbox}[Satz des Maximums]
 Für eine beschränkte Fläche $A\subseteq D(f)\subseteq\R^2$ mit einem Rand existiert mindestens je eine globale Minimal- und Maximalstelle.
 \end{statementbox}
+\ZSFindex{Satz des Maximums}
 
 \begin{procedure}[Vorgehen: Extremalstellen finden]
     \ProcStep{Definitionsgebiet}{Skizze des Bereichs zeichnen.}
@@ -129,11 +132,13 @@ Eine \ZSFkeyword{Niveaufläche} ist eine Fläche im $xyz$-Raum, deren Punkte den
 \end{formulabox}
 
 Die Integrabilitätsbedingungen in 3D besagen, dass für drei stetige Funktionen $\varphi$, $\psi$ und $\chi$ mit $\varphi_y=\psi_x$, $\varphi_z=\chi_x$ und $\psi_z=\chi_y$ eine Funktion $f(x,y,z)$ mit $f_x=\varphi$, $f_y=\psi$ und $f_z=\chi$ existiert.
+\ZSFindex{Integrabilitätsbedingungen}
 
 \textVorBox{Der Gradient für $f(x,y,z)$ berechnet sich mit:}
 \begin{formulabox}
     $\displaystyle \grad(f(x,y,z))=\begin{pmatrix} f_x \\ f_y \\ f_z \end{pmatrix}=\vec{\nabla}f(x,y,z)$
 \end{formulabox}
+\ZSFindex{Gradient}
 
 \paragraph*{Linearisierung \& Fehlerrechnung}
 \ZSFindex{Fehlerrechnung}
@@ -147,6 +152,7 @@ Die Integrabilitätsbedingungen in 3D besagen, dass für drei stetige Funktionen
 \textNachBox{Die Fehlerrechnung ist analog zu der in zwei Variablen.}
 
 \paragraph*{Tangentialebene}
+\ZSFindex{Tangentialebene}
 \textVorBox{Tangentialebenen können mit der \ZSFkeyword{Gradientenmethode} aufgestellt werden. Die Tangentialebene der impliziten Funktion $f(x,y,z)=c$ im Punkt $\vec r_0=(x_0,y_0,z_0)$ beträgt:}
 \begin{formulabox}
     $\displaystyle \grad(f(\vec r_0))(\vec r-\vec r_0)=0$
@@ -168,7 +174,7 @@ Die Integrabilitätsbedingungen in 3D besagen, dass für drei stetige Funktionen
 
 \SubsectionBar{Kettenregel}
 \ZSFindex{Kettenregel}
-\textVorBox{Die \ZSFkeyword{verallgemeinerte Kettenregel} für $F(t)=f(\vec r(t))$ wird verwendet, um die Richtungsableitung einer Funktion in mehreren Variablen zum Parameter $t$ zu berechnen:}
+\textVorBox{Die \ZSFkeyword*{verallgemeinerte Kettenregel} für $F(t)=f(\vec r(t))$ wird verwendet, um die Richtungsableitung einer Funktion in mehreren Variablen zum Parameter $t$ zu berechnen:}
 \begin{formulabox}
     $\displaystyle F'(t)=\ZSFmhlA{f_x(\vec r(t))}\ZSFmhlB{\dot x(t)}+\ZSFmhlA{f_y(\vec r(t))}\ZSFmhlB{\dot y(t)}+\ZSFmhlA{f_z(\vec r(t))}\ZSFmhlB{\dot z(t)}$
     $\displaystyle \qquad = \ZSFmhlA{\grad(f(\vec r(t)))}\,\ZSFmhlB{\dot{\vec r}(t)}$

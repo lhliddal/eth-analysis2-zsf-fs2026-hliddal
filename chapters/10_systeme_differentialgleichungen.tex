@@ -43,10 +43,11 @@ Wenn $f_1$ und $f_2$ in $x$ stetig und nach $y_1$ und $y_2$ stetig differenzierb
         v_2
     \end{pmatrix}$
 \end{formulabox}
+\ZSFindexsee{Phasendiagramm}{Phasenportrait}
 
 \SubsectionBar{Linear-autonome DGL mit konst. Koeffizienten}
 
-\textVorBox{Ein System der folgenden Form ist ein \ZSFkeyword{linear autonomes DGL-System mit konstanten Koeffizienten} der Ordnung 1:}
+\textVorBox{Ein System der folgenden Form ist ein \ZSFkeyword[DGL-System, linear autonomes@DGL-System, linear autonomes]{linear autonomes DGL-System mit konstanten Koeffizienten} der Ordnung 1:}
 \begin{formulabox}
     $\displaystyle
     \begin{cases}
@@ -90,12 +91,13 @@ Eigenvektor $\vec v = \ZSFmhlA{\vec u} \pm i \ZSFmhlB{\vec w}$ in Realteil $\ZSF
     $\displaystyle \vec x = C_1 e^{\lambda t} \ZSFmhlA{\vec v} + C_2 e^{\lambda t} (\ZSFmhlB{\vec h} + t \ZSFmhlA{\vec v})$
 \end{formulabox}
 
-\textVorBox{Bei einem \ZSFkeyword{inhomogenen} System $\dot{\vec x} = A\vec x + \vec b(t)$ wählt man einen vektoriellen Ansatz (Koeffizientenvergleich):}
+\textVorBox{Bei einem \ZSFkeyword[inhomogenes System@inhomogenes System]{inhomogenen} System $\dot{\vec x} = A\vec x + \vec b(t)$ wählt man einen vektoriellen Ansatz (Koeffizientenvergleich):}
 \begin{formulabox}
     \textbf{Konstantes Störglied} $\vec b$: \quad $\vec x_p = \vec c \implies A \vec c + \vec b = 0$\par
     \formulasep
     \textbf{Exp. Störglied} $\vec b \cdot e^{\mu t}$: \quad $\vec x_p = \vec c \cdot e^{\mu t} \implies (\mu I - A) \vec c = \vec b$
 \end{formulabox}
+\ZSFindex{Störglied}
 
 \textVorBox{Alternativ (als Notnagel) eignet sich das \ZSFkeyword{Eliminationsverfahren}:}
 \begin{procedure}
@@ -117,6 +119,7 @@ Eigenvektor $\vec v = \ZSFmhlA{\vec u} \pm i \ZSFmhlB{\vec w}$ in Realteil $\ZSF
     \end{cases}$
 \end{formulabox}
 \textNachBox{Dann ist $(c_1,c_2)$ ein \ZSFkeyword{Gleichgewichtspunkt} des DGL-Systems.}
+\ZSFindexsee{Ruhelage}{Gleichgewichtspunkt}
 
 \begin{propertylist}[Gleichgewichtspunkt finden]
     \item \textbf{DGL-System:} $x_1'=x_2'=0$ setzen und nach $x_1, x_2$ auflösen.
@@ -124,6 +127,7 @@ Eigenvektor $\vec v = \ZSFmhlA{\vec u} \pm i \ZSFmhlB{\vec w}$ in Realteil $\ZSF
 \end{propertylist}
 
 System umschreiben zu ${\dot{\vec x}=A\vec x}$. Eigenwerte $\lambda_i$ von $A$ \ZSFref{sec:eigenvalues} bestimmen Typ des Gleichgewichtspunkts:
+\ZSFindex[Stabilitat]{Stabilität}
 
 \begin{fulltablebox}{Z{0.85} | Z{1.15}}
     \ZSFrowColor
@@ -134,6 +138,8 @@ System umschreiben zu ${\dot{\vec x}=A\vec x}$. Eigenwerte $\lambda_i$ von $A$ \
 \end{fulltablebox}
 
 \SubsectionBar[sec:eigenvalues]{Eigenwerte \& Eigenvektoren}
+\ZSFindex{Eigenwert}
+\ZSFindex{Eigenvektor}
 
 \textVorBox{Die Berechnung von Eigenwerten $\lambda$ und Eigenvektoren $\vec v$ einer Matrix $A$ ist das Fundament zur Lösung von DGL-Systemen.}
 \begin{procedure}[Abkürzung für $2\times 2$-Matrizen]

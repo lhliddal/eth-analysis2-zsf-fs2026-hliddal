@@ -30,10 +30,11 @@ Die Ableitung einer geraden Funktion ist ungerade und umgekehrt.
 
 \SubsectionBar{Linearisieren \& Fehlerrechnung\ZSFScriptRef{64}}
 \ZSFindex{Fehlerrechnung}
+\ZSFindex{Linearisierung}
 
 Die Linearisierung ist ein Verfahren, um eine nichtlineare Funktion an einer Stelle $x_0$ durch eine lineare Funktion zu approximieren.
 
-\textVorBox{Die Formel der \ZSFkeyword{linearen Ersatzfunktion} lautet:}
+\textVorBox{Die Formel der \ZSFkeyword[Ersatzfunktion, lineare@Ersatzfunktion, lineare]{linearen Ersatzfunktion} lautet:}
 
 \begin{formulabox}
     $\displaystyle t(x) = f(x_0) + f'(x_0)(x - x_0)$
@@ -41,13 +42,15 @@ Die Linearisierung ist ein Verfahren, um eine nichtlineare Funktion an einer Ste
 
 \textNachBox{wobei $f(x_0)$ der Stützpunkt, $f'(x_0)$ die Steigung und $(x - x_0)$ der horizontale Abstand zu $x_0$ ist.}
 
-\textVorBox{Der \ZSFkeyword{absolute Fehler} durch die Linearisierung beträgt:}
+\textVorBox{Der \ZSFkeyword[Fehler, absoluter@Fehler, absoluter]{absolute Fehler} durch die Linearisierung beträgt:}
 
 \begin{formulabox}
     $\displaystyle \Delta f = f(x) - f(x_0) \approx f'(x_0)(x - x_0)$
 \end{formulabox}
 
 \SubsectionBar{Mittelwertsatz \& Satz von Rolle\ZSFScriptRef{64}}
+\ZSFindex{Mittelwertsatz}
+\ZSFindex{Satz von Rolle}
 
 \begin{statementbox}[Mittelwertsatz]
 Zwischen zwei Endpunkten einer Funktion existiert mindestens ein Punkt, in dem die Tangente parallel zur Geraden durch die Endpunkte verläuft.
@@ -104,11 +107,12 @@ Im Gegensatz zu Funktionen können \ZSFkeyword{Kurven} jeden möglichen Verlauf 
 
 $\Rightarrow$ Bei der Umrechnung von der Parameter- in die explizite Darstellung nach $t$ auflösen und gleichsetzen.
 
-\textVorBox{Kurven können in \ZSFkeyword{polaren Koordinaten} ($\cos(\varphi) \cdot \rho(\varphi),\, \sin(\varphi) \cdot \rho(\varphi)$) dargestellt werden:}
+\textVorBox{Kurven können in \ZSFkeyword*{polaren Koordinaten} ($\cos(\varphi) \cdot \rho(\varphi),\, \sin(\varphi) \cdot \rho(\varphi)$) dargestellt werden:}
 
 \begin{formulabox}
     $\displaystyle x(\varphi) = \rho(\varphi)\cos(\varphi), \quad y(\varphi) = \rho(\varphi)\sin(\varphi)$
 \end{formulabox}
+\ZSFindex{Polarkoordinaten}
 
 \textVorBox{wobei $\rho(\varphi)$ die Distanz zum Koordinatenursprung ist:}
 
@@ -118,6 +122,7 @@ $\Rightarrow$ Bei der Umrechnung von der Parameter- in die explizite Darstellung
 
 \SubsectionBar{Ebene Kurven (S.67,68,69)}
 
+\ZSFindex{Kreis}
 \begin{defbox}[Kreis (Radius $R$, Mittelpunkt $(x_0, y_0)$)]
 \begin{splitbox}[0.3]
     \includegraphics[width=\linewidth, keepaspectratio]{graphics/media/kreis_skizze.png}
@@ -135,6 +140,7 @@ $\Rightarrow$ Bei der Umrechnung von der Parameter- in die explizite Darstellung
 \end{splitbox}
 \end{defbox}
 
+\ZSFindex{Ellipse}
 \begin{defbox}[Ellipse (Mittelpunkt $(x_0, y_0)$ und Halbachsen $a, b$)]
 \begin{splitbox}[0.3]
     \includegraphics[width=\linewidth, keepaspectratio]{graphics/media/ellipse_skizze.png}
@@ -150,6 +156,7 @@ $\Rightarrow$ Bei der Umrechnung von der Parameter- in die explizite Darstellung
 \end{splitbox}
 \end{defbox}
 
+\ZSFindex{Hyperbel}
 \begin{defbox}[Hyperbel ($x$-Achsenabschnitt $a$)]
 \begin{splitbox}[0.3]
     \includegraphics[width=\linewidth, keepaspectratio]{graphics/media/hyperbel_skizze.png}
@@ -168,6 +175,7 @@ $\Rightarrow$ Bei der Umrechnung von der Parameter- in die explizite Darstellung
 \end{splitbox}
 \end{defbox}
 
+\ZSFindex{Bernoullispirale}
 \begin{defbox}[Bernoullispirale]
 \begin{splitbox}[0.3]
     \includegraphics[width=\linewidth, keepaspectratio]{graphics/media/bernoullispirale_skizze.png}
@@ -182,6 +190,7 @@ $\Rightarrow$ Bei der Umrechnung von der Parameter- in die explizite Darstellung
 \end{splitbox}
 \end{defbox}
 
+\ZSFindex{Zykloide}
 \begin{defbox}[Zykloide (Kreisradius $a$)]
 \begin{splitbox}[0.3]
     \includegraphics[width=\linewidth, keepaspectratio]{graphics/media/zykloide_skizze.png}
@@ -194,6 +203,7 @@ $\Rightarrow$ Bei der Umrechnung von der Parameter- in die explizite Darstellung
 \textNachBox{\textbf{Verlängerte}: $b > a$, \textbf{Verkürzte}: $b < a$}
 \end{defbox}
 
+\ZSFindex{Astroide}
 \begin{defbox}[Astroide (Äusserer Kreisradius $R$, innerer Kreisradius $r$)]
 \begin{splitbox}[0.3]
     \includegraphics[width=\linewidth, keepaspectratio]{graphics/media/astroide_skizze.png}
@@ -222,6 +232,7 @@ $\Rightarrow$ Bei der Umrechnung von der Parameter- in die explizite Darstellung
 \end{fulltablebox}
 
 \textNachBox{Für eine horizontale Tangente gilt $\dot{y}(t) = 0$. Für eine vertikale Tangente gilt $\dot{x}(t) = 0$.}
+\ZSFindex{Tangente}
 
 \textVorBox{\ZSFkeyword{Normale}: Steht orthogonal zur Tangente.}
 
@@ -284,3 +295,4 @@ $\Rightarrow$ Bei der Umrechnung von der Parameter- in die explizite Darstellung
     \tcblower
     \includegraphics[width=\linewidth, keepaspectratio]{graphics/media/kruemmungskreis_skizze.png}
 \end{splitbox}
+\ZSFindexsee{Neilsche Parabel}{Evolute}

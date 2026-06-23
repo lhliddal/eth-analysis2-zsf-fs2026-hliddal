@@ -2,6 +2,7 @@
 
 \SubsectionBar{Gebietsintegral}
 Beim \ZSFkeyword{Gebietsintegral} integriert man über zwei Variablen. Dadurch kann man sowohl Volumen als auch Flächen berechnen.
+\ZSFindexsee{Doppelintegral}{Gebietsintegral}
 
 \textVorBox{Mit Gebietsintegralen können Flächeninhalte bestimmt werden. Hier das Beispiel einer Fläche $B$:}
 \begin{formulabox}
@@ -28,6 +29,7 @@ Beim \ZSFkeyword{Gebietsintegral} integriert man über zwei Variablen. Dadurch k
     \textVorFormel{Massenschwerpunkte}
     $\displaystyle x_S\cdot m = \iint_B x\sigma(x,y)\,dA$
 \end{formulabox}
+\ZSFindex{Schwerpunkt}
 \begin{formulabox}
     \textVorFormel{Polares Flächenträgheitsmoment}
     $\displaystyle J_0 = \iint_B x^2 + y^2\,dA = \iint_B r^3\,dr\,d\varphi$
@@ -41,14 +43,16 @@ Beim \ZSFkeyword{Gebietsintegral} integriert man über zwei Variablen. Dadurch k
 
 wobei $\sigma(x,y)$ die \ZSFkeyword[Flächendichte@Flächendichte]{Flächendichte in $\left[kg/m^2\right]$} ist.
 
-\textVorBox{Beim \ZSFkeyword{Gebietsintegral in Polarkoordinaten} $(\rho\cos(\varphi),\rho\sin(\varphi))$ mit $\varphi \in [0,2\pi]$ muss die Integrationsvariable verändert werden:}
+\textVorBox{Beim \ZSFkeyword*{Gebietsintegral in Polarkoordinaten} $(\rho\cos(\varphi),\rho\sin(\varphi))$ mit $\varphi \in [0,2\pi]$ muss die Integrationsvariable verändert werden:}
 \begin{formulabox}
     $\displaystyle \iint_{\tilde B} \tilde f(\rho,\varphi)\,\rho\,d\varphi\,d\rho$
 \end{formulabox}
 \textNachBox{wobei $\tilde B$ die Integrationsgrenzen in Polarkoordinaten sind.}
+\ZSFindex{Polarkoordinaten}
 
 \SubsectionBar{Volumenintegral}
 \textVorBox{Bei einem \ZSFkeyword{Volumenintegral} wird über ein Volumen, also drei Variablen integriert. Das Ergebnis kann ein Volumen sein:}
+\ZSFindexsee{Dreifachintegral}{Volumenintegral}
 \begin{formulabox}
     $\displaystyle V = \iiint_B 1\,dV$
 \end{formulabox}
@@ -68,11 +72,12 @@ wobei $\sigma(x,y)$ die \ZSFkeyword[Flächendichte@Flächendichte]{Flächendicht
 
 \textNachBox{wobei $\rho(x,y,z)$ die \ZSFkeyword{Massendichte} ist.}
 
-\textVorBox{Bei einem \ZSFkeyword{Volumenintegral in Zylinderkoordinaten} $(r\cos(\varphi),r\sin(\varphi),z)$ mit $\varphi\in[0,2\pi]$, $r\in[0,R]$ und $z\in[0,h]$ muss die Integrationsvariable verändert werden:}
+\textVorBox{Bei einem \ZSFkeyword*{Volumenintegral in Zylinderkoordinaten} $(r\cos(\varphi),r\sin(\varphi),z)$ mit $\varphi\in[0,2\pi]$, $r\in[0,R]$ und $z\in[0,h]$ muss die Integrationsvariable verändert werden:}
 \begin{formulabox}
     $\displaystyle dA = r\,dr\,d\varphi,\qquad dV = r\,dr\,d\varphi\,dz,\qquad dO = R\,d\varphi\,dz$
 \end{formulabox}
 \textNachBox{wobei $\tilde B$ die Integrationsgrenzen in Zylinderkoordinaten sind.}
+\ZSFindex{Zylinderkoordinaten}
 
 \textVorBox{Dasselbe gilt für ein Volumenintegral in \ZSFkeyword{Kugelkoordinaten}
 $(r\sin(\vartheta)\cos(\varphi),r\sin(\vartheta)\sin(\varphi),r\cos(\vartheta))$
@@ -84,7 +89,9 @@ mit $\vartheta\in[0,\pi]$, $\varphi\in[0,2\pi]$ und $r\in[0,R]$:}
 \noindent\textit{Notation: }$\vartheta=\theta$, $\varphi=\phi$ und $\rho=\varrho$ bezeichnen jeweils dieselbe mathematische Grösse; hier werden die Varianten $\vartheta,\varphi,\rho$ verwendet.
 
 \SubsectionBar{Allgemeine Koordinatentransformation}
-Das Flächenelement $dF$ bei einer Koordinatentransformation ist abhängig von der Determinante der \ZSFkeyword{Jacobi-Matrix}, einem Art Verzerrungsfaktor.
+\ZSFindex{Koordinatentransformation}
+\ZSFindexsee{Substitution (mehrdimensional)}{Koordinatentransformation}
+Das \ZSFkeyword{Flächenelement} $dF$ bei einer Koordinatentransformation ist abhängig von der Determinante der \ZSFkeyword{Jacobi-Matrix}, einem Art Verzerrungsfaktor.
 
 \textVorBox{In 2D lautet die Jacobi-Matrix für die Transformation
 $\tilde r(u,v)=(x(u,v),y(u,v))$:}
@@ -112,10 +119,12 @@ $\tilde r(u,v,w)=(x(u,v,w),y(u,v,w),z(u,v,w))$:}
 \begin{formulabox}
     $\displaystyle dV=\left|\det(J)\right|\,du\,dv\,dw$
 \end{formulabox}
+\ZSFindex{Volumenelement}
 
 \textNachBox{Zudem müssen die Integrationsgrenzen angepasst werden. Die Umkehrung einer linearen Koordinatentransformation ist ebenfalls linear.}
 
 \SubsectionBarOnNewColumn{Integrale mit Parametern}
+\ZSFindex{Leibniz-Regel}
 \textVorBox{Sei $f:(x,t)\to f(x,t)$ differenzierbar und $f_x$ stetig, so gilt:}
 \begin{formulabox}
     $\displaystyle \frac{d}{dx}\int_a^b f(x,t)\,dt = \int_a^b f_x(x,t)\,dt$
