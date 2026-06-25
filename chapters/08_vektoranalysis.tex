@@ -163,6 +163,42 @@ Sei $K$ eine parametrisierte Raumkurve $\tilde r(u)=(x(u),y(u),z(u))$, so ist di
     $\displaystyle W=\int_{t_1}^{t_2}\vec v(\tilde r(t))\cdot\dot{\tilde r}(t)\,dt$
 \end{formulabox}
 
+\SubsectionBar{Konservative Vektorfelder, Potential}
+Ein Vektorfeld ist \ZSFkeyword{konservativ}, wenn die Arbeit aller möglichen Wege zwischen zwei Punkten gleich ist, unabhängig vom gewählten Weg.
+
+\begin{propertylist}[Charakterisierungen konservativer Felder]
+    \item Arbeit entlang aller geschlossenen Wege $\displaystyle \oint \vec v\,d\vec r=0$.
+    \item Vektorfeld ist ein \ZSFkeyword{Potentialfeld}.
+\end{propertylist}
+
+Ein \ZSFkeyword{Potentialfeld} ist ein Vektorfeld der Form $\vec v=\grad(f)$ mit Potential $f$.
+
+\begin{propertylist}[Eigenschaften von Potentialfeldern]
+    \item Für zwei Punkte $P,Q$: Arbeit $W=f(Q)-f(P)$.
+    \item Wirbelfrei: $\rot\,\vec v=\vec 0$.
+\end{propertylist}
+
+\begin{procedure}[Vorgehen: Potential $f$ bestimmen]
+    \ProcStep{Prüfung}{$\rot\,\vec v = \vec 0$ auf einfach zusammenhängendem $D(\vec v)$ prüfen.}
+    \ProcStep{1.\ Integration}{$f(x,y,z) = \int v_1 \dd x + C(y,z)$ ansetzen.}
+    \ProcStep{1.\ Abgleich}{$f_y \stackrel{!}{=} v_2 \implies C_y$ bestimmen und zu $C(y,z) = \int C_y \dd y + D(z)$ integrieren.}
+    \ProcStep{2.\ Abgleich}{$f_z \stackrel{!}{=} v_3 \implies D'(z)$ bestimmen und zu $D(z) = \int D'(z) \dd z + c$ integrieren.}
+\end{procedure}
+\ZSFindex{Potentialbestimmung}
+
+\ZSFdanger{Achtung:} Wirbelfreie Vektorfelder sind umgekehrt nur dann Potentialfelder, wenn $D(\vec v)$ \ZSFkeyword{einfach zusammenhängend} ist.
+
+\textVorBox{Eine Menge $M$ ist \ZSFkeyword{einfach zusammenhängend}, wenn sich alle Wege in $M$ auf einen Punkt zusammenziehen lassen, ohne dass $M$ verlassen werden muss:}
+\begin{fulltablebox}{Z{0.2} | Y{1.8}}
+    $\checkmark$ & $\R^2$, $\R^3$, $\R^3\setminus\{\text{Punkt}\}$, Kugeloberfläche, $\R^3\setminus\{\text{gefüllte Kugel}\}$, konvexer gefüllter Körper \\ \hline
+    \ZSFrowColor
+    $\times$ & $\R^3\setminus\{\text{Gerade}\}$, Torus, $\R^2\setminus\{\text{Punkt}\}$
+\end{fulltablebox}
+
+\textVorBox{\ZSFdanger{Achtung:} Für ein Potentialfeld gilt stets $\rot\,\vec v=\vec 0$. Umgekehrt folgt aus $\rot\,\vec v=\vec 0$ nur bei einfach zusammenhängendem $D(\vec v)$ wieder ein Potentialfeld.}
+\noindent\includegraphics[width=\linewidth,keepaspectratio]{graphics/media/potentialfeld_schema.png}
+
+\SubsectionBar{Satz von Stokes}
 \textVorBox{Der \ZSFkeyword{Satz von Stokes} besagt, dass für ein stetig differenzierbares Vektorfeld $\vec v$ und eine beschränkte Fläche $S$ mit Rand $\partial S$ gilt:}
 \begin{formulabox}
     $\displaystyle
@@ -182,30 +218,4 @@ Sei $K$ eine parametrisierte Raumkurve $\tilde r(u)=(x(u),y(u),z(u))$, so ist di
     \includegraphics[width=\linewidth,keepaspectratio]{graphics/media/stokes_skizze.png}
 \end{formulabox}
 
-\SubsectionBar{Konservative Vektorfelder}
-Ein Vektorfeld ist \ZSFkeyword{konservativ}, wenn die Arbeit aller möglichen Wege zwischen zwei Punkten gleich ist, unabhängig vom gewählten Weg.
-
-\begin{propertylist}[Charakterisierungen konservativer Felder]
-    \item Arbeit entlang aller geschlossenen Wege $\displaystyle \oint \vec v\,d\vec r=0$.
-    \item Vektorfeld ist ein \ZSFkeyword{Potentialfeld}.
-\end{propertylist}
-
-Ein \ZSFkeyword{Potentialfeld} ist ein Vektorfeld der Form $\vec v=\grad(f)$ mit Potential $f$.
-
-\begin{propertylist}[Eigenschaften von Potentialfeldern]
-    \item Für zwei Punkte $P,Q$: Arbeit $W=f(Q)-f(P)$.
-    \item Wirbelfrei: $\rot\,\vec v=\vec 0$.
-\end{propertylist}
-
-\ZSFdanger{Achtung:} Wirbelfreie Vektorfelder sind umgekehrt nur dann Potentialfelder, wenn $D(\vec v)$ \ZSFkeyword{einfach zusammenhängend} ist.
-
-\textVorBox{Eine Menge $M$ ist \ZSFkeyword{einfach zusammenhängend}, wenn sich alle Wege in $M$ auf einen Punkt zusammenziehen lassen, ohne dass $M$ verlassen werden muss:}
-\begin{fulltablebox}{Z{0.2} | Y{1.8}}
-    $\checkmark$ & $\R^2$, $\R^3$, $\R^3\setminus\{\text{Punkt}\}$, Kugeloberfläche, $\R^3\setminus\{\text{gefüllte Kugel}\}$, konvexer gefüllter Körper \\ \hline
-    \ZSFrowColor
-    $\times$ & $\R^3\setminus\{\text{Gerade}\}$, Torus, $\R^2\setminus\{\text{Punkt}\}$
-\end{fulltablebox}
-
-\textVorBox{\ZSFdanger{Achtung:} Für ein Potentialfeld gilt stets $\rot\,\vec v=\vec 0$. Umgekehrt folgt aus $\rot\,\vec v=\vec 0$ nur bei einfach zusammenhängendem $D(\vec v)$ wieder ein Potentialfeld.}
-\noindent\includegraphics[width=\linewidth,keepaspectratio]{graphics/media/potentialfeld_schema.png}
 
