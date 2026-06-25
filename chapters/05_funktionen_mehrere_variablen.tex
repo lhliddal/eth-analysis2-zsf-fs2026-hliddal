@@ -1,7 +1,6 @@
 \StartChapter{Funktionen -- Mehrere Variablen}
 
-\SubsectionBar{Funktionen in zwei Variablen}
-\paragraph*{Eigenschaften}
+\SubsectionBar{Differentialrechnung in 2D}
 
 Eine Funktion in zwei Variablen $f : (x,y) \to f(x,y)$ weist einem Punkt in $\R^2$ ein Skalar in $\R$ zu.
 \textVorBox{Folgend eine lineare Funktion:}
@@ -15,7 +14,7 @@ Eine \ZSFkeyword{Niveaulinie} ist eine Kurve in der $xy$-Ebene, deren Punkte den
     $\displaystyle y = f(x,C)$
 \end{formulabox}
 
-\paragraph*{Ableitung}
+\paragraph*{Partielle Ableitung \& Gradient}
 \textVorBox{$f(x,y)$ kann nach einer seiner Variablen abgeleitet werden; dies bezeichnet man als \ZSFkeyword{partielle Ableitung}:}
 \begin{formulabox}
     $\displaystyle f_x = \frac{\partial f}{\partial x} = \ZSFlimAuto{\Delta x \to 0}\frac{f(x+\Delta x, y)-f(x,y)}{\Delta x}$
@@ -39,7 +38,18 @@ Die \ZSFkeyword{Integrabilitätsbedingungen} besagen, dass für zwei stetige Fun
 
 \textbf{Nullvektor:} Wenn der Gradient an einem Punkt $(x,y)$ der Nullvektor ist, gibt es dort keine Richtung, in die $f$ zunimmt.
 
-\paragraph*{Linearisierung \& Fehlerrechnung}
+\paragraph*{Tangentialebene}
+\textVorBox{Eine \ZSFkeyword{Tangentialebene} kann durch Linearisierung hergeleitet werden. Wenn eine Fläche durch $f(x,y)=z$ explizit gegeben ist, ist die Tangentialebene in $(x_0,y_0,f(x_0,y_0))$:}
+\begin{formulabox}
+    $\displaystyle z = f(x_0,y_0) + f_x(x_0,y_0)(x-x_0) + f_y(x_0,y_0)(y-y_0)$
+\end{formulabox}
+
+\textVorBox{Die Tangentensteigung der Niveaulinien bei $(x_0,y_0)$ beträgt:}
+\begin{formulabox}
+    $\displaystyle \varphi' = -\frac{f_x(x_0,y_0)}{f_y(x_0,y_0)}$
+\end{formulabox}
+
+\SubsectionBar{Linearisierung \& Fehlerrechnung (2D \& 3D)}
 \ZSFindex{Fehlerrechnung}
 \ZSFindex{Linearisierung}
 \textVorBox{Für eine Funktion in zwei Variablen kann eine \ZSFkeyword{Ersatzfunktion} bei $(x_0,y_0)$ aufgestellt werden:}
@@ -79,7 +89,18 @@ wobei $f(x_0,y_0)$ der Stützpunkt ist.
 
 \textNachBox{Um die obere Grenze des relativen Fehlers zu erhalten, können die Maxima/Minima des Definitionsbereiches der Variablen in den relativen Fehler eingesetzt werden.}
 
-\paragraph*{Extremalstellen}
+\paragraph*{Erweiterung auf 3D}
+\ZSFindex{Fehlerrechnung}
+\textVorBox{Für eine Funktion in drei Variablen kann eine \ZSFkeyword{Ersatzfunktion} bei $(x_0,y_0,z_0)$ aufgestellt werden:}
+\begin{formulabox}
+    $\displaystyle t(x,y,z)=f(x_0,y_0,z_0)+f_x(x_0,y_0,z_0)(x-x_0)$
+    $\displaystyle \qquad\qquad\quad + f_y(x_0,y_0,z_0)(y-y_0)$
+    $\displaystyle \qquad\qquad\quad + f_z(x_0,y_0,z_0)(z-z_0)$
+    $\displaystyle \qquad\qquad = f(\vec r_0)+\grad(f(\vec r_0))(\vec r-\vec r_0)$
+\end{formulabox}
+\textNachBox{Die Fehlerrechnung ist analog zu der in zwei Variablen.}
+
+\SubsectionBar{Extremalstellen (2D)}
 Für \ZSFkeyword{Extremalstellen} in zwei Variablen gilt:
 \begin{itemize}
     \item \textbf{Globale Maximalstelle:} $f(x_0,y_0)\geq f(x,y)$
@@ -99,19 +120,8 @@ Für eine beschränkte Fläche $A\subseteq D(f)\subseteq\R^2$ mit einem Rand exi
     \ProcStep{Vergleich}{Funktionswerte aller Kandidaten berechnen und vergleichen.}
 \end{procedure}
 
-\paragraph*{Tangentialebene}
-\textVorBox{Eine \ZSFkeyword{Tangentialebene} kann durch Linearisierung hergeleitet werden. Wenn eine Fläche durch $f(x,y)=z$ explizit gegeben ist, ist die Tangentialebene in $(x_0,y_0,f(x_0,y_0))$:}
-\begin{formulabox}
-    $\displaystyle z = f(x_0,y_0) + f_x(x_0,y_0)(x-x_0) + f_y(x_0,y_0)(y-y_0)$
-\end{formulabox}
+\SubsectionBar{Differentialrechnung in 3D}
 
-\textVorBox{Die Tangentensteigung der Niveaulinien bei $(x_0,y_0)$ beträgt:}
-\begin{formulabox}
-    $\displaystyle \varphi' = -\frac{f_x(x_0,y_0)}{f_y(x_0,y_0)}$
-\end{formulabox}
-
-\SubsectionBar{Funktionen in drei Variablen}
-\paragraph*{Eigenschaften}
 Eine Funktion in drei Variablen $f:(x,y,z)\to f(x,y,z)$ weist einem Punkt in $\R^3$ ein Skalar in $\R$ zu.
 \textVorBox{Ihre lineare Funktion lautet:}
 \begin{formulabox}
@@ -120,7 +130,7 @@ Eine Funktion in drei Variablen $f:(x,y,z)\to f(x,y,z)$ weist einem Punkt in $\R
 
 Eine \ZSFkeyword{Niveaufläche} ist eine Fläche im $xyz$-Raum, deren Punkte den gleichen Funktionswert $C$ (Niveau) besitzen.
 
-\paragraph*{Ableitung}
+\paragraph*{Partielle Ableitung \& Gradient}
 \textVorBox{Die partiellen Ableitungen für $f(x,y,z)$ sind:}
 \begin{formulabox}
     $\displaystyle f_x=\frac{\partial f}{\partial x},\qquad f_y=\frac{\partial f}{\partial y},\qquad f_z=\frac{\partial f}{\partial z}$
@@ -140,18 +150,7 @@ Die Integrabilitätsbedingungen in 3D besagen, dass für drei stetige Funktionen
 \end{formulabox}
 \ZSFindex{Gradient}
 
-\paragraph*{Linearisierung \& Fehlerrechnung}
-\ZSFindex{Fehlerrechnung}
-\textVorBox{Für eine Funktion in drei Variablen kann eine \ZSFkeyword{Ersatzfunktion} bei $(x_0,y_0,z_0)$ aufgestellt werden:}
-\begin{formulabox}
-    $\displaystyle t(x,y,z)=f(x_0,y_0,z_0)+f_x(x_0,y_0,z_0)(x-x_0)$
-    $\displaystyle \qquad\qquad\quad + f_y(x_0,y_0,z_0)(y-y_0)$
-    $\displaystyle \qquad\qquad\quad + f_z(x_0,y_0,z_0)(z-z_0)$
-    $\displaystyle \qquad\qquad = f(\vec r_0)+\grad(f(\vec r_0))(\vec r-\vec r_0)$
-\end{formulabox}
-\textNachBox{Die Fehlerrechnung ist analog zu der in zwei Variablen.}
-
-\paragraph*{Tangentialebene}
+\paragraph*{Tangentialebene \& -fläche}
 \ZSFindex{Tangentialebene}
 \textVorBox{Tangentialebenen können mit der \ZSFkeyword{Gradientenmethode} aufgestellt werden. Die Tangentialebene der impliziten Funktion $f(x,y,z)=c$ im Punkt $\vec r_0=(x_0,y_0,z_0)$ beträgt:}
 \begin{formulabox}
@@ -165,14 +164,16 @@ Die Integrabilitätsbedingungen in 3D besagen, dass für drei stetige Funktionen
     $\displaystyle \vec\varphi(u,v)=\vec r(u)+v\,\vec r'(u)$
 \end{formulabox}
 
-\SubsectionBar{Richtungsableitung}
+\SubsectionBar{Richtungsableitung \& Kettenregel}
+
+\paragraph*{Richtungsableitung}
 \textVorBox{Die \ZSFkeyword{Richtungsableitung} $D_{\vec e}f(\vec r_0)$ von $f$ an der Stelle $\vec r_0$ in Richtung von $\vec e$ ist ein Skalar. Sie gibt an, wie sich die Funktionswerte an einer Stelle verändern, wenn man sich in Richtung von $\vec e$ bewegt:}
 \begin{formulabox}
     $\displaystyle D_{\vec e}f(\vec r_0)=\grad(f(\vec r_0))\cdot\vec e$
 \end{formulabox}
 \textNachBox{wobei $\vec e$ ein normierter Vektor ist. Die maximale Richtungsableitung tritt in Richtung des Gradienten auf.}
 
-\SubsectionBar{Kettenregel}
+\paragraph*{Kettenregel}
 \ZSFindex{Kettenregel}
 \textVorBox{Die \ZSFkeyword*{verallgemeinerte Kettenregel} für $F(t)=f(\vec r(t))$ wird verwendet, um die Richtungsableitung einer Funktion in mehreren Variablen zum Parameter $t$ zu berechnen:}
 \begin{formulabox}
