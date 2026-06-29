@@ -34,6 +34,17 @@
 \renewcommand{\longrightarrow}{\rightarrow}
 \renewcommand{\longleftarrow}{\leftarrow}
 
+% \neq: Schraegstrich sauber ueber das Relationszeichen zentrieren
+% (sansmath verschiebt das Standard-\neq).
+\makeatletter
+\newcommand{\ZSFsansmathneq}[2]{%
+  \vphantom{/#2}%
+  \ooalign{\hidewidth$\m@th#1\mathrel{/}$\hidewidth\cr$\m@th#1#2$}%
+}
+\DeclareRobustCommand{\neq}{\mathrel{\mathpalette\ZSFsansmathneq{=}}}
+\renewcommand{\ne}{\neq}
+\makeatother
+
 % --- Summen/Limes-Mode-System ---
 \newcommand{\ZSFsumMode}{auto}
 \newcommand{\SetZSFsumMode}[1]{\renewcommand{\ZSFsumMode}{#1}}
@@ -64,3 +75,10 @@
 \newcommand{\ZSFmhlB}[1]{{\color{MathHLSecondary}#1}}
 \newcommand{\ZSFmhlC}[1]{{\color{MathHLTarget}#1}}
 \newcommand{\ZSFmhlD}[1]{{\color{MathHLTertiary}#1}}
+
+% --- Term-Annotation mit geschweifter Klammer (Stilmittel) ---
+% Beschriftet einen Formelteil unter/ueber einer geschweiften Klammer.
+% Label via \text (aufrecht); Mathe im Label als $...$.
+%   \[ f(x) = \ZSFbraceunder{x^2}{Hauptterm} + \dots \]
+\newcommand{\ZSFbraceunder}[2]{\underbrace{#1}_{\text{#2}}}
+\newcommand{\ZSFbraceover}[2]{\overbrace{#1}^{\text{#2}}}

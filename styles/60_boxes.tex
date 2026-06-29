@@ -140,6 +140,11 @@
   after title={},
 }}
 
+% Rechtsbuendiges Meta-/Kategorie-Tag im Titelbalken einer Titelbox.
+% Im Titel-Argument verwenden, z.B.:
+%   \begin{defbox}[Satz von Fubini\ZSFTitleTag{Integration}] ... \end{defbox}
+\newcommand{\ZSFTitleTag}[1]{\hfill{\ZSFfontTitleTag #1}}
+
 % Gemeinsamer Basis-Stil fuer alle Panel-Boxen mit Titelbalken
 \tcbset{zsfpanelbox/.style={
   enhanced jigsaw,
