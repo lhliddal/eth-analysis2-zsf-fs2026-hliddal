@@ -1,0 +1,311 @@
+\ZSFNewColumn
+\StartChapter{Differentialrechnung}
+
+\SubsectionBar{Ableitungsregeln\ZSFScriptRef{63,65}}
+\ZSFindex{Differenzierbarkeit}
+\ZSFindex{Kettenregel}
+\ZSFindex{Potenzregel}
+\ZSFindex{Summenregel}
+\ZSFindex{Produktregel}
+\ZSFindex{Quotientenregel}
+\ZSFindex{Ableitung der Umkehrfunktion}
+
+\textVorBox{Die \ZSFkeyword{Ableitung} beschreibt die Änderungsrate einer Funktion.}
+
+\begin{tablebox}
+\begin{ZSFtable}[header=false]{Q{0.8} Z{1.2}}
+    Potenz: & $\displaystyle (x^n)' = nx^{n-1}$ \\
+    Addition: & $\displaystyle (f(x) + g(x))' = f'(x) + g'(x)$ \\
+    Multiplikation: & $\displaystyle (f(x)g(x))' = f'(x)g(x) + f(x)g'(x)$ \\
+    Faktor: & $\displaystyle (cf(x))' = cf'(x)$ \\
+    Division: & $\displaystyle \left(\frac{f(x)}{g(x)}\right)' = \frac{f'(x)g(x) - f(x)g'(x)}{g^2(x)}$ \\
+    Verkettung: & $\displaystyle (f(g(x)))' = f'(g(x))g'(x)$ \\
+    Inverse: & $\displaystyle \left(f^{-1}(x)\right)' = \frac{1}{f'\left(f^{-1}(x)\right)}$ \\
+\end{ZSFtable}
+\end{tablebox}
+
+Die Ableitung einer geraden Funktion ist ungerade und umgekehrt.
+
+\textVorBox{Sei $f$ eine gerade Funktion, so gilt für die ungeraden Ableitungen:}
+\begin{formulabox}
+    $\displaystyle f'(0) = f'''(0) = f'''''(0) = \dots = 0$
+\end{formulabox}
+
+\textNachBox{\ZSFdanger{Achtung:} Bei der Ableitung einer Wurzel den Faktor der Potenz sowie die innere Ableitung nicht vergessen.}
+
+\SubsectionBar{Linearisieren \& Fehlerrechnung\ZSFScriptRef{64}}
+\ZSFindex{Linearisierung}
+\ZSFindex{Fehlerrechnung}
+
+Die Linearisierung ist ein Verfahren, um eine nichtlineare Funktion an einer Stelle $x_0$ durch eine lineare Funktion zu approximieren.
+
+\textVorBox{Die Formel der \ZSFkeyword[lineare Ersatzfunktion@lineare Ersatzfunktion]{linearen Ersatzfunktion} lautet:}
+
+\begin{formulabox}
+    $\displaystyle t(x) = f(x_0) + f'(x_0)(x - x_0)$
+\end{formulabox}
+
+\textNachBox{wobei $f(x_0)$ der Stützpunkt, $f'(x_0)$ die Steigung und $(x - x_0)$ der horizontale Abstand zu $x_0$ ist.}
+
+\textVorBox{Der \ZSFkeyword[absoluter Fehler@absoluter Fehler]{absolute Fehler} durch die Linearisierung beträgt:}
+
+\begin{formulabox}
+    $\displaystyle \Delta f = f(x) - f(x_0) \approx f'(x_0)(x - x_0)$
+\end{formulabox}
+
+\SubsectionBar{Mittelwertsatz \& Satz von Rolle\ZSFScriptRef{64}}
+
+\begin{defbox}[Mittelwertsatz][weight=quiet]
+Zwischen zwei Endpunkten einer Funktion existiert mindestens ein Punkt, in dem die Tangente parallel zur Geraden durch die Endpunkte verläuft.
+\end{defbox}
+\ZSFindex{Mittelwertsatz}
+
+\begin{defbox}[Satz von Rolle][weight=quiet]
+Gilt $f(a)=f(b)$, so existiert dazwischen mindestens eine Stelle $x_0$ mit $f'(x_0)=0$.
+\end{defbox}
+\ZSFindex{Satz von Rolle}
+
+\SubsectionBar{Kurvendiskussion\ZSFScriptRef{65}}
+\ZSFindex{Wendepunkt}
+\ZSFindex{Lokales Minimum}
+\ZSFindex{Lokales Maximum}
+
+\textVorBox{Die \ZSFkeyword{Kurvendiskussion} dient dazu, eine Vorstellung von der Form einer Funktion zu erhalten:}
+
+\begin{tablebox}
+\begin{ZSFtable}[header=false]{Z{1} Z{1}}
+    \ZSFlabel{Positiv} & \ZSFlabel{Negativ} \\
+    $\displaystyle f(x) > 0 \; \forall x$ & $\displaystyle f(x) < 0 \; \forall x$ \\
+    \ZSFlabel{Monoton wachsend} & \ZSFlabel{Monoton fallend} \\
+    $\displaystyle f'(x) \ge 0 \; \forall x$ & $\displaystyle f'(x) \le 0 \; \forall x$ \\
+    \ZSFlabel{Konvex} («Tal/Loch») & \ZSFlabel{konkav} («Berg») \\
+    $\displaystyle f''(x_0) > 0$ & $\displaystyle f''(x_0) < 0$ \\
+\end{ZSFtable}
+\end{tablebox}
+
+\begin{tablebox}
+\begin{ZSFtable}[header=false]{Y{1} Y{1} Y{1}}
+    \ZSFlabel{Lokales Minimum} & \ZSFlabel{Lokales Maximum} & \ZSFlabel{Wendepunkt} \\
+    $\displaystyle f'(x_0) = 0$ \par $f''(x_0) > 0$ & $\displaystyle f'(x_0) = 0$ \par $f''(x_0) < 0$ & $\displaystyle f''(x_0) = 0$ \par $f'''(x_0) \neq 0$ \\
+\end{ZSFtable}
+\end{tablebox}
+
+\textNachBox{Wenn $f'(x) = f''(x) = \dots = f^{(n-1)}(x) = 0$ und $f^{(n)}(x) \neq 0$:\par
+\dots ist $x$ eine lokale Extremalstelle, wenn $n$ gerade ist.\\
+\dots ist $x$ ein Wendepunkt, wenn $n$ ungerade ist.}
+
+\ZSFNewColumn
+\SubsectionBar{Tangenten}
+\ZSFindex{Tangente}
+
+Die \ZSFkeyword{Tangente} $t(x)$ an eine Funktion $f(x)$ in einem Punkt $x_0$ ist die Gerade, die an diesem Punkt dieselbe Steigung wie die Funktion besitzt. Es gilt $t(x_0) = f(x_0)$ und $t'(x_0) = f'(x_0)$.\par
+Die Tangenten an $\cos(x)$ und $\sin(x)$ können nie eine Steigung besitzen, die im Betrag grösser ist als 1.
+
+\SubsectionBar{Kurven\ZSFScriptRef{67}}
+
+Im Gegensatz zu Funktionen können \ZSFkeyword{Kurven} jeden möglichen Verlauf annehmen. Sie können sich schneiden oder mehrmals denselben Wegabschnitt durchlaufen.\par
+\textVorBox{Bei der \ZSFkeyword{Parameterdarstellung} werden die Punkte einer Kurve als Funktion eines oder mehrerer Parameter durchlaufen:}
+
+\begin{formulabox}
+    $\displaystyle t \to \vec{r}(t) = (x(t), y(t))$
+\end{formulabox}
+
+\begin{ZSFlist}
+    \ZSFItem{implizit}{$F(x,y) = 0$, nicht nach einer der beiden Variablen aufgelöst.}
+    \ZSFItem{explizit}{$f(x)$, eine Variable steht allein auf einer Seite.}
+\end{ZSFlist}
+\ZSFindex{implizit}
+\ZSFindex{explizit}
+
+$\Rightarrow$ Bei der Umrechnung von der Parameter- in die explizite Darstellung nach $t$ auflösen und gleichsetzen.
+
+\textVorBox{Kurven können in \ZSFkeyword[Polarkoordinaten@Polarkoordinaten]{polaren Koordinaten} ($\cos(\varphi) \cdot \rho(\varphi),\, \sin(\varphi) \cdot \rho(\varphi)$) dargestellt werden \ZSFref{sec:hliddal_anhang}:}
+
+\begin{formulabox}
+    $\displaystyle x(\varphi) = \rho(\varphi)\cos(\varphi), \quad y(\varphi) = \rho(\varphi)\sin(\varphi)$
+\end{formulabox}
+
+\textVorBox{wobei $\rho(\varphi)$ die Distanz zum Koordinatenursprung ist:}
+
+\begin{formulabox}
+    $\displaystyle \rho(\varphi) = \sqrt{x(\varphi)^2 + y(\varphi)^2}, \quad \varphi = \arctan\left(\frac{y(\varphi)}{x(\varphi)}\right)$
+\end{formulabox}
+
+\SubsectionBar{Ebene Kurven (S.67,68,69)}
+\ZSFindex{Polarkoordinaten}
+
+\begin{defbox}[Kreis (Radius $R$, Mittelpunkt $(x_0, y_0)$)]
+\begin{splitbox}[split=0.3]
+    \ZSFimage{graphics/media/kreis_skizze.png}
+    \tcblower
+    \begin{formulabox}
+        \textVorBox{Parametrisiert mit $t \in [0,2\pi]$:}
+        $\vec{r}(t) = (x_0 + R\cos(t), y_0 + R\sin(t))$\par
+        \tcbline
+        \textVorBox{Implizit:}
+        $(x - x_0)^2 + (y - y_0)^2 = R^2$\par
+        \tcbline
+        \textVorBox{Explizit:}
+        $f(x) = y_0 \pm \sqrt{R^2 - (x - x_0)^2}$
+    \end{formulabox}
+\end{splitbox}
+\end{defbox}
+\ZSFindex{Kreis}
+
+\begin{defbox}[Ellipse (Mittelpunkt $(x_0, y_0)$ und Halbachsen $a, b$)]
+\begin{splitbox}[split=0.3]
+    \ZSFimage{graphics/media/ellipse_skizze.png}
+    \tcblower
+    \begin{formulabox}
+        \textVorBox{Parametrisiert mit $t \in [0,2\pi]$:}
+        $\vec{r}(t) = (x_0 + a\cos(t), y_0 + b\sin(t))$\par
+        \tcbline
+        \textVorBox{Implizit:}
+        $\frac{(x - x_0)^2}{a^2} + \frac{(y - y_0)^2}{b^2} = 1$
+    \end{formulabox}
+    \textNachBox{Normalenvektor $\sim \left(\frac{x - x_0}{a^2}, \frac{y - y_0}{b^2}\right)$; nur beim Kreis radial zum Mittelpunkt.}
+\end{splitbox}
+\end{defbox}
+\ZSFindex{Ellipse}
+
+\begin{defbox}[Hyperbel ($x$-Achsenabschnitt $a$)]
+\begin{splitbox}[split=0.3]
+    \ZSFimage{graphics/media/hyperbel_skizze.png}
+    \tcblower
+    \begin{formulabox}
+        \textVorBox{Parametrisiert mit $t \in [0,2\pi]$:}
+        $\vec{r}(t) = (\pm a\cosh(t), y_0 + b\sinh(t))$\par
+        \textNachBox{$y_0$ ist eine Verschiebung in $y$-Richtung.}\par
+        \tcbline
+        \textVorBox{Implizit:}
+        $\left(\frac{x}{a}\right)^2 - \left(\frac{y}{b}\right)^2 = 1$\par
+        \tcbline
+        \textVorBox{Explizit:}
+        $f(x) = \pm b\sqrt{\left(\frac{x}{a}\right)^2 - 1}$
+    \end{formulabox}
+\end{splitbox}
+\end{defbox}
+\ZSFindex{Hyperbel}
+
+\begin{defbox}[Bernoullispirale]
+\begin{splitbox}[split=0.3]
+    \ZSFimage{graphics/media/bernoullispirale_skizze.png}
+    \tcblower
+    \begin{formulabox}
+        \textVorBox{Parametrisiert mit $\varphi \in [0, \infty)$:}
+        $\vec{r}(\varphi) = C\left(\cos(\varphi)e^{k\varphi}, \sin(\varphi)e^{k\varphi}\right)$\par
+        \tcbline
+        $\rho(\varphi) = Ce^{k\varphi}$
+    \end{formulabox}
+    \textNachBox{Der Winkel $\theta$ zw. Ortsvektor \& Tangente ist konstant. Drehung von $\vec{r}$ um $\pi$: parallele Tangenten.}
+\end{splitbox}
+\end{defbox}
+\ZSFindex{Bernoullispirale}
+
+\begin{defbox}[Zykloide (Kreisradius $a$)]
+\begin{splitbox}[split=0.3]
+    \ZSFimage{graphics/media/zykloide_skizze.png}
+    \tcblower
+    \begin{formulabox}
+        \textVorBox{Parametrisiert mit $t \in [0, \infty)$:}
+        $\vec{r}(t) = (at - b\sin(t), a - b\cos(t))$
+    \end{formulabox}
+\end{splitbox}
+\textNachBox{\ZSFlabel{Verlängerte}: $b > a$, \ZSFlabel{Verkürzte}: $b < a$}
+\end{defbox}
+\ZSFindex{Zykloide}
+
+\begin{defbox}[Astroide (Äusserer Kreisradius $R$, innerer Kreisradius $r$)]
+\begin{splitbox}[split=0.3]
+    \ZSFimage{graphics/media/astroide_skizze.png}
+    \tcblower
+    \begin{formulabox}
+        \textVorBox{Parametrisiert mit $t \in [0,2\pi)$:}
+        $\vec{r}(t) = (x_0 + R\cos^3(t), y_0 + R\sin^3(t))$\par
+        \tcbline
+        \textVorBox{Explizit:}
+        $x^{\frac{2}{3}} + y^{\frac{2}{3}} = R^{\frac{2}{3}}$
+    \end{formulabox}
+\end{splitbox}
+\end{defbox}
+\ZSFindex{Astroide}
+
+
+\SubsectionBar{Eigenschaften Ebene Kurven\ZSFScriptRef{67}}
+
+\textVorBox{Der \ZSFkeyword{Richtungsvektor} einer parametrisierten Kurve $\vec{r}(t) = (x(t), y(t))$ besitzt folgende Eigenschaften:}
+
+\begin{tablebox}
+\begin{ZSFtable}[header=false]{Q{0.8} Z{1.2}}
+    Tangentensteigung: & $\displaystyle \frac{\dot{y}(t)}{\dot{x}(t)}$ \\
+    Tangentialvektor: & $\displaystyle \vec{t}(t) = \dot{\vec{r}}(t) = (\dot{x}(t), \dot{y}(t))$ \\
+    Tangente an Kurve: & $\displaystyle \vec{r}_T(s) = \vec{r}(t_0) + s\,\vec{t}(t_0)$ \\
+\end{ZSFtable}
+\end{tablebox}
+
+\textNachBox{Für eine horizontale Tangente gilt $\dot{y}(t) = 0$. Für eine vertikale Tangente gilt $\dot{x}(t) = 0$.}
+
+\textVorBox{\ZSFkeyword{Normale}: Steht orthogonal zur Tangente.}
+
+\begin{tablebox}
+\begin{ZSFtable}[header=false]{Q{0.65} Z{1.35}}
+    Linke Normale: & $\displaystyle \vec{n}_L(t) = (-\dot{y}(t), \dot{x}(t))$ \\
+    Rechte Normale: & $\displaystyle \vec{n}_R(t) = (\dot{y}(t), -\dot{x}(t))$ \\
+    Normalengerade: & $\displaystyle \vec{r}_N(s) = \vec{r}(t_0) + s\,\vec{n}_{L/R}(t_0)$ \\
+    normiert: & $\displaystyle \hat{n}_L(t) = \frac{(-\dot{y}(t), \dot{x}(t))}{\sqrt{\dot{x}(t)^2 + \dot{y}(t)^2}},\quad \hat n_R=-\hat n_L$ \\
+\end{ZSFtable}
+\end{tablebox}
+\textNachBox{Bei einer gegen den Uhrzeigersinn durchlaufenen geschlossenen Kurve zeigt die rechte Normale nach aussen.}
+
+\textVorBox{\ZSFkeyword{Bogenlänge}:}
+\begin{formulabox}
+    $\displaystyle s(t_1, t_2) = \int_{t_1}^{t_2} \sqrt{\dot{x}(t)^2 + \dot{y}(t)^2}\,dt$
+\end{formulabox}
+
+\textVorBox{\ZSFkeyword{Krümmung}:}
+\begin{formulabox}
+    \ZSFlabel{Parametrisiert:}\quad $\displaystyle \kappa(t) = \frac{\dot{x}\ddot{y} - \ddot{x}\dot{y}}{(\dot{x}^2 + \dot{y}^2)^{3/2}}$\par
+    \ZSFsep
+    \ZSFlabel{Explizit:}\quad $\displaystyle \kappa(x) = \frac{f''(x)}{(1 + f'(x)^2)^{3/2}}$\par
+    \ZSFsep
+    \ZSFlabel{Polarkoordinaten:}\quad $\displaystyle \kappa(\varphi) = \frac{\rho^2 + 2\dot{\rho}^2 - \rho\ddot{\rho}}{(\rho^2 + \dot{\rho}^2)^{3/2}}$\par
+\end{formulabox}
+
+\begin{ZSFlist}
+    \ZSFItem{Negative Krümmung (konkav) bei einer Rechtskurve, positive Krümmung (konvex) bei einer Linkskurve}
+    \ZSFItem{Je enger die Kurve, desto grösser die Krümmung}
+\end{ZSFlist}
+
+\textVorBox{\ZSFkeyword{Krümmungskreis}: Kreis, der die Krümmung einer ebenen Kurve in einem Punkt beschreibt. Sein Radius, der \ZSFkeyword{Krümmungsradius}, ist der Kehrwert der Krümmung:}
+\begin{formulabox}
+    \ZSFformulaline{R = \frac{1}{|\kappa|}}{Krümmungsradius}
+\end{formulabox}
+
+\textVorBox{\ZSFkeyword{Krümmungskreismittelpunkte}:}
+\begin{formulabox}
+    \[\begin{aligned}
+        x_M &= x - \frac{\dot{y}(\dot{x}^2 + \dot{y}^2)}{\dot{x}\ddot{y} - \ddot{x}\dot{y}} \\
+        y_M &= y + \frac{\dot{x}(\dot{x}^2 + \dot{y}^2)}{\dot{x}\ddot{y} - \ddot{x}\dot{y}}
+    \end{aligned}\]
+\end{formulabox}
+
+\textVorBox{Die \ZSFkeyword{Evolute} einer Kurve ist die Ortskurve aller Krümmungskreismittelpunkte:}
+\begin{formulabox}
+    \[\begin{aligned}
+        \vec{E}(t) &= \vec{r}(t) + \rho(t) \cdot \vec{m}(t) \\
+        &= \Bigl( x - \frac{1}{\kappa(t)} \cdot \frac{\dot{y}(t)}{\sqrt{\dot{x}(t)^2 + \dot{y}(t)^2}}, \\
+        &\hphantom{{}={}\Bigl(\;} y + \frac{1}{\kappa(t)} \cdot \frac{\dot{x}(t)}{\sqrt{\dot{x}(t)^2 + \dot{y}(t)^2}} \Bigr)
+    \end{aligned}\]
+\end{formulabox}
+
+\begin{splitbox}[split=0.6]
+    \begin{ZSFlist}
+        \ZSFItem{Evolute eines Kreises: Punkt}
+        \ZSFItem{Evolute einer Astroide: Astroide}
+        \ZSFItem{Evolute einer Ellipse: Astroide}
+        \ZSFItem{Evolute einer Parabel: Form einer\par Möwe (Neilsche Parabel)}
+    \end{ZSFlist}
+    \tcblower
+    \ZSFimage{graphics/media/curvature_circle_sketch.png}
+\end{splitbox}
+\ZSFindexsee{Neilsche Parabel}{Evolute}

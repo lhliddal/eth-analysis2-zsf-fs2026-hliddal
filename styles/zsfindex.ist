@@ -1,0 +1,16 @@
+% zsfindex.ist — Index-Style für das Stichwortverzeichnis (upmendex)
+% "Seitenzahlen" sind Abschnittsnummern (6.2): page_compositor "." laesst
+% den Prozessor sie als zusammengesetzte Nummern parsen und sortieren.
+% icu_locale: deutsche Sortierung nach DIN 5007-1 (ä wie a, ß wie ss) —
+% ersetzt die frueheren Pflicht-Sortkeys; [sort@Anzeige] bleibt als Override.
+icu_locale "de"
+page_compositor "."
+headings_flag 1
+heading_prefix "\\ZSFIndexLetter{"
+heading_suffix "}"
+symhead_positive "Symbole"
+numhead_positive "Zahlen"
+delim_0 "\\enspace\\ZSFIndexLocatorListStart "
+delim_1 "\\enspace "
+delim_n "\\ZSFIndexLocatorListMultiple, "
+delim_t "\\ZSFIndexLocatorListFinish"

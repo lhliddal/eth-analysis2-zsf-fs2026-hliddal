@@ -1,0 +1,109 @@
+% ============================================================
+% 11_math_advanced.tex — OPTIONALES Math-Erweiterungsmodul
+% ============================================================
+% Opt-in: in preamble.tex einkommentieren für mathe-lastige
+% Fächer (LinAlg, Analysis). Baut auf 10_math.tex auf und
+% ergänzt nur das Delta — keine Basis-Makros duplizieren.
+%
+% Voraussetzungen (aus 00_packages.tex):
+%   - mathtools, unicode-math   (Operatoren, Symbole)
+%   - tikz                      (drawbrace / tikzmark / annote)
+% ============================================================
+
+% --- Lineare-Algebra-Operatoren ---
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\rang}{rang}
+\DeclareMathOperator{\Spur}{Spur}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\spanop}{span}
+\DeclareMathOperator{\eig}{eig}
+\DeclareMathOperator{\algVfh}{algVfh}
+\DeclareMathOperator{\gVfh}{gVfh}
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\sig}{sig}
+\DeclareMathOperator{\Adj}{Adj}
+
+% --- Analysis-Operatoren (Abweichung dieses Forks) ---
+% Grad(p) ist der Polynomgrad und bewusst gross geschrieben — \grad aus
+% 10_math ist der Gradient und eine andere Sache.
+% Die Areafunktionen sind die Umkehrungen der Hyperbelfunktionen; TeX bringt
+% dafuer nichts mit, und \operatorname im Kapitel meldet der Linter zu Recht:
+% Ein Operator, der mehrfach vorkommt, gehoert einmal hierher.
+\DeclareMathOperator{\Grad}{Grad}
+\DeclareMathOperator{\Arsinh}{Arsinh}
+\DeclareMathOperator{\Arcosh}{Arcosh}
+\DeclareMathOperator{\Artanh}{Artanh}
+
+% --- Phasenportraet / GGWP Semantik-Typen (Ink-konform) ---
+\newcommand{\ZSFggwpKnoten}[1][Knoten]{\ZSFInk{ChapterColor9}{\textbf{#1}}}
+\newcommand{\ZSFggwpSattel}[1][Sattel]{\ZSFInk{ChapterColor14}{\textbf{#1}}}
+\newcommand{\ZSFggwpStrudel}[1][Strudel]{\ZSFInk{ChapterColor4}{\textbf{#1}}}
+\newcommand{\ZSFggwpZentrum}[1][Zentrum]{\textbf{#1}}
+
+% --- Gotisches Im/Re -> moderne aufrechte Operatoren ---
+% AtBeginDocument, weil unicode-math seine Symbole ebenfalls erst dort
+% definiert — eine Praeambel-Renewcommand wuerde still ueberschrieben.
+\AtBeginDocument{%
+  \let\oldIm\Im
+  \renewcommand{\Im}{\operatorname{Im}}%
+  \let\oldRe\Re
+  \renewcommand{\Re}{\operatorname{Re}}%
+}
+
+% --- TikZ-Klammern für Matrix-Annotationen ---
+\usetikzlibrary{decorations.pathreplacing,calc}
+% Das optionale Argument sind KNOTEN-OPTIONEN (z.B. xshift), keine Länge. Der
+% Default ist deshalb leer: Ein Mass an dieser Stelle liest pgf als
+% Pfeilspezifikation und bricht ab ("Unknown arrow tip kind"). Der vertikale
+% Versatz der Klammer hängt ohnehin an den Koordinaten, siehe unten.
+\newcommand{\tikzmark}[2][]{\tikz[remember picture, overlay, baseline=-0.5ex]\node[#1](#2){};}
+% Die Marker von \tikzmark sitzen auf der GRUNDLINIE des Terms. Ohne Versatz
+% liegt die Klammer-Sehne genau dort und läuft als waagrechte Linie mitten
+% durch die Formel. Der Versatz muss an den Koordinaten hängen, nicht als
+% yshift an der Pfadoption: Knoten aus einem anderen Bild (remember picture)
+% werden absolut aufgelöst und ignorieren die Pfad-Transformation.
+%
+% Richtung und Dekoration gehören zusammen, deshalb setzt jeder Stil beides.
+% \ZSF@braceSign trägt das Vorzeichen zur Koordinate — die Optionen werden vor
+% den Koordinaten ausgewertet, der Wert steht also rechtzeitig.
+\makeatletter
+\newcommand{\ZSF@braceSign}{-}
+\tikzset{
+  brace/.style={decorate, decoration={brace},
+                /utils/exec=\renewcommand{\ZSF@braceSign}{}},
+  brace mirrored/.style={decorate, decoration={brace,mirror},
+                /utils/exec=\renewcommand{\ZSF@braceSign}{-}},
+}
+\newcounter{brace}
+\setcounter{brace}{0}
+% \drawbrace[stil]{marke links}{marke rechts}
+%   brace           — Klammer ÜBER dem Term (Default)
+%   brace mirrored  — Klammer UNTER dem Term
+\newcommand{\drawbrace}[3][brace]{%
+  \refstepcounter{brace}%
+  \tikz[remember picture, overlay]\draw[#1]
+    ([yshift=\ZSF@braceSign\ZSFbraceDrop]#2.center)--%
+    ([yshift=\ZSF@braceSign\ZSFbraceDrop]#3.center)%
+    node[pos=0.5, name=brace-\thebrace]{};%
+}
+\makeatother
+\newcommand{\annote}[3][]{%
+  \tikz[remember picture, overlay]\node[#1] at (#2) {#3};%
+}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSFbraceRoom}{\vspace{\dimexpr\ZSFbraceDrop+\ZSFspaceM\relax}}
+
+% --- Asterisk-Definitionen (mathabx-Namen auf Standard-Symbole) ---
+\newcommand{\asterisk}{\ast}
+\newcommand{\oasterisk}{\circledast}

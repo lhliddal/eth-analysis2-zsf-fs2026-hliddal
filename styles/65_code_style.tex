@@ -1,0 +1,188 @@
+% ============================================================
+% 65_code_style.tex — OPTIONALES Code-Listing-Modul (CodeExpert)
+% ============================================================
+% Opt-in: in preamble.tex einkommentieren für code-lastige
+% Fächer (Informatik). Das Modul lädt seine optionale Abhängigkeit
+% listings samt tcolorbox-Listings-Library selbst.
+% Farben (ce_*, code_*) aus 40_colors_structure.tex,
+% Längen (\ZSFcode*) aus 30_layout_spacing.tex,
+% Box-Grundvertrag (zsftitlebox) und Regler aus 60_boxes.tex.
+%
+% Stellt bereit:
+%   - lstlisting-Style "CodeExpert" (dunkler Code-Block)
+%   - codebox[Titel][Optionen]  — Container für Code-Snippets; ohne
+%                                 vertikale Polsterung, weil lstlisting
+%                                 eigene Skips mitbringt
+%   - Regler `part`             — whole (Default) | first | mid | last:
+%                                 mehrteilige Code-Gruppen mit offenen
+%                                 Kanten, zwischen denen die Spalte
+%                                 umbrechen darf
+% ============================================================
+
+\RequirePackage{listings}
+\tcbuselibrary{listings}
+
+% -------------------------
+% CodeExpert Listings Style
+% -------------------------
+% Was NICHT zum Stil gehört: Satzmechanik, die für jedes Listing gilt.
+% Alles, was CodeExpert unten ohnehin setzt, stand hier ein zweites Mal —
+% andere Rahmenart, andere Skips — und welcher Wert galt, hing daran, ob der
+% Autor den Stil angefordert hatte.
+\lstset{
+    columns=flexible,
+    tabsize=2,
+}
+
+\lstdefinestyle{CodeExpert}{
+    language=Python,
+    basicstyle=\ttfamily\linespread{\ZSFcodeLeadingFactor}\color{code_fg},
+    numbers=none,
+    aboveskip=\ZSFspaceM,
+    belowskip=\ZSFspaceM,
+    frame=single,
+    rulecolor=\color{code_rule},
+    framerule=\ZSFcodeFrameRule,
+    framexleftmargin=\ZSFcodeXMargin,
+    framexrightmargin=\ZSFcodeXMargin,
+    framextopmargin=\ZSFspaceM,
+    framexbottommargin=\ZSFspaceM,
+    xleftmargin=\ZSFcodeXMargin,
+    xrightmargin=\ZSFcodeXMargin,
+    backgroundcolor=\color{code_bg},
+    keywordstyle=\bfseries\color{ce_pink},
+    commentstyle=\color{ce_green},
+    stringstyle=\color{ce_yellow},
+    identifierstyle=\color{code_fg},
+    showstringspaces=false,
+    breaklines=true,
+    breakatwhitespace=true,
+    literate={->}{{$\rightarrow$}}2 {ü}{{\"u}}1 {ä}{{\"a}}1 {ö}{{\"o}}1 {Ü}{{\"U}}1 {Ä}{{\"A}}1 {Ö}{{\"O}}1 {—}{{---}}1 {−}{{-}}1 {„}{{\glqq}}1 {“}{{\grqq}}1 {”}{{''}}1 {’}{{'}}1 {–}{{--}}1 {→}{{$\rightarrow$}}1
+}
+
+%
+%
+%
+%
+%
+%
+%
+\lstset{style=CodeExpert}
+
+% ------------------------------------------------------------
+% codebox — Container für Code-Snippets (optional mit Titel)
+%   Identisches Erscheinungsbild wie die Titelboxen (zsftitlebox),
+%   aber weisser Hintergrund und zero top/bottom padding, da
+%   lstlisting eigene above/belowskips mitbringt.
+% ------------------------------------------------------------
+\tcbset{preset/code/.style={
+  zsftitlebox,
+  ZSF@surface=plain,
+  pady=none,
+}}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\tcbset{zsf@codebox@split@base/.style={
+  zsfboxcontract,
+  unbreakable,
+  bodyparskip=inherit,
+  ZSF@surface=plain,
+  leftrule=\ZSFboxRuleWidth, rightrule=\ZSFboxRuleWidth,
+  toprule=0pt, bottomrule=0pt,
+  arc=0pt, outer arc=0pt,
+  boxsep=0pt,
+  padx=normal, pady=none,
+  % Der Vorabstand wird über das REGISTER genullt, nicht über `before skip`.
+  % Letzteres ist in tcolorbox ein Stil, der `before` schreibt, und überschriebe
+  % damit den Eintritts-Hook aus zsfbox (\ZSF@blockBefore): Der Abstand käme an,
+  % die Balken-Merker und das \par gingen verloren. Über /utils/exec gilt der
+  % Wert nur für diese Box — nachgemessen, der Hook bleibt.
+  /utils/exec={\renewcommand{\ZSFBoxBeforeSkip}{0pt}},
+  after skip=\ZSFspaceXS,
+}}
+% Die vier Kantenformen als Auswahl-Schlüssel. 'whole' ist der Default und
+% liefert die geschlossene Box; die drei anderen öffnen je eine Kante.
+%
+% `part` wählt wie `weight` keinen WERT, sondern einen BASISSTIL — und ein
+% Basisstil bringt Vorbelegungen mit (`padx=normal`, `pady=none`, Skips).
+% Stünde er wie die übrigen Regler in der Aufrufer-Liste, liefen diese
+% Vorbelegungen nach den Wahlen des Aufrufers und überschrieben sie:
+% `[padx=bar, part=first]` verlor den Innenabstand, `[part=first, padx=bar]`
+% behielt ihn — stumm, weil beide Werte für sich gültig sind. Deshalb liest
+% die Umgebung die Wahl unten im Vor-Lauf und setzt die fertige Basis VOR die
+% Aufrufer-Optionen, genau wie `ZSF@weightBase` in styles/60_boxes.tex.
+\tcbset{
+  ZSF@partBase/.is choice,
+  ZSF@partBase/whole/.style={preset/code},
+  ZSF@partBase/first/.style={
+    zsf@codebox@split@base,
+    toprule=\ZSFboxRuleWidth,
+    arc=\ZSFboxInnerArc, outer arc=\ZSFboxArc,
+    sharp corners=south,
+    % KEIN `before skip` hier. Es ist in tcolorbox ein Stil, der `before`
+    % schreibt, und ueberschriebe damit den Eintritts-Hook aus zsfbox
+    % (\ZSF@blockBefore) — der Abstand kaeme an, die Balken-Merker gingen
+    % verloren. Der Abstand kommt ohnehin von dort, aus demselben Register.
+    zsftitlebar,
+  },
+  ZSF@partBase/mid/.style={zsf@codebox@split@base},
+  ZSF@partBase/last/.style={
+    zsf@codebox@split@base,
+    bottomrule=\ZSFboxRuleWidth,
+    arc=\ZSFboxInnerArc, outer arc=\ZSFboxArc,
+    sharp corners=north,
+    after skip=\ZSFspaceS,
+  },
+  % Der öffentliche Schlüssel bleibt als No-op bestehen: Er steht weiterhin in
+  % der Aufrufer-Liste, wo tcolorbox ihn sonst als unbekannt meldete. Gelesen
+  % wurde er zu diesem Zeitpunkt längst.
+  part/.is choice,
+  part/whole/.code={},
+  part/first/.code={},
+  part/mid/.code={},
+  part/last/.code={},
+}
+\makeatletter
+\newcommand{\ZSF@codeBase}{ZSF@partBase=whole}
+\pgfkeys{
+  /zsf/codepart/.is family, /zsf/codepart,
+  part/.code={\renewcommand{\ZSF@codeBase}{ZSF@partBase=#1}},
+  .unknown/.code={},% chktex 26
+}
+% Öffnet die Box mit EXPANDIERTER Basis — ohne den Umweg landete der Makroname
+% selbst in der Optionsliste (dasselbe Muster wie \ZSF@figOpen in 60_boxes).
+\newcommand{\ZSF@codeOpen}[3]{\begin{ZSF@box}{#1}{#2}{#3}} % chktex 9
+\NewDocumentEnvironment{codebox}{O{} O{}}
+  {\renewcommand{\ZSF@codeBase}{ZSF@partBase=whole}%
+   \renewcommand{\ZSF@boxOwnKnobs}{,part,}%
+   \pgfkeys{/zsf/codepart, #2}%
+   \expandafter\ZSF@codeOpen\expandafter{\ZSF@codeBase}{#1}{#2}}
+  {\end{ZSF@box}} % chktex 9
+\makeatother

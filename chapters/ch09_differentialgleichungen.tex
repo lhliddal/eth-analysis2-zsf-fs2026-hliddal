@@ -1,0 +1,435 @@
+\StartChapter{Differentialgleichungen (S.81,82,142)}
+
+\SubsectionBar{Eigenschaften}
+\textVorBox{Eine \ZSFkeyword{Differentialgleichung} enthält Funktionen und deren Ableitungen.
+Eine \ZSFkeyword[gewohnliche Differentialgleichung@gewöhnliche Differentialgleichung]{gewöhnliche Differentialgleichung (DGL)} hängt nur von einer Variablen (z.B. $x$) ab und ist von der Form:}
+\ZSFindexsee{DGL}{gewöhnliche Differentialgleichung}
+\begin{formulabox}
+    $\displaystyle F\!\left(x,y(x),y'(x),y''(x),\ldots,y^{(n)}(x)\right)=0$
+\end{formulabox}
+\textNachBox{wobei $C$ eine Konstante und $y$ eine Funktion in $x$ ist. Die höchste Ableitung gibt die \ZSFkeyword{Ordnung der DGL} an.}
+
+Die Menge der Lösungen einer solchen Gleichung wird als die \ZSFkeyword{allgemeine Lösung} der DGL bezeichnet. Sie bildet eine Schar von Funktionen mit einem \ZSFkeyword{Scharparameter} $C$.
+
+Bei einer bekannten Bedingung $y(x_0)=y_0$, man spricht von einem \ZSFkeyword{Anfangswertproblem (AWP)}, kann der Scharparameter $C$ bestimmt werden. Die zugehörige Lösung der DGL wird als \ZSFkeyword{spezielle Lösung} bezeichnet.
+\ZSFindexsee{AWP}{Anfangswertproblem (AWP)}
+
+\SubsectionBar{Differentialgleichungen 1. Ordnung}
+\ZSFindex{Variablentrennung}
+\begin{defbox}[Existenzsatz][weight=quiet]
+Sei $f(x,y)$ stetig und nach $y$ partiell stetig differenzierbar. Dann existiert für jeden Punkt $(x_0,y_0)$ genau eine Funktion $y(x)$ mit $y'=f(x,y)$ und $y(x_0)=y_0$.
+
+Graphisch: Die Graphen verschiedener Anfangswertprobleme sind entweder identisch oder kreuzen sich nicht.
+\end{defbox}
+\ZSFindex{Existenz- und Eindeutigkeitssatz}
+
+\ZSFdanger{Achtung:} Ist $f(x,y)$ \ZSFlabel{nicht} nach $y$ partiell stetig differenzierbar, können zwei Funktionen $y(x)$ existieren, die $y'=f(x,y)$ erfüllen.
+\textVorBox{Eine DGL 1. Ordnung ist \ZSFkeyword{separierbar}, wenn sie in die folgende Form überführt werden kann:}
+\begin{formulabox}
+    \ZSFformulaline{y' = f(x,y) = \frac{g(x)}{h(y)}}{separierbar}
+\end{formulabox}
+
+Einige DGLs lassen sich nur durch Substitution separieren.
+\begin{ZSFlist}[Substitution zur Separierung][ordered]
+    \ZSFItem{Substitution ansetzen}{Wähle $u(x,y)$ und stelle nach $y$ um.}
+    \ZSFItem{Ableiten}{Den umgestellten Term nach $x$ ableiten (kann zu einem $u'$-Term führen) und $y'$ mit dem ursprünglichen Term gleichsetzen.}
+    \ZSFItem{DGL in $u$ lösen}{Die entstandene DGL 1.\ Ordnung enthält $u'$ und $u$ und kann mittels Integration nach $u(x)$ aufgelöst werden.}
+    \ZSFItem{Rücksubstitution}{Den ursprünglichen Term $u(x,y)$ mit $u(x)$ gleichsetzen und nach $y$ auflösen.}
+\end{ZSFlist}
+
+\SubsectionBar[sec:richtungsfeld]{DGL, Vektorfeld \& Kurvenschar}
+\ZSFindex{Richtungsfeld}
+\ZSFindex{Kurvenschar}
+\ZSFindex{Feldlinie}
+\ZSFindexsee{Trajektorie}{Feldlinie}
+
+\begin{defbox}[Zusammenhang: DGL, Vektorfeld, Kurvenschar]
+    \begin{minipage}[c]{\dimexpr\linewidth-1.85cm\relax}
+        \ZSFlabel{DGL / Richtungsfeld / Schar:} dieselben Kurven $y(x)$;\\
+        \ZSFlabel{Vektorfeld $\vec v$ \ZSFref{sec:vektorfelder}:} $+$ Betrag \& Orientierung.\\
+        \ZSFlabel{Richtungsfeld:} Steigung $y'=f(x,y)$ pro Punkt.\\
+        \ZSFlabel{Feldlinie \ZSFref{sec:phasenportrait}:} tangential zu $\vec v$ ($\dot{\vec r}\parallel \vec v$).\\
+        \ZSFlabel{Kurvenschar \ZSFref{sec:enveloppen}:} $F(x,y,C)=0$ ($C\in\R$).
+    \end{minipage}\hfill
+    \begin{minipage}[c]{1.75cm}
+    \raggedleft
+    \begin{tikzpicture}[scale=0.62, baseline=(current bounding box.center),
+        >={Stealth[length=1.0mm]}, line cap=round, line join=round]
+      \draw[->, black!35, line width=0.4pt] (-0.2,0) -- (2.35,0) node[right, inner sep=0.5pt, font=\ZSFfontDiagramLabelSmall, text=black!60] {$x$};
+      \draw[->, black!35, line width=0.4pt] (0,-0.65) -- (0,1.35) node[above, inner sep=0.5pt, font=\ZSFfontDiagramLabelSmall, text=black!60] {$y$};
+      \foreach \x in {0.3, 0.75, 1.25, 1.75, 2.15}{
+        \foreach \y in {-0.45, -0.05, 0.35, 0.75}{
+          \pgfmathsetmacro{\m}{0.55*(\x - 0.4) + 0.35*(\y + 0.2)}
+          \pgfmathsetmacro{\dx}{0.085 / sqrt(1 + \m*\m)}
+          \pgfmathsetmacro{\dy}{\m * \dx}
+          \draw[ChapterColor9!55, line width=0.55pt] ({\x-\dx},{\y-\dy}) -- ({\x+\dx},{\y+\dy});
+        }
+      }
+      \draw[ChapterColor9, line width=1.0pt] plot[domain=0.08:2.15, samples=20, smooth] (\x, {0.28*(\x-0.5)*(\x-0.5) - 0.22});
+      \node[ChapterColor9, font=\bfseries\ZSFfontDiagramLabelSmall, above] at (1.65, 0.60) {$y(x)$};
+    \end{tikzpicture}%
+    \end{minipage}
+    \par\ZSFgap[XS]%
+    \centering
+    \begin{tikzpicture}[>={Stealth[length=1.2mm]}, line cap=round, line join=round,
+        boxnode/.style={draw=ChapterColor9, rounded corners=1.5pt, line width=0.5pt,
+                        fill=ChapterColor9!8, inner sep=1.8pt, align=center,
+                        font=\bfseries\ZSFfontDiagramLabel},
+        lbl/.style={font=\ZSFfontDiagramLabelSmall, inner sep=0.8pt}]
+      \node[boxnode] (V) at (0,0) {Vektorfeld\\[-1pt]$\vec v=\begin{pmatrix}v_1\\v_2\end{pmatrix}$};
+      \node[boxnode] (D) at (2.62,0) {DGL\\[-1pt]$y'=f(x,y)$};
+      \node[boxnode] (K) at (5.32,0) {Kurvenschar\\[-1pt]$F(x,y,C)=0$};
+
+      % Pfeile V <-> D
+      \draw[->, ChapterColor9, line width=0.5pt] ([yshift=2.2pt]V.east) -- ([yshift=2.2pt]D.west)
+        node[midway, above, lbl] {$y'=\frac{v_2}{v_1}$};
+      \draw[->, ChapterColor9, line width=0.5pt] ([yshift=-2.2pt]D.west) -- ([yshift=-2.2pt]V.east)
+        node[midway, below, lbl] {Richtung wählen};
+
+      % Pfeile D <-> K
+      \draw[->, ChapterColor9, line width=0.5pt] ([yshift=2.2pt]D.east) -- ([yshift=2.2pt]K.west)
+        node[midway, above, lbl] {lösen};
+      \draw[->, ChapterColor9, line width=0.5pt] ([yshift=-2.2pt]K.west) -- ([yshift=-2.2pt]D.east)
+        node[midway, below, lbl] {$C$ eliminieren};
+    \end{tikzpicture}
+\end{defbox}
+
+\textVorBox{Die Steigung im Richtungsfeld bzw. Phasenportrait \ZSFref{sec:phasenportrait} berechnet sich mit:}
+\begin{formulabox}
+    \ZSFformulaline{y'=\frac{v_2(x,y(x))}{v_1(x,y(x))}}{Richtungsfeld}
+\end{formulabox}
+
+\SubsectionBar[sec:linear-dgl]{Lineare Differentialgleichungen 1. Ordnung}
+\ZSFindex{Lagrange-Verfahren}
+\ZSFindex{Ansatzverfahren}
+
+\SubsubsectionBar{Grundform \& Lösungsstruktur}
+
+\textVorBox{In einer \ZSFkeyword[lineare DGL 1. Ordnung@lineare DGL 1. Ordnung]{linearen DGL 1. Ordnung} ($\ZSFmhlA{I}$) dürfen $y$ und $y'$ nur als lineare Terme vorkommen:}
+\begin{formulabox}
+    $\displaystyle \ZSFmhlA{I:}\quad y'(x)=p(x)y(x)+\ZSFbraceunder{\ZSFmhlA{q(x)}}{Störglied}$
+\end{formulabox}
+\textNachBox{Dabei ist $\ZSFmhlA{q(x)}$ der \ZSFkeyword[inhomogener Teil@inhomogener Teil]{inhomogene Teil}. Die zugehörige \ZSFkeyword[homogene DGL@homogene DGL]{homogene DGL} ($\ZSFmhlB{H}$) lautet:
+\[
+    \ZSFmhlB{H:}\quad y'(x)=p(x)\,y(x).
+\]
+\ZSFdanger{Achtung:} Nicht erlaubt sind Terme wie $\cos(y')$, $y'y$ oder $y^2$.
+Erlaubt sind hingegen lineare Terme wie $\sin(x)\cdot y$.}
+
+\ZSFlabel{Notation} $\ZSFmhlA{I}$ bezeichnet die lineare DGL mit \ZSFkeyword{Störglied} $\ZSFmhlA{q(x)}$, $\ZSFmhlB{H}$ dieselbe Struktur ohne Störglied, also $q(x)=0$.
+
+Die allgemeine Lösung von $\ZSFmhlA{I}$ ist die Summe einer speziellen Lösung (\ZSFkeyword{partikuläre Lösung} $\ZSFmhlA{y_p}$) und der allgemeinen Lösung $\ZSFmhlB{y_h}$ von $\ZSFmhlB{H}$.
+
+\SubsubsectionBar{Ansatzverfahren \& Resonanz}
+
+\textVorBox{Bei einem einfachen Störglied und passender Koeffizientenstruktur eignet sich das Ansatzverfahren:}
+\begin{tablebox}
+\begin{ZSFtable}{Y{1.0} Y{1.0}}
+    \ZSFheaderRow \ZSFhead{Störglied $\ZSFmhlA{q(x)}$} & \ZSFhead{Ansatz für $\ZSFmhlA{y_p}$} \\
+    Konstante & $C$ \\
+    Lineare Funktion & $C_1x + C_2$ \\
+    Polynom mit Grad $n$ & $C_1\cdot x^n + C_2\cdot x^{n-1} + \dots$ \\
+    $C_1\cdot \sin(\omega x) + C_2\cdot \cos(\omega x)$ & $C_3\cdot \sin(\omega x) + C_4\cdot \cos(\omega x)$ \\
+    $C_1\cdot e^{bx}$ & $C_2\cdot e^{bx}$ \\
+\end{ZSFtable}
+\end{tablebox}
+\textNachBox{Ist kein passender Ansatz erkennbar oder ist $p(x)$ allgemein gegeben, das Lösungsverfahren nach Lagrange verwenden.}
+
+\begin{tablebox}
+\begin{ZSFtable}[header=false]{Y{0.75} Y{1.25}}
+    \ZSFkeyword{Resonanz} & wenn Standard-$\ZSFmhlA{y_p}$ bereits in $\ZSFmhlB{y_h}$ liegt \\
+    \ZSFlabel{Dann} & gesamten Ansatz $\cdot x$\newline
+        noch Überlappung $\Rightarrow x^2,x^3,\ldots$
+\end{ZSFtable}
+\end{tablebox}
+
+\begin{ZSFlist}[Lösungsverfahren mit Ansatz][ordered]
+    \ZSFItem{Ansatz wählen}{$\ZSFmhlB{y_h}$ festlegen und $\ZSFmhlA{y_p}$ wie Tabelle; bei \ZSFkeyword{Resonanz} zweite Tabelle darunter.}
+    \ZSFItem{Einsetzen}{Die Ableitungen von $\ZSFmhlA{y_p}$ in $\ZSFmhlA{I}$ einsetzen.}
+    \ZSFItem{Koeffizienten}{Die Konstanten durch Koeffizientenvergleich bestimmen.}
+    \ZSFItem{Allgemeine Lösung}{$y(x)=\ZSFmhlA{y_p}+\ZSFmhlB{y_h}$.}
+\end{ZSFlist}
+
+\SubsubsectionBar{Variation der Konstanten / Lagrange (1. Ordnung)}
+\ZSFindex{Koeffizientenvergleich}
+\begin{ZSFlist}[Lösungsverfahren nach Lagrange (1. Ordnung)][ordered]
+    \ZSFItem{Homogene Basislösung}{$\ZSFmhlB{y_h^*(x)}=e^{\int p(x)\,dx}$ ohne Scharkonstante bestimmen.}
+    \ZSFItem{Variation}{Ansatz $\ZSFmhlA{y_p}=v(x)\,\ZSFmhlB{y_h^*(x)}$ einführen.}
+    \ZSFItem{$v$ bestimmen}{$v'(x)=q(x)/\ZSFmhlB{y_h^*(x)}$ aufstellen und integrieren.}
+    \ZSFItem{Allgemeine Lösung}{$y(x)=\ZSFmhlA{y_p}+\ZSFmhlB{y_h}$.}
+\end{ZSFlist}
+
+\ZSFNewColumn
+\SubsectionBar[sec:enveloppen]{Niveaulinien, Orth. trajektorien, Enveloppen}
+
+\SubsubsectionBar{Niveaulinien \& Exakte DGL}
+
+\textVorBox{Sei $\ZSFmhlA{g(x,y)=C}$ eine $\ZSFmhlA{Schar}$ von \ZSFkeyword*{Niveaulinien}, so gilt:}
+\begin{formulabox}
+    \ZSFformulaline{y'(x)=-\frac{g_x(x,y)}{g_y(x,y)}}{Niveaulinien}
+\end{formulabox}
+\ZSFindex{Niveaulinie}
+\textNachBox{Eine solche DGL nennt man \ZSFkeyword{exakt} und kann umgeformt werden zu:
+\[
+    g_x(x,y)+y'(x)\,g_y(x,y)=0 \;\text{ mit }\; g_x=\psi_x.
+\]
+Exaktheit prüfen: $(g_x)_y = (g_y)_x$ \ZSFref{sec:partielle_ableitungen}.\par
+Die Lösung ist die $\ZSFmhlA{Schar}$ von Niveaulinien $\ZSFmhlA{g(x,y)=C}$.}
+
+\SubsubsectionBar{Orthogonaltrajektorien}
+
+Die Niveaulinien von $g(x,y)$ stehen senkrecht auf den \ZSFkeyword[Feldlinie]{Feldlinien} von $\nabla g(x,y)$, den sogenannten \ZSFkeyword{Orthogonaltrajektorien}.
+
+\textVorBox{Sei $y'(x)=f(x,y)$ eine Kurvenschar, dann ist die Kurvenschar von Orthogonaltrajektorien gegeben durch:}
+\begin{formulabox}
+    \ZSFformulaline{y_{\mathrm{or}}'(x)=-\frac{1}{y'(x)}}{Orthogonaltraj.}
+\end{formulabox}
+
+\begin{ZSFlist}[Lösungsverfahren: Orthogonaltrajektorien][ordered]
+    \ZSFItem{Schar umformen}{Ursprüngliche Kurvenschar nach $C$ umformen: $\ZSFmhlA{F(x,y,C)=0}$.}
+    \ZSFItem{Ableiten}{\ZSFmhlA{Ursprüngliche Schar} $\ZSFmhlA{F(x,y,C)=0}$ nach $x$ ableiten und nach $y'$ auflösen: $\ZSFmhlB{y'=f(x,y,C)}$.}
+    \ZSFItem{$C$ ersetzen}{$C$ in \ZSFmhlB{abgeleiteter Schar} durch Umformung aus (1) ersetzen.}
+    \ZSFItem{Neue DGL}{$y'=f(x,y)$ in die Formel für $y_{\mathrm{or}}'(x)$ einsetzen und die neue DGL lösen.}
+\end{ZSFlist}
+
+\SubsubsectionBar{Enveloppen \& Singuläre Lösungen}
+
+Die \ZSFkeyword{Enveloppe} einer Kurvenschar ist diejenige Kurve, die an jedem ihrer Punkte tangential zur Kurvenschar steht. Die zugehörige Lösung der DGL wird als \ZSFkeyword{singuläre Lösung} bezeichnet.
+
+\begin{ZSFlist}[Lösungsverfahren: Enveloppen][ordered]
+    \ZSFItem{Allgemeine Lösung}{Sei die allgemeine Lösung einer DGL $y=f(x,C)$ gegeben.}
+    \ZSFItem{Umstellen}{Nach $F(x,y,C)=0$ umstellen.}
+    \ZSFItem{$C$ bestimmen}{Mittels $F_C(x,y,C)=0$ den Scharparameter $C$ bestimmen.}
+    \ZSFItem{Einsetzen}{Ausdruck für $C$ aus (3) in $F(x,y,C)=0$ einsetzen.}
+\end{ZSFlist}
+
+\SubsectionBar{Clairaut'sche Differentialgleichung}
+\ZSFindex{Clairautsche Differentialgleichung}
+
+\textVorBox{Clairaut'sche Differentialgleichungen sind von der Form:}
+\begin{formulabox}
+    \ZSFformulaline{y = y'\cdot x + g(y')}{Clairaut-DGL}
+\end{formulabox}
+\textNachBox{Lösungen sind Geraden, eine singuläre Lösung \ZSFref{sec:enveloppen} und Kombinationen davon.}
+
+\begin{ZSFlist}[Lösungsverfahren: Clairaut'sche DGL][ordered]
+    \ZSFItem{Ansatz}{$y'=C$ setzen, das ergibt die allgemeine Lösung $y=Cx+g(C)$.}
+    \ZSFItem{Ableiten}{Nach $C$ ableiten und nach $C$ auflösen.}
+    \ZSFItem{Einsetzen}{Den Ausdruck aus (2) in die allgemeine Lösung einsetzen.}
+\end{ZSFlist}
+
+\ZSFNewColumn
+\SubsectionBar[sec:higher-order-dgl]{Differentialgleichungen höherer Ordnung}
+\SubsubsectionBar{Grundbegriffe \& Lineare Struktur}
+
+\textVorBox{Eine \ZSFkeyword{Differentialgleichung höherer Ordnung} ist von der Form:}
+\begin{formulabox}
+    $\displaystyle F\!\left(x,y,y'(x),y''(x),\ldots,y^{(n)}(x)\right)=0$
+\end{formulabox}
+
+\begin{defbox}[Anfangswertproblem (höhere Ordnung)][weight=quiet]
+Für eine DGL $n$-ter Ordnung benötigt ein Anfangswertproblem normalerweise $n$ Anfangsbedingungen: $y(x_0),y'(x_0),\ldots,y^{(n-1)}(x_0)$.
+\end{defbox}
+\ZSFindex{Existenz- und Eindeutigkeitssatz}
+
+\textVorBox{Eine \ZSFkeyword{lineare DGL höherer Ordnung} ist von der Form:}
+\begin{formulabox}
+    $\displaystyle y^{(n)}(x)+p_{n-1}(x)y^{(n-1)}(x)+\dots+p_0(x)y(x)=q(x)$
+\end{formulabox}
+\textNachBox{Dabei sind $p_i(x)$ und $q(x)$ Funktionen.}
+
+\begin{ZSFlist}
+    \ZSFItem{Homogenität}{Die DGL ist \ZSFkeyword[homogene DGL@homogene DGL]{homogen} ($\ZSFmhlB{H}$), wenn $q(x)=0$.}
+    \ZSFItem{Linearkombination}{Linearkombinationen der Lösungen von $\ZSFmhlB{H}$ sind ebenfalls Lösungen von $\ZSFmhlB{H}$.}
+    \ZSFItem{Allgemeine Lösung}{Die allgemeine Lösung von $\ZSFmhlB{H}$ ist eine Linearkombination aller linear unabhängigen Lösungen von $\ZSFmhlB{H}$.}
+    \ZSFItem{System 1. Ordnung}{Setze $y_1=y,\,y_2=y'\Rightarrow y_1'=y_2,\,y_2'=q-p_1y_2-p_0y_1$ zur Umwandlung in ein DGL-System \ZSFref{sec:phasenportrait}.}
+\end{ZSFlist}
+
+\SubsubsectionBar[sec:wronski-determinante]{Wronski-Determinante \& Fundamentalsystem}
+
+\textVorBox{Die \ZSFkeyword{Wronski-Determinante} zweier Funktionen $y_1(x), y_2(x)$ lautet:}
+\begin{formulabox}
+    $\displaystyle W(x) = \det\begin{pmatrix} y_1 & y_2 \\ y_1' & y_2' \end{pmatrix} = y_1(x)\,y_2'(x) - y_2(x)\,y_1'(x)$
+\end{formulabox}
+\ZSFindex{Wronski-Determinante}
+
+\begin{defbox}[Fundamentalsystem-Kriterium][weight=quiet]
+Seien $y_1, y_2$ Lösungen der homogenen linearen DGL $\ZSFmhlB{H}$ (2. Ordnung):
+\ZSFlabel{Fundamentalsystem} $y_1, y_2$ sind \ZSFkeyword{linear unabhängig} $\iff W(x_0) \neq 0$ an mindestens \ZSFkeyword{einem} Punkt $x_0$.\par
+\ZSFlabel{Liouville} Gilt $W(x_0)=0$ an einer Stelle, so ist $W(x)\equiv 0$ überall $\Rightarrow$ linear abhängig.
+\end{defbox}
+
+\SubsubsectionBar[sec:variation-der-konstanten-2]{Variation der Konstanten / Lagrange (2. Ordnung)}
+
+\textVorBox{Sei $\{y_1,y_2\}$ ein Fundamentalsystem von $\ZSFmhlB{H}$. Der Ansatz für die \ZSFkeyword{partikuläre Lösung} $\ZSFmhlA{y_p}$ führt auf das Lagrange-$2\times 2$-LGS und dessen Lösung via $W$ \ZSFref{sec:wronski-determinante}:}
+\begin{tablebox}
+\begin{ZSFtable}{Y{1.0} Y{1.0}}
+    \ZSFheaderRow \ZSFhead{Ansatz für $\ZSFmhlA{y_p}$} & \ZSFhead{$\ZSFmhlA{y_p}=c_1(x)y_1+c_2(x)y_2$} \\
+    \ZSFlabel{Nebenbed.} & $c_1'y_1+c_2'y_2=0$ \\
+    \ZSFlabel{DGL} & $c_1'y_1'+c_2'y_2'=q(x)$ \\
+    \ZSFlabel{Lösung $c_1'$} & $-y_2\,q(x)/W$ \\
+    \ZSFlabel{Lösung $c_2'$} & $y_1\,q(x)/W$
+\end{ZSFtable}
+\end{tablebox}
+
+\begin{ZSFlist}[Lagrange / Variation der Konstanten (2. Ordnung)][ordered]
+    \ZSFItem{Fundamentalsystem}{$y_1,y_2$ als linear unabhängige Lösungen von $\ZSFmhlB{H}$ bestimmen \ZSFref{sec:const-coeff}.}
+    \ZSFItem{Wronski $W$}{$W=y_1y_2'-y_2y_1'$ berechnen \ZSFref{sec:wronski-determinante} ($W\neq 0$).}
+    \ZSFItem{$c_i'$ integrieren}{$c_1',c_2'$ aus Cramerscher Formel (Tabelle); integrieren (Konstanten $=0$ für $\ZSFmhlA{y_p}$).}
+    \ZSFItem{Allgemeine Lösung}{$y=\ZSFmhlB{y_h}+\ZSFmhlA{y_p}$ mit $\ZSFmhlB{y_h}=C_1y_1+C_2y_2$ und $\ZSFmhlA{y_p}=c_1y_1+c_2y_2$.}
+\end{ZSFlist}
+
+\textNachBox{Normalform $y''+p_1y'+p_0y=q$ beachten \ZSFref{sec:const-coeff} (durch Koeffizienten von $y''$ teilen!). Reihenfolge von $y_1,y_2$ durchgängig gleich lassen (Vertauschen kehrt $W$ um). Beispiel $y''+\omega^2y=q$: $y_1=\sin(\omega x)$, $y_2=\cos(\omega x)$ $\Rightarrow$ $W=-\omega$.\ZSFindexsee{Lagrange}{Variation der Konstanten}\ZSFindex{Lagrange-Verfahren!2. Ordnung} Inhomogen mit speziellem $q(x)$: Ansatzverfahren wie bei linearen Differentialgleichungen \ZSFref{sec:linear-dgl} (Tabelle + \ZSFkeyword{Resonanz}).}
+
+\ZSFNewColumn
+\SubsectionBar[sec:const-coeff]{Homogene lineare DGL mit konst. Koeffizienten}
+\ZSFindex{Ansatzverfahren}
+\ZSFindex{Charakteristische Gleichung}
+
+\textVorBox{Eine \ZSFkeyword{homogene lineare DGL mit konstanten Koeffizienten} ist von der Form:}
+\begin{formulabox}
+    $\displaystyle y^{(n)}(x)+a_{n-1}y^{(n-1)}(x)+\dots+a_0y(x)=0$
+\end{formulabox}
+\textNachBox{Dabei sind $a_i$ Konstanten.}
+
+\textVorBox{Das \ZSFkeyword[charakteristisches Polynom@charakteristisches Polynom]{charakteristische Polynom} einer solchen DGL lautet:}
+\begin{formulabox}
+    $\displaystyle P(\lambda)=\lambda^n+a_{n-1}\lambda^{n-1}+a_{n-2}\lambda^{n-2}+\dots+a_1\lambda+a_0$
+\end{formulabox}
+\textNachBox{Durch $P(\lambda)=0$ ergeben sich die Nullstellen.}
+
+\begin{tablebox}
+\begin{ZSFtable}{Y{0.8} Z{1.2}}
+     \ZSFheaderRow \ZSFhead{Nullstellen} & \ZSFhead{Lösungen} \\
+    Einfach reell & $y(x)=e^{\lambda x}$ \\
+    Einfach komplex $(a=\alpha\pm ib)$ & $e^{\alpha x}\cos(bx),$\newline $e^{\alpha x}\sin(bx)$ \\
+    k-fach reell & $e^{\lambda x},\; x e^{\lambda x},\; \ldots,$\newline $x^{k-1}e^{\lambda x}$ \\
+    k-fach komplex $(a=\alpha\pm ib)$ & $x^j e^{\alpha x}\cos(bx),$\newline $x^j e^{\alpha x}\sin(bx)$, $j=0,\ldots,k-1$ \\
+\end{ZSFtable}
+\end{tablebox}
+
+\begin{ZSFlist}[Lösungsverfahren: Homogene DGL mit konst. Koeffizienten][ordered]
+    \ZSFItem{Char. Polynom}{$P(\lambda)=\lambda^n+a_{n-1}\lambda^{n-1}+\dots+a_0$ aufstellen.}
+    \ZSFItem{Nullstellen}{$P(\lambda)=0$ lösen.}
+    \ZSFItem{Basisfunktionen}{Je nach Fall (einfach/k-fach, reell/komplex) $y_i$ aus Tabelle \ZSFref{sec:const-coeff} wählen.}
+    \ZSFItem{Homogene Lösung}{$\ZSFmhlB{y_h}=C_1y_1+C_2y_2+\dots+C_iy_i$.}
+    \ZSFItem{Inhomogene Lösung}{$\ZSFmhlA{y_p}$ wie bei linearen Differentialgleichungen \ZSFref{sec:linear-dgl}; Koeffizientenvergleich; bei \ZSFkeyword{Resonanz} Tabelle \ZSFref{sec:linear-dgl}.}
+    \ZSFItem{Allgemeine Lösung}{$y=\ZSFmhlB{y_h}+\ZSFmhlA{y_p}$.}
+\end{ZSFlist}
+
+\textVorBox{Die allgemeine Lösung $y$ der homogenen DGL ist eine Linearkombination der einzelnen Lösungen $y_i$:}
+\begin{formulabox}
+    \ZSFformulaline{y=C_1y_1+C_2y_2+\dots+C_iy_i}{homogene Lösung}
+\end{formulabox}
+
+\ZSFNewColumn
+\SubsectionBar[sec:euler-dgl]{Euler'sche Differentialgleichung}
+\ZSFindex{Ansatzverfahren}
+\ZSFindex{Charakteristische Gleichung}
+
+\SubsubsectionBar{Homogene Lösung \& Char. Polynom}
+
+\textVorBox{Eine \ZSFkeyword[Eulersche Differentialgleichung@Eulersche Differentialgleichung]{Euler'sche Differentialgleichung} ist von der Form:}
+\begin{formulabox}
+    $\displaystyle a_n y^{(n)}(x)+\frac{a_{n-1}}{x}y^{(n-1)}(x)+\dots+\frac{a_0}{x^n}y(x)=q(x)$
+\end{formulabox}
+\textNachBox{Dabei sind $a_i$ Konstanten. Alternative: Substitution $x=e^t$ ($t=\ln x$) führt die Euler-DGL in eine DGL mit konstanten Koeffizienten \ZSFref{sec:const-coeff} über.}
+
+\textVorBox{Das \ZSFkeyword[charakteristisches Polynom@charakteristisches Polynom]{charakteristische Polynom} ($y=x^{\lambda}$ in $\ZSFmhlB{H}$, $x^{\lambda-n}$ ausklammern):}
+\begin{formulabox}
+    \ZSFlabel{Ansatz} $y=x^{\lambda},\; y'=\lambda x^{\lambda-1},\; y''=\lambda(\lambda-1)x^{\lambda-2},\; y'''=\lambda(\lambda-1)(\lambda-2)x^{\lambda-3}$
+    \ZSFsep
+    $\displaystyle P(\lambda)=a_n\lambda(\lambda-1)\cdots(\lambda-n+1)+\dots+a_1\lambda+a_0$
+    \ZSFsep[2.~Ordnung ($a_2 y''+\frac{a_1}{x}y'+\frac{a_0}{x^2}y=0$)]
+    $\displaystyle P(\lambda)=a_2\lambda(\lambda-1)+a_1\lambda+a_0$
+    \formulanote{\ZSFlabel{Bsp.} $y''+\frac{y'}{x}+\frac{y}{x^2}=0 \;\Rightarrow\; \lambda^2+1=0 \;\Rightarrow\; \lambda=\pm i \;\Rightarrow\; \ZSFmhlB{y_h}=C_1\cos(\ln x)+C_2\sin(\ln x)$}
+\end{formulabox}
+\textNachBox{Durch $P(\lambda)=0$ ergeben sich die Nullstellen.}
+
+\textVorBox{Folgendes gilt:}
+\begin{tablebox}
+\begin{ZSFtable}{Y{0.8} Z{1.2}}
+     \ZSFheaderRow \ZSFhead{Nullstellen} & \ZSFhead{Lösungen} \\
+    Einfach reell & $y(x)=x^{\lambda}$ \\
+    Einfach komplex $(a=\alpha\pm ib)$ & $x^{\alpha}\cos(b\ln(x)),$\newline $x^{\alpha}\sin(b\ln(x))$ \\
+    k-fach reell & $x^{\lambda},\; \ln(x)\,x^{\lambda},\; \ldots,$\newline $\ln(x)^{k-1}x^{\lambda}$ \\
+    k-fach komplex $(a=\alpha\pm ib)$ & $x^{\alpha}\cos(b\ln(x)),$\newline $x^{\alpha}\sin(b\ln(x)),$\newline $\ldots,$\newline $\ln(x)^{k-1}x^{\alpha}\sin\!\bigl(b\ln(x)\bigr)$ \\
+\end{ZSFtable}
+\end{tablebox}
+
+\SubsubsectionBar{Inhomogene Ansätze \& Resonanz}
+
+\textVorBox{Ansätze für $\ZSFmhlA{y_p}$ bei speziellem $\ZSFmhlA{q(x)}$:}
+\begin{tablebox}
+\begin{ZSFtable}{Y{1.0} Y{1.0}}
+    \ZSFheaderRow \ZSFhead{Störglied $\ZSFmhlA{q(x)}$} & \ZSFhead{Ansatz für $\ZSFmhlA{y_p}$} \\
+    Konstante & $C$ \\
+    $x^m$ & $C x^m$ \\
+    Polynom Grad $n$ & $C_1 x^n + C_2 x^{n-1} + \dots$ \\
+    $C_1\sin(b\ln x)+C_2\cos(b\ln x)$ & $C_3\sin(b\ln x)+C_4\cos(b\ln x)$ \\
+    Allgemein (Probe) & $Aq(x)+B$
+\end{ZSFtable}
+\end{tablebox}
+
+\begin{tablebox}
+\begin{ZSFtable}[header=false]{Y{0.75} Y{1.25}}
+    \ZSFkeyword{Resonanz} & wenn Standard-$\ZSFmhlA{y_p}$ bereits in $\ZSFmhlB{y_h}$ liegt \\
+    \ZSFlabel{Dann} & gesamten Ansatz $\cdot\ln x$\newline
+        noch Überlappung $\Rightarrow \ln^2 x,\ln^3 x,\ldots$
+\end{ZSFtable}
+\end{tablebox}
+\textNachBox{Alternativ: $x=e^t$ $\Rightarrow$ Ansatz wie bei linearen Differentialgleichungen \ZSFref{sec:linear-dgl}.}
+
+\begin{ZSFlist}[Lösungsverfahren: Euler-DGL][ordered]
+    \ZSFItem{Char. Polynom}{$y=x^{\lambda}$ in $\ZSFmhlB{H}$ einsetzen, $x^{\lambda-n}$ ausklammern $\Rightarrow$ $P(\lambda)$ wie oben \ZSFref{sec:euler-dgl}.}
+    \ZSFItem{Nullstellen}{$P(\lambda)=0$ lösen; $y_i$ aus Tabelle \ZSFref{sec:euler-dgl} wählen.}
+    \ZSFItem{Homogene Lösung}{$\ZSFmhlB{y_h}=C_1y_1+C_2y_2+\dots+C_iy_i$.}
+    \ZSFItem{Inhomogene Lösung}{$\ZSFmhlA{y_p}$ wie Tabelle \ZSFref{sec:euler-dgl}; Ableitungen einsetzen \& Koeffizientenvergleich \ZSFref{sec:linear-dgl}; bei \ZSFkeyword{Resonanz} Resonanz-Tabelle \ZSFref{sec:euler-dgl}. Alternativ: $x=e^t$ $\Rightarrow$ \ZSFref{sec:linear-dgl}.}
+    \ZSFItem{Allgemeine Lösung}{$y=\ZSFmhlB{y_h}+\ZSFmhlA{y_p}$.}
+\end{ZSFlist}
+
+\ZSFNewColumn
+\SubsectionBar{Taylorreihen für DGLs}
+\textVorBox{Ansatz zur Lösung einer DGL als \ZSFkeyword{Potenzreihe} um $x_0=0$:}
+\begin{formulabox}
+    $\displaystyle y(x)=\ZSFsumAuto{n=0}{\infty} c_nx^n=c_0+c_1x+c_2x^2+c_3x^3+c_4x^4+\dots$
+    \ZSFsep
+    $\displaystyle c_n=\frac{y^{(n)}(0)}{n!}$
+\end{formulabox}
+\textNachBox{Je nach Aufgabentyp wählt man in der Prüfung eine der folgenden Methoden.}
+
+\SubsubsectionBar{Methode 1: Koeffizienten im Entwicklungspunkt ($x_0=0$)}
+
+\textVorBox{Das direkte Ableiten der DGL am Punkt $x=0$ ist für die ersten Koeffizienten am schnellsten:}
+\begin{formulabox}
+    $\displaystyle c_0=y(0),\qquad c_1=y'(0)$
+    \ZSFsep
+    $\displaystyle c_2=\frac{y''(0)}{2}$
+    \formulanote{$y''(0)$ durch Einsetzen von $x=0$ in die DGL bestimmen.}
+    \ZSFsep
+    $\displaystyle c_3=\frac{y'''(0)}{6},\qquad c_4=\frac{y^{(4)}(0)}{24}$
+    \formulanote{DGL einmal bzw. zweimal ableiten und danach $x=0$ einsetzen.}
+\end{formulabox}
+
+\SubsubsectionBar{Methode 2: Reihenansatz \& Rekursionsformel}
+\ZSFindex{Reihenansatz}
+
+\textVorBox{Ersetze die Terme in der DGL durch diesen ausgeschriebenen Spickzettel:}
+\begin{formulabox}[][left=0.5pt, right=0.5pt]
+$\begin{alignedat}{5}
+    y &= c_0 &{}+{}& c_1 x &{}+{}& c_2 x^2 &{}+{}& c_3 x^3 &{}+\dots+{}& c_n x^n \\
+    y' &= c_1 &{}+{}& 2c_2 x &{}+{}& 3c_3 x^2 &{}+{}& 4c_4 x^3 &{}+\dots+{}& (n+1)c_{n+1} x^n \\
+    y'' &= 2c_2 &{}+{}& 6c_3 x &{}+{}& 12c_4 x^2 &{}+{}& 20c_5 x^3 &{}+\dots+{}& (n+2)(n+1)c_{n+2} x^n \\
+    xy' &= &{}& c_1 x &{}+{}& 2c_2 x^2 &{}+{}& 3c_3 x^3 &{}+\dots+{}& nc_n x^n \\
+    x^2y'' &= &{}& &{}& 2c_2 x^2 &{}+{}& 6c_3 x^3 &{}+\dots+{}& n(n-1)c_n x^n
+\end{alignedat}$
+\end{formulabox}
+\textNachBox{Tipp: Vertikal pro Potenz ($x^0,x^1,\dots$) gruppieren und $=0$ setzen. Der letzte Term mit $n$ liefert direkt die allgemeine \ZSFkeyword{Rekursionsformel}.}
+
+\begin{defbox}[Beispiel Koeffizientenvergleich: $y''+xy'+y=0$][weight=quiet]
+    $x^0:\quad 2c_2+c_0=0\Rightarrow c_2=-\frac12c_0$
+
+    $x^1:\quad 6c_3+c_1+c_1=0\Rightarrow c_3=-\frac13c_1$
+
+    $x^n:\quad \ZSFbraceunder{(n+2)(n+1)c_{n+2}}{$y''$}+\ZSFbraceunder{nc_n}{$xy'$}+\ZSFbraceunder{c_n}{$y$}=0\Rightarrow c_{n+2}=-\frac{c_n}{n+2}$
+\end{defbox}

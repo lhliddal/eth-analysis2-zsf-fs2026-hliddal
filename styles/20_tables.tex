@@ -1,0 +1,683 @@
+% ============================================================
+% 20_tables.tex — Tabellen-Helfer (semantisches Table-System)
+% ============================================================
+% Zentrales Design-Prinzip:
+%   1. Tabellen fuellen IMMER \linewidth (kein manuelles p{0.16..}).
+%   2. Spaltenbreiten werden PROPORTIONAL deklariert (Y{0.18} L{0.54} ...),
+%      sodass die Summe der Faktoren = Anzahl X-Spalten ergibt.
+%   3. Zebra-Streifen + Header-Highlight sind ins Environment eingebaut;
+%      direkte Farb-Primitive sind in Kapiteln per Linter verboten.
+%
+% Damit ist strukturell ausgeschlossen:
+%   - zu kurze Zebra-Streifen (Tabelle schmaler als Box),
+%   - überstehende Zeilen (Content sprengt Box-Breite),
+%   - Drift zwischen Kapiteln (jede Tabelle nutzt dieselben Wrapper).
+
+% ------------------------------------------------------------
+% Wo in der Zeile stehen wir gerade?
+% ------------------------------------------------------------
+% Zwei Zaehler, EINE Frage: welche Spalte ist die naechste. Gebraucht wird sie
+% nur an einer Stelle — \ZSFspan muss wissen, ob sein Verbund an der letzten
+% Spalte endet, denn nur dann waere sein Trennstrich rechts die Aussenkante
+% (siehe \ZSFspan). Der Zaehler steht hier oben, weil ihn die Spaltentypen
+% darunter bereits hochzaehlen.
+%
+% \ZSF@tblNcols  — Spalten der Tabelle, gezaehlt vom Scanner (siehe unten).
+% \ZSF@tblCol    — bereits gesetzte Spalten der laufenden Zeile.
+%
+% Beide global: Der Tick steht im u-Teil einer Spalte und damit in deren
+% Zellgruppe; eine lokale Zuweisung waere mit dem `&' wieder weg.
+\makeatletter
+\newcount\ZSF@tblNcols
+\newcount\ZSF@tblCol
+\newcommand{\ZSF@tblColTick}{\global\advance\ZSF@tblCol\@ne}
+\makeatother
+
+% ------------------------------------------------------------
+% Spaltentypen (tabularx-X-Varianten)
+% ------------------------------------------------------------
+% Feste Varianten — jede zaehlt als Faktor 1:
+% m{#1}: X-Spalten vertikal mittig (Text + Grafik in einer Zeile).
+\renewcommand{\tabularxcolumn}[1]{m{#1}}
+\makeatletter
+\newcolumntype{L}{>{\ZSF@tblColTick\RaggedRight\arraybackslash}X}   % linksbuendig, umbricht
+\newcolumntype{C}{>{\ZSF@tblColTick\Centering\arraybackslash}X}     % zentriert,  umbricht
+\newcolumntype{R}{>{\ZSF@tblColTick\RaggedLeft\arraybackslash}X}    % rechtsbuendig, umbricht
+\makeatother
+
+% Parametrisierte, proportionale Varianten — #1 = relativer Anteil.
+%
+% WICHTIG (tabularx-Konvention): Die Summe aller Faktoren in EINER
+% Tabelle muss = Anzahl X-Spalten sein, damit die Tabelle \linewidth
+% voll ausfuellt. L/C/R zählen als Faktor 1.
+%
+% Beispiele (2 Spalten → Summe 2):
+%   Y{0.6}  Y{1.4}            → 30% / 70%
+%   Y{1}    Y{1}              → 50% / 50% (== L L)
+%   Q{0.8}  Y{1.2}            → 40% / 60%, Spalte 1 rechtsbuendig
+% Beispiele (3 Spalten → Summe 3):
+%   Y{0.6}  Y{1.5}  Y{0.9}    → 20% / 50% / 30%
+%   L       Y{2}    L         → 25% / 50% / 25%
+% Beispiele (4 Spalten → Summe 4):
+%   Y{1.2}  Y{0.8}  Y{1.2}  Y{0.8}  → 30% / 20% / 30% / 20%
+\makeatletter
+\newcolumntype{Y}[1]{>{\hsize=#1\hsize\ZSF@tblColTick\RaggedRight\arraybackslash}X} % linksb., proport.
+\newcolumntype{Z}[1]{>{\hsize=#1\hsize\ZSF@tblColTick\Centering\arraybackslash}X}   % zentriert, proport.
+\newcolumntype{Q}[1]{>{\hsize=#1\hsize\ZSF@tblColTick\RaggedLeft\arraybackslash}X}  % rechtsb., proport.
+
+% Zentrierte Formel-Spalte (Math-Mode automatisch, proportional)
+\newcolumntype{F}[1]{>{\hsize=#1\hsize\ZSF@tblColTick\Centering\arraybackslash$}X<{$}}
+\makeatother
+
+% ------------------------------------------------------------
+% Luft zwischen Zellinhalt und Zeilenkante
+% ------------------------------------------------------------
+% Der Regler `rows` versprach »mehr Höhe für Zellen mit Brüchen« und konnte
+% das nicht halten: \arraystretch skaliert das Zeilenstreben, und ein Streben
+% ist ein MINDESTmass. Inhalt, der höher ist als es — ein \dfrac, eine Wurzel,
+% ein Bild —, bleibt davon unberührt. Gemessen: an einer Textabelle +22 %
+% Höhe, an derselben Tabelle mit \dfrac-Zellen +5 %.
+%
+% Bündig steht der Inhalt zusätzlich, und zwar unten. Grund ist die
+% Ausrichtung der m-Spalte in array.sty (\ar@align@mcell): Ist eine Zelle
+% höher als ein Streben, senkt sie den Block um
+%   0.5 * (Zellhöhe - Strebenhöhe + \baselineskip)
+% und schiebt ihn damit so weit nach unten, dass die Tiefe der Zelle die Tiefe
+% der Zeile bestimmt — die ganze verbleibende Luft landet oben. Die Formel ist
+% für mehrzeiligen Text gedacht; für eine einzelne hohe Zeile bedeutet sie
+% Unterkante bündig. Im Satz sichtbar: Der Nenner eines \dfrac berührte die
+% Zeilengrenze, in der letzten Zeile lief er aus der Box.
+%
+% Kein strebenbasierter Weg behebt das, weil jede Strebe ein Mindestmass ist
+% und die Zeilentiefe das Maximum aus Strebe und Zellinhalt. Deshalb meldet
+% der Ausrichter die Zelle um \ZSFtableCellPadY höher UND tiefer, ohne sie zu
+% verschieben — dieselbe \raisebox-Geste wie bei \ZSFimage, nur eine Ebene
+% höher und damit für JEDEN hohen Zellinhalt.
+%
+% Nur der hohe Zweig wird angefasst. Kurzer Text läuft weiter über die
+% Grundlinien-Ausrichtung von array.sty; an ihm ändert sich nichts.
+%
+% \ar@align@mcell ist ein Hook und keine Interna-Bastelei: array.sty prüft ihn
+% selbst mit \ifx\ar@align@mcell\@undefined und setzt ihn in anderen Pfaden
+% auf \relax. Die Wache darunter hält den Fall offen, dass eine ältere
+% array.sty ihn gar nicht kennt — dann bleibt alles beim Alten.
+%
+% Bewusst mit TeX-Primitiven und einem EIGENEN Register: \raisebox und die
+% \@tempdim*-Register sind hier belegt — colortbl haelt den Farbueberhang der
+% Zeile in \@tempdimb/\@tempdimc, und eine Zuweisung darauf wuerde die
+% Zeilenflaeche verschieben. Mit \raisebox gemessen: die Zellen kamen leer
+% heraus.
+\newlength{\ZSFtableCellPadY}
+\makeatletter
+\newdimen\ZSF@cellShift
+\@ifundefined{ar@align@mcell}{}{%
+  \def\ar@align@mcell{%
+    \ifdim \ht\ar@mcellbox > \ht\strutbox
+      \ZSF@cellShift\ht\ar@mcellbox
+      \advance\ZSF@cellShift-\ht\@arstrutbox
+      \advance\ZSF@cellShift\baselineskip
+      \ZSF@cellShift=.5\ZSF@cellShift
+      \setbox\ar@mcellbox\hbox{\lower\ZSF@cellShift\box\ar@mcellbox}%
+      \ht\ar@mcellbox\dimexpr\ht\ar@mcellbox+\ZSFtableCellPadY\relax
+      \dp\ar@mcellbox\dimexpr\dp\ar@mcellbox+\ZSFtableCellPadY\relax
+      \box\ar@mcellbox
+    \else
+      \box\ar@mcellbox
+    \fi}%
+}
+\makeatother
+
+% ------------------------------------------------------------
+% Zebra-Streifen (Scannbarkeit)
+% ------------------------------------------------------------
+\newcommand{\ZSFzebraBG}{\TableZebraColor}
+\newcommand{\SetZSFzebraBG}[1]{\renewcommand{\ZSFzebraBG}{#1}}
+%
+%
+%
+\newcommand{\ZSFzebraStart}[1]{\rowcolors{#1}{\BoxPlainBackColor}{\ZSFzebraBG}}
+\newcommand{\ZSFzebraOff}{\rowcolors{1}{}{}}
+
+% ------------------------------------------------------------
+% Header-Highlight
+% ------------------------------------------------------------
+% Konvention:
+%   \ZSFheaderRow   — startet die Header-Zeile und setzt den Zeilen-Hintergrund.
+%   \ZSFhead{<Text>} — umschliesst den Inhalt JEDER Header-Zelle (Farbe + bold).
+%
+% Warum zweigeteilt? In tabularx-X-Spalten propagiert \color, das direkt nach
+% \rowcolor am Zeilenanfang gesetzt wird, NICHT zuverlässig über die
+% &-Grenzen. Die erste Zelle verliert die Farbe, andere behalten sie — je
+% nach Spaltenbreite und Content (siehe SI-Praefix-Bug). Per-Zelle-Wrapper
+% via \ZSFhead{...} ist robust und konsistent.
+\newcommand{\ZSFheaderRowBG}{\chaptercolor}
+\newcommand{\ZSFheaderRowFG}{\chaptercolortext}
+\newcommand{\ZSFheaderRow}{\rowcolor{\ZSFheaderRowBG}}
+% \ZSFInkOwned steht direkt neben dem \color, das den Kontrast setzt: Die
+% Kopfzelle ist eine gesaettigte Flaeche mit eigener Textfarbe, eine
+% Inline-Farbe darin waere unlesbar (40_colors_structure -> Ink-Vertrag).
+\newcommand{\ZSFhead}[1]{{\color{\ZSFheaderRowFG}\ZSFInkOwned\ZSFfontTableHead #1}}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+\newcommand{\ZSF@spanBadAlign}[1]{%
+  \PackageError{ZSF}{Unbekannte Ausrichtung '#1' in \string\ZSFspan}%
+    {Gueltig sind L, C und R -- dieselben Buchstaben wie bei den
+     Spaltentypen L/C/R.}%
+}
+\newcommand{\ZSF@spanTick}[1]{\global\advance\ZSF@tblCol#1\relax}
+\newcommand{\ZSF@spanPlain}[3]{%
+  \if L#1\multicolumn{#2}{l}{\ZSF@spanTick{#2}#3}%
+  \else\if R#1\multicolumn{#2}{r}{\ZSF@spanTick{#2}#3}%
+  \else\if C#1\multicolumn{#2}{c}{\ZSF@spanTick{#2}#3}%
+  \else\multicolumn{#2}{c}{\ZSF@spanTick{#2}\ZSF@spanBadAlign{#1}#3}%
+  \fi\fi\fi
+}
+\newcommand{\ZSF@spanRuled}[3]{%
+  \if L#1\multicolumn{#2}{l|}{\ZSF@spanTick{#2}#3}%
+  \else\if R#1\multicolumn{#2}{r|}{\ZSF@spanTick{#2}#3}%
+  \else\if C#1\multicolumn{#2}{c|}{\ZSF@spanTick{#2}#3}%
+  \else\multicolumn{#2}{c|}{\ZSF@spanTick{#2}\ZSF@spanBadAlign{#1}#3}%
+  \fi\fi\fi
+}
+% \ZSF@tblNcols ist 0, solange keine senkrechten Linien gezeichnet werden —
+% dann ist die Bedingung von selbst falsch und der Verbund setzt keinen Strich.
+\newcommand{\ZSFspan}[3]{%
+  \ifnum\numexpr\ZSF@tblCol+#2\relax<\ZSF@tblNcols
+    \ZSF@spanRuled{#1}{#2}{#3}%
+  \else
+    \ZSF@spanPlain{#1}{#2}{#3}%
+  \fi
+}
+\makeatother
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+\newif\ifZSF@tblHRules
+\newif\ifZSF@tblVRules
+\makeatother
+
+% --- waagrecht: eine Linie ZWISCHEN zwei Zeilen, nirgends sonst
+%
+% \hline nach jeder Zeile zu verlangen waere Handarbeit im Kapitel. TeX hat
+% fuer genau das \everycr: eine Tokenliste, die nach jedem \cr einer
+% Ausrichtung eingefuegt wird. Sie feuert allerdings auch nach dem \cr der
+% Praeambel und nach dem abschliessenden \crcr — also OBEN und UNTEN, und
+% genau dort gehoert keine Linie hin: Die Aussenkante zeichnet der Boxrahmen
+% (Begruendung im Abschnitt darunter). Solange hier ein blankes \hline stand,
+% lief unter jeder Tabelle eine zweite Linie dicht neben dem Rahmen.
+%
+% Die Unterscheidung ist die Herkunft des \cr: Nur ein `\\' im Kapitel meint
+% einen Zeilenwechsel — der \cr der Praeambel und der \crcr des Abschlusses
+% meinen den Rand der Tabelle. \@arraycr ist der gemeinsame Weg beider
+% `\\'-Formen (mit und ohne [2pt]) und setzt deshalb den Merker; der Tick
+% direkt nach dem \cr liest ihn und raeumt ihn weg. Ein Patch auf \@arraycr,
+% der den \hline selbst einschoebe, traefe die Optionsform nicht — er setzt
+% hier nur einen Schalter und fasst den Zeilenwechsel nicht an.
+%
+% \endarray raeumt den Merker ebenfalls weg, und das ist kein Zierrat: Eine
+% verschachtelte Ausrichtung in einer Zelle (pmatrix, cases, array) benutzt
+% dasselbe \@arraycr und liesse ihn sonst gesetzt zurueck — die naechste
+% Tabellenkante bekaeme die Linie, die zur Matrix gehoerte.
+%
+% Daraus folgt eine Schreibregel, und zwar dieselbe wie in jedem LaTeX-Satz:
+% NACH DER LETZTEN ZEILE KEIN `\\'. Es ist ein Zeilenwechsel, also kommt eine
+% Linie — und die faellt dort mit dem Boxrahmen zusammen und verdickt ihn.
+%
+% Der Tick traegt zugleich den Spaltenzaehler der Zeile zurueck (\ZSF@tblCol,
+% oben): Beides ist dieselbe Stelle — hier faengt eine neue Zeile an.
+%
+% Die Linie steht IM Tick und nicht als \hline daneben, damit \everycr genau
+% eine Ergaenzung bekommt; gezeichnet wird sie wie bei colortbls \hline, also
+% mit der Tinte aus \arrayrulecolor (\CT@arc@) und der Staerke der Tabelle.
+%
+% \everycr laesst sich nur nicht vorher setzen: array.sty ueberschreibt es in
+% \ar@ialign, unmittelbar bevor dort \halign laeuft (gemessen — ein \everycr
+% vor \begin{ZSFtable} kommt wirkungslos an). Dazwischen kommt man genau an
+% einer Stelle: \halign ist in \ar@ialign ein Token wie jedes andere. Der
+% Schalter unten haengt sich davor, ergaenzt \everycr um den Tick und stellt
+% sich dabei SELBST zurueck — das \let gilt in der Gruppe von \@array, sodass
+% eine verschachtelte Ausrichtung in einer Zelle (aligned, array) die
+% Erweiterung nicht erbt und der naechste Durchgang von tabularx sie wieder
+% bekommt.
+\makeatletter
+\newif\ifZSF@tblRowBreak
+\newcommand{\ZSF@tblCrTick}{%
+  \global\ZSF@tblCol\z@
+  \ifZSF@tblRowBreak
+    \global\ZSF@tblRowBreakfalse
+    \ifZSF@tblHRules{\CT@arc@\hrule\@height\arrayrulewidth}\fi
+  \fi}
+\let\ZSF@origArraycr\@arraycr
+\def\@arraycr{\global\ZSF@tblRowBreaktrue\ZSF@origArraycr}
+% Der Merker wird HINTER \crcr zurueckgesetzt, nicht davor — die Reihenfolge
+% ist hier kein Stil, sondern Mechanik: TeX ueberliest das abschliessende
+% \crcr nur, solange es die Zeile unmittelbar expandierend erreicht. Steht
+% eine Zuweisung davor, bricht TeX die Expansion ab und faengt eine Zeile an;
+% jede Tabelle, deren letzte Zeile mit `\\' endet, bekam damit eine leere
+% Phantomzeile (gemessen an der Kopfzeile der Boxgruppe).
+\let\ZSF@origEndarray\endarray
+\def\endarray{\ZSF@origEndarray\global\ZSF@tblRowBreakfalse}
+\let\ZSF@halign\halign
+\newcommand{\ZSF@tblCrHookOn}{%
+  \def\halign{%
+    \everycr\expandafter{\the\everycr\noalign{\ZSF@tblCrTick}}%
+    \let\halign\ZSF@halign
+    \ZSF@halign}%
+}
+
+% --- senkrecht: ein '|' zwischen die Spalten, keines an die Aussenkanten
+%
+% Der Preamble-Parser von `array` expandiert nicht (siehe unten bei
+% \ZSF@tblSpec), ein Makro als Trennstrich kommt also nicht an. Die Striche
+% muessen deshalb VOR dem Parser in die Spaltenaufteilung — und weil die vom
+% Kapitel kommt, wird sie dafuer Token fuer Token durchgegangen.
+%
+% NUR zwischen den Spalten — DIE AUSSENKANTE ZEICHNET DER BOXRAHMEN.
+%
+% Zwei Gruende, und der zweite ist der wichtigere:
+%
+% 1. Ein Strich an der Kante liegt ausserhalb der Farbflaeche. Die Flaeche
+%    einer Zeile ragt um genau \tabcolsep ueber die Zelle hinaus (\CT@setup,
+%    siehe unten); davor gesetzt, enden Kopfzeile und Zebra sichtbar vor ihm
+%    statt an der Boxkante. Gemessen an der Boxgruppe: rund 7 pt Weiss
+%    zwischen Strich und Farbe, auf jeder Seite.
+%
+% 2. Ein Strich an der Kante ist GERADE. Die Box hat runde Ecken, und eine
+%    Tabelle kann sie nicht nachfahren — das Gitter endete an vier Stellen im
+%    Nichts und sah abgeschnitten aus. Der Rahmen der Box kann es, weil
+%    tcolorbox ihn ohnehin entlang \ZSFboxArc zeichnet.
+%
+% Damit die beiden zusammengehen, sprechen sie dieselbe Sprache: gleiche
+% Staerke (\ZSFboxRuleWidth = boxrule) und gleiche Tinte (\ZSFtoneFrameHard =
+% colframe bei `frame=hard`, der Vorbelegung von tablebox und valuegrid). Wer
+% die Aussenkante nicht will, nimmt sie an der Box weg (`frame=none`) — dort
+% liegt sie, und dort ist sie auch abschaltbar.
+%
+% Die Zeile ueber die volle Breite (\ZSFspan) faellt dabei gratis richtig aus:
+% Sie hat keine innere Grenze, also zeichnet sie auch keine. Ein Verbund ueber
+% nur einen Teil der Spalten braucht dagegen Zutun — siehe \ZSFspan oben.
+%
+% Der Scanner kennt die Spaltentypen dieses Systems (L/C/R und Y/Z/Q/F mit
+% ihrem Faktor) und den Praefix >{...}; alles andere reicht er unveraendert
+% durch. Ein exotischer Eintrag verliert damit hoechstens seinen Strich — er
+% kann die Aufteilung nicht zerlegen. Ein bereits im Kapitel gesetztes '|'
+% faellt weg, sonst stuende dort ein doppelter Strich.
+%
+% Ein >{...}-Praefix gehoert zur FOLGENDEN Spalte und ist selbst keine: Der
+% Strich steht davor, und die Spalte dahinter setzt keinen zweiten. Ohne diese
+% Merkung stuende er zwischen Praefix und Spalte — eine Stelle, an der `array`
+% keinen Strich erlaubt.
+%
+% Nebenbei zaehlt der Scanner die Spalten (\ZSF@tblNcols): Er geht die
+% Aufteilung ohnehin Token fuer Token durch, und \ZSFspan braucht die Zahl.
+\newcommand{\ZSF@tblVSpec}{}
+\newif\ifZSF@vfirst
+\newif\ifZSF@vprefix
+\def\ZSF@vstop{\ZSF@vstop}
+\newcommand{\ZSF@vappend}[1]{%
+  \edef\ZSF@tblVSpec{\unexpanded\expandafter{\ZSF@tblVSpec}\unexpanded{#1}}}
+% Die erste Spalte bekommt keinen Strich davor — sonst waere er die
+% Aussenkante.
+\newcommand{\ZSF@vsep}{%
+  \ifZSF@vprefix
+    \ZSF@vprefixfalse
+  \else
+    \ifZSF@vfirst\ZSF@vfirstfalse\else\ZSF@vappend{|}\fi
+  \fi}
+\newcommand{\ZSF@vcount}{\global\advance\ZSF@tblNcols\@ne}
+\def\ZSF@vcolumn#1{\ZSF@vsep\ZSF@vcount\ZSF@vappend{#1}\ZSF@vloop}
+\def\ZSF@vcolumnarg#1{\ZSF@vsep\ZSF@vcount\ZSF@vappend{#1}\ZSF@vgrab}
+\def\ZSF@vprefixarg#1{\ZSF@vsep\ZSF@vprefixtrue\ZSF@vappend{#1}\ZSF@vgrab}
+\def\ZSF@vgrab#1{\ZSF@vappend{{#1}}\ZSF@vloop}
+\def\ZSF@vpass#1{\ZSF@vappend{#1}\ZSF@vloop}
+\def\ZSF@vdrop#1{\ZSF@vloop}
+\def\ZSF@vfinish{}
+% Die Auswahl steht als \let-Kette und nicht als verschachteltes \else: Der
+% Zweig liest danach das naechste Token aus der Eingabe, und ein wartendes
+% \fi waere genau dieses Token.
+\def\ZSF@vdispatch#1{%
+  \let\ZSF@vnext\ZSF@vpass
+  \ifx L#1\let\ZSF@vnext\ZSF@vcolumn\fi
+  \ifx C#1\let\ZSF@vnext\ZSF@vcolumn\fi
+  \ifx R#1\let\ZSF@vnext\ZSF@vcolumn\fi
+  \ifx Y#1\let\ZSF@vnext\ZSF@vcolumnarg\fi
+  \ifx Z#1\let\ZSF@vnext\ZSF@vcolumnarg\fi
+  \ifx Q#1\let\ZSF@vnext\ZSF@vcolumnarg\fi
+  \ifx F#1\let\ZSF@vnext\ZSF@vcolumnarg\fi
+  \ifx >#1\let\ZSF@vnext\ZSF@vprefixarg\fi
+  \ifx |#1\let\ZSF@vnext\ZSF@vdrop\fi
+  \ZSF@vnext{#1}}
+\def\ZSF@vloop#1{%
+  \ifx#1\ZSF@vstop
+    \let\ZSF@vnextstep\ZSF@vfinish
+  \else
+    \def\ZSF@vnextstep{\ZSF@vdispatch{#1}}%
+  \fi
+  \ZSF@vnextstep}
+\newcommand{\ZSF@vrules}[1]{%
+  \renewcommand{\ZSF@tblVSpec}{}%
+  \global\ZSF@tblNcols\z@
+  \ZSF@vfirsttrue \ZSF@vprefixfalse
+  \ZSF@vloop#1\ZSF@vstop}
+\makeatother
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+\newif\ifZSF@tblHeader
+\newif\ifZSF@tblZebra
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSF@tblFontDefault}{\ZSFfontContent}
+\newcommand{\ZSF@tblFont}{\ZSFfontContent}
+\newcommand{\ZSF@tblStretch}{\ZSFtableArrayStretch}
+\newlength{\ZSF@tblColSep}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSF@setRows}[1]{%
+  \IfStrEqCase{#1}{%
+    {normal}{\renewcommand{\ZSF@tblStretch}{\ZSFtableArrayStretch}%
+             \setlength{\ZSFtableCellPadY}{\ZSFDensityTables\ZSFspaceXS}}%
+    {roomy} {\renewcommand{\ZSF@tblStretch}{\ZSFtableArrayStretchRoomy}%
+             \setlength{\ZSFtableCellPadY}{\ZSFDensityTables\ZSFspaceS}}%
+    {tight} {\renewcommand{\ZSF@tblStretch}{\ZSFtableArrayStretchTight}%
+             \setlength{\ZSFtableCellPadY}{\ZSFDensityTables\ZSFspaceXS}%
+             \setlength{\ZSFtableCellPadY}{0.5\ZSFtableCellPadY}}%
+  }%
+}
+\newcommand{\ZSF@setColsep}[1]{%
+  \IfStrEqCase{#1}{%
+    {normal}{\setlength{\ZSF@tblColSep}{\ZSFtableEdgePad}}%
+    {tight} {\setlength{\ZSF@tblColSep}{\ZSFtableEdgePadTight}}%
+  }%
+}
+\newcommand{\ZSF@tblSpec}{}
+\newcommand{\ZSF@tblRaw}{}
+\newcommand{\ZSF@beginTabularx}[1]{\tabularx{\linewidth}{#1}}
+\pgfkeys{
+  /zsf/table/.is family, /zsf/table,
+  header/.is if=ZSF@tblHeader,
+  zebra/.is if=ZSF@tblZebra,
+  font/.is choice,
+  font/normal/.code={\renewcommand{\ZSF@tblFont}{\ZSFfontContent}},
+  font/dense/.code={\renewcommand{\ZSF@tblFont}{\ZSFfontContentDense}},
+  % `rows` und `colsep` beantworten ihre Frage EINMAL — die beiden Schlüssel
+  % hier reichen sie nur durch (\ZSF@setRows / \ZSF@setColsep, oben). Das
+  % valuegrid stellt dieselben zwei Fragen und liest dieselbe Antwort; stünde
+  % die Zuordnung an beiden Bausteinen, hiesse `rows=roomy` beim nächsten
+  % Eingriff auf einem der beiden etwas anderes.
+  rows/.is choice,
+  rows/normal/.code={\ZSF@setRows{normal}},
+  rows/roomy/.code ={\ZSF@setRows{roomy}},
+  rows/tight/.code ={\ZSF@setRows{tight}},
+  colsep/.is choice,
+  colsep/normal/.code={\ZSF@setColsep{normal}},
+  colsep/tight/.code ={\ZSF@setColsep{tight}},
+  % Auch `grid` steht am valuegrid unter demselben Namen mit denselben Werten
+  % (60_boxes). Die Umsetzung ist eine andere — dort tabularray, hier
+  % \everycr und '|' —, die Wahl ist dieselbe.
+  grid/.is choice,
+  grid/both/.code      ={\ZSF@tblHRulestrue\ZSF@tblVRulestrue},
+  grid/horizontal/.code={\ZSF@tblHRulestrue\ZSF@tblVRulesfalse},
+  grid/none/.code      ={\ZSF@tblHRulesfalse\ZSF@tblVRulesfalse},
+  % `font` steht bewusst NICHT in der Vorbelegung: Es wird eine Zeile vorher
+  % aus \ZSF@tblFontDefault gesetzt, damit die Boxgruppe es vorgeben kann.
+  % Hier eingetragen überschriebe die Vorbelegung sie bei jeder Tabelle.
+  ZSF@tblDefaults/.style={header=true, zebra=true,
+                          rows=normal, colsep=normal, grid=both},
+}
+\NewDocumentEnvironment{ZSFtable}{O{} m}{%
+  \begingroup
+  % Zellinhalt: ein \ZSFimage hier bekommt Zellen-, nicht Abbildungshoehe.
+  % Explizit und nicht als Default verlassen, damit eine Tabelle IN einer
+  % figbox nicht deren Abbildungsbudget erbt (siehe \ZSF@imgBudget, 60_boxes).
+  \renewcommand{\ZSF@imgBudget}{\ZSFimageMaxHeight}%
+  % VOR den Schlüsseln: die Vorbelegung der Ebene darüber (Boxgruppe oder,
+  % ausserhalb einer Gruppe, \ZSFfontContent). `font=` in #1 sticht sie.
+  \let\ZSF@tblFont\ZSF@tblFontDefault
+  \pgfkeys{/zsf/table, ZSF@tblDefaults, #1}%
+  \setlength{\tabcolsep}{\ZSF@tblColSep}%
+  \renewcommand{\arraystretch}{\ZSF@tblStretch}%
+  \ZSF@tblFont
+  \ifZSF@tblZebra
+    \ifZSF@tblHeader\ZSFzebraStart{2}\else\ZSFzebraStart{1}\fi
+  \else
+    \ZSFzebraOff
+  \fi
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+  \setlength{\arrayrulewidth}{\ZSFboxRuleWidth}%
+  \arrayrulecolor{\ZSFtoneFrameHard}%
+  \edef\ZSF@tblRaw{#2}%
+  \ifZSF@tblVRules
+    \expandafter\ZSF@vrules\expandafter{\ZSF@tblRaw}%
+  \else
+    % Ohne senkrechte Linien wird nicht gezaehlt — und ohne Zahl setzt auch
+    % \ZSFspan keinen Trennstrich. Die Null muss trotzdem stehen: sonst laese
+    % der Verbund die Spaltenzahl der zuletzt gesetzten Tabelle.
+    \global\ZSF@tblNcols\z@
+    \let\ZSF@tblVSpec\ZSF@tblRaw
+  \fi
+  % Der Tick haengt IMMER am \cr — er traegt den Spaltenzaehler zurueck, auch
+  % wo keine Linie gezeichnet wird.
+  \global\ZSF@tblCol\z@
+  \global\ZSF@tblRowBreakfalse
+  \ZSF@tblCrHookOn
+  \edef\ZSF@tblSpec{@{\hskip\ZSF@tblColSep}%
+    \unexpanded\expandafter{\ZSF@tblVSpec}@{\hskip\ZSF@tblColSep}}%
+  \expandafter\ZSF@beginTabularx\expandafter{\ZSF@tblSpec}%
+}{%
+  \endtabularx
+  \endgroup
+}
+\makeatother

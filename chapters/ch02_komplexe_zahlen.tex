@@ -1,0 +1,89 @@
+\StartChapter{Komplexe Zahlen\ZSFScriptRef{14,18,19}}
+
+\SubsectionBar{Eigenschaften}
+
+Eine \ZSFkeyword{komplexe Zahl} ist von der Form $z = a + ib$ wobei $a = \Re(z)$ der \ZSFkeyword{Realteil} und $b = \Im(z)$ der \ZSFkeyword{Imaginärteil} ist.
+
+Die \ZSFkeyword{komplex konjugierte Zahl} $\bar{z} = a - ib$ ist die Spiegelung von $z$ an der reellen Achse (meist die $x$-Achse).
+
+\textVorBox{Es gelten die folgenden Regeln für Konjugation und Betrag:}
+
+\begin{tablebox}
+\begin{ZSFtable}{C C}
+    \ZSFheaderRow \ZSFhead{Konjugation} & \ZSFhead{Betrag} \\
+    $\displaystyle \overline{z_1 + z_2} = \overline{z_1} + \overline{z_2}$ & $\displaystyle |z_1 z_2| = |z_1||z_2|$ \\
+    $\displaystyle \overline{z_1 z_2} = \overline{z_1} \, \overline{z_2}$ & $\displaystyle \left| \frac{z_1}{z_2} \right| = \frac{|z_1|}{|z_2|}$ \\
+    $\displaystyle \overline{z^n} = \bar{z}^n$ & $\displaystyle |z_1 + z_2| \leq |z_1| + |z_2|$ \\
+    \ZSFspan{C}{2}{$\displaystyle z\bar{z} = |z|^2$} \\
+\end{ZSFtable}
+\end{tablebox}
+\ZSFindex{Betrag}
+\ZSFindex{Dreiecksungleichung}
+\ZSFindexsee{Konjugierte}{komplex konjugierte Zahl}
+
+Die Darstellung $z = r(\cos(\varphi) + i\sin(\varphi))$ nennt man \ZSFkeyword{Polarform}.
+\ZSFindexsee{Polardarstellung}{Polarform}
+
+\textVorBox{Die Darstellung $z = re^{i\varphi}$ nennt man \ZSFkeyword{Eulersche Form}. Es gilt:}
+\ZSFindexsee{Euler-Formel}{Eulersche Form}
+\begin{formulabox}
+    \ZSFformulaline{r = |z| = \sqrt{a^2 + b^2}}{Betrag}
+\end{formulabox}
+
+\textVorBox{und:}
+\begin{tablebox}
+\begin{ZSFtable}{C C C}
+    \ZSFheaderRow \ZSFhead{$a > 0$} & \ZSFhead{$a < 0,\ b \geq 0$} & \ZSFhead{$a < 0,\ b < 0$} \\
+    $\displaystyle \varphi = \arctan\left(\frac{b}{a}\right)$ & $\displaystyle \varphi = \arctan\left(\frac{b}{a}\right) + \pi$ & $\displaystyle \varphi = \arctan\left(\frac{b}{a}\right) - \pi$ \\
+\end{ZSFtable}
+\end{tablebox}
+\textNachBox{wobei $\varphi$ gegen den Uhrzeigersinn gemessen wird.}
+\ZSFindex{Argument}
+\ZSFindexsee{Phasenwinkel}{Argument}%
+\textVorBox{\ZSFdanger{Wichtig:}}
+\begin{formulabox}
+    $\displaystyle z = e^{i\pi} = -1,\quad z = e^{i\frac{\pi}{2}} = i$
+\end{formulabox}
+
+\SubsectionBar{Rechenregeln}
+
+\textVorBox{Die Eulersche Form eignet sich für komplizierte Operationen mit komplexen Zahlen:}
+
+\begin{tablebox}
+\begin{ZSFtable}[header=false]{Q{0.7} Z{1.3}}
+     Multiplikation: & $\displaystyle z_1 \cdot z_2 = \ZSFmhlA{r_1 \cdot r_2} \cdot \ZSFmhlB{e^{i(\varphi_1 + \varphi_2)}}$ \\
+    Division: & $\displaystyle \frac{z_1}{z_2} = \ZSFmhlA{\frac{r_1}{r_2}} \ZSFmhlB{e^{i(\varphi_1 - \varphi_2)}}$ \\
+     Inverse: & $\displaystyle \frac{1}{z} = \ZSFmhlA{\frac{1}{r}} \ZSFmhlB{e^{-i\varphi}}$ \\
+    Potenz: & $\displaystyle z^n = \ZSFmhlA{r^n} \ZSFmhlB{e^{in\varphi}}$ \\
+     Wurzel: & $\displaystyle \sqrt[n]{z} = \ZSFmhlA{\sqrt[n]{r}} \ZSFmhlB{e^{i\left(\frac{\varphi + 2k\pi}{n}\right)}}$ \\
+\end{ZSFtable}
+\end{tablebox}
+\textNachBox{wobei $k = 0, 1, 2, \dots, n-1$}
+\textNachBox{Alle Wurzeln liegen auf Kreis mit Radius $\sqrt[n]{r}$}
+\ZSFindex{Wurzel (komplex)}
+
+\ZSFNewColumn
+\SubsectionBar{Polynome\ZSFScriptRef{21,57}}
+
+\textVorBox{Ein \ZSFkeyword{Polynom} ist eine Summe von Potenzen einer Variable:}
+\begin{formulabox}
+    \ZSFformulaline{p(x) = ax^n + bx^{n-1} + \dots + cx + d}{Polynom}
+\end{formulabox}
+\textNachBox{$x$ wird als \ZSFkeyword{Nullstelle} des Polynoms $p$ bezeichnet, wenn $p(x) = 0$.}
+
+\begin{ZSFlist}
+    \ZSFItem{Grad}{Grösster Exponent eines Polynoms (oben $n$).}
+    \ZSFItem{Anzahl Nullstellen}{Ein Polynom vom Grad $n$ hat $n$ Nullstellen.}
+    \ZSFItem{Vielfachheit}{Eine Nullstelle kann einfach ($p=0$), doppelt ($p=0$, $p'=0$), dreifach ($p=p'=p''=0$), bis $n$-fach vorkommen.}
+    \ZSFItem{Komplexe Nullstellen}{Treten paarweise auf ($z,\bar{z}$). Eine einfach komplexe Nullstelle entspricht zwei, eine doppelt komplexe vier Nullstellen. Ein Polynom mit ungeradem Grad besitzt mindestens eine reelle Nullstelle.}
+\end{ZSFlist}
+\ZSFindex{Vielfachheit}
+\ZSFindex{Grad eines Polynoms}
+
+\textVorBox{Es gelten folgende Regeln für den Grad eines Polynoms:}
+\begin{formulabox}
+    \[\begin{aligned}
+        \Grad\{p + q\} &\leq \max(\Grad\{p\}, \Grad\{q\}) \\
+        \Grad\{pq\} &= \Grad\{p\} + \Grad\{q\}
+    \end{aligned}\]
+\end{formulabox}

@@ -1,0 +1,200 @@
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+
+% ── Platz: Grundgrösse, Dichte, Zeilenhöhe, Umbruchreserve ───────────
+% Müssen VOR styles/30_layout_spacing stehen.
+%
+% Drei Hebel, drei verschiedene Fragen — bewusst nicht einer:
+%   Grundgrösse   wie gross die Schrift ist
+%   Dichte        wie viel Leerraum zwischen den Blöcken liegt
+%   Zeilenhöhe    wie eng die Zeilen aufeinander folgen
+% Sie sind getrennt, weil unterschiedlich riskant: Abstände sind Leerraum und
+% vertragen jede Skalierung, Zeilenhöhe enthält die Schrift selbst — nur in
+% kleinen Schritten senken und danach das PDF auf kollidierende Formelzeilen
+% prüfen.
+%
+% Die Grundgrösse des Satzes. Leer = die Klassenoption aus main.tex
+% (\documentclass[8pt]). Nimmt den ganzen Schriftsatz mit — Klassenstufen,
+% Titel- und Balkengrössen, Diagramm-Beschriftungen —, sodass die Verhältnisse
+% erhalten bleiben. Erreicht auch Grössen, die extsizes nicht als Klassenoption
+% anbietet (7pt). Für eine ZSF, die den Platz nicht über Dichte und Zeilenhöhe
+% allein bekommt: der grösste der drei Hebel, ~30 % Fläche zwischen 8pt und 7pt.
+% \def\ZSFBodyFontSize{7pt}       % leer = Klassengrösse (8pt)
+% \def\ZSFDensityFactor{0.85}     % 1    = Referenz, kleiner = dichter
+%
+% 0.90 ist der Wert, mit dem diese ZSF vor der Template-Migration gesetzt war
+% (damals als rohes \linespread{0.9} in styles/00_packages). Die Referenz 0.95
+% brachte rund 5 % mehr Zeilenhöhe über den gesamten Satz — in den ~50 mm
+% schmalen Spalten der sichtbarste Teil des Seitenwachstums. Hier statt dort:
+% Zeilenhöhe ist Layout und keine Paket-Einstellung.
+\def\ZSFLeadingFactor{0.90}       % 0.95 = Referenz, kleiner = enger
+%
+% Die zwei ROLLEN-Faktoren auf die Grundgrösse. Sie beantworten dieselbe Frage
+% für die zwei Inhaltsarten — wie laut steht dieser Inhalt neben den
+% Titelbalken, die ihn gliedern? — und sind deshalb getrennt von
+% \ZSFBodyFontSize, das die Balken mitnähme.
+%
+% Boxinhalt: Boxtext, Tabellenzelle, Formel. 0.875 = 7pt bei 8pt Grundgrösse,
+% und das ist die Grösse, in der diese ZSF vor der Template-Migration gesetzt
+% war. Sie ist hier keine Geschmacksfrage, sondern eine Passform: Eine
+% Formelzelle einer zweispaltigen Tabelle ist 86.2 pt breit, und
+% sin(arctan(x)) = x/sqrt(1+x^2) braucht bei 8pt Inhalt 86.3 pt — es bricht um.
+% Bei 7pt sind es 75.9 pt. Über \ZSFBodyFontSize gelöst schrumpften die
+% Titelbalken von 8.1 auf 7.1 bp mit; die stehen aber richtig.
+\def\ZSFContentScale{0.875}       % 1 = Klassengrösse (8pt)
+%
+% Fliesstext: `runintext`, freier Text zwischen den Bausteinen, das Register.
+% Gleicher Wert wie der Boxinhalt = beide auf 7pt, der Zustand vor der
+% Migration. Wer die Prosa LEISER als den Boxinhalt will, senkt nur diesen
+% Faktor — die Box trägt den prüfungsrelevanten Inhalt, der Fliesstext
+% verbindet.
+\def\ZSFFlowTextScale{0.875}      % 1 = Klassengrösse (8pt)
+%
+% Bereichsfaktoren multiplizieren den globalen Faktor für IHREN Bereich —
+% für ZSF, die ungleich verteilt sind (box-lastig vs. textlastig).
+\def\ZSFDensityBoxes{0.85}        % Innen-/Aussenabstände der Inhaltsboxen
+% \def\ZSFDensityText{1}          % Absatzabstand im Fliesstext
+% \def\ZSFDensityTables{1}        % Zell- und Zeilenabstand in Tabellen
+% \def\ZSFDensityStructure{1}     % Polsterung und Abstände der Titelbalken
+%
+% Umbruchsteuerung an Titelbalken: in dieser ZSF komplett aus, siehe
+% \ZSFBreakReservesOff nach den \input-Zeilen unten. Der Faktor bleibt
+% deshalb auf der Referenz — er hat hier nichts mehr zu skalieren.
+% \def\ZSFBreakReserveFactor{1}   % 1 = Referenz
+%
+% Der Abstand NACH einem Titelbalken — der ganze Abstand bis zum ersten
+% Block darunter, Fliesstext wie Box. Eigener Regler und nicht Teil von
+% \ZSFDensityStructure: Wie eng eine Überschrift an ihrem Inhalt klebt, ist
+% eine Bindungs-Entscheidung und keine Frage der Gesamtdichte — in einer
+% ZSF mit vielen kurzen Abschnitten will man ihn enger als alles andere.
+\def\ZSFBarGapFactor{0.5}         % 1 = Referenz (3pt), kleiner = enger
+%
+% Schriftgrösse der Diagramm-Beschriftung — beide Stufen gemeinsam
+% (\ZSFfontDiagramLabel und \ZSFfontDiagramLabelSmall). Kleiner für Fächer mit
+% vielen gedrängten Zeichnungen; die zwei Stufen bleiben dabei unterscheidbar.
+% Ein ROLLEN-Faktor: Er multipliziert die Grundgrösse für diese eine Rolle,
+% statt sie zu ersetzen — wie die Bereichsfaktoren bei der Dichte.
+% \def\ZSFDiagramLabelScale{0.85} % 1 = Referenz, kleiner = kleinere Labels
+
+\input{styles/00_packages}
+\input{styles/10_math}
+
+% ── Formelsatz: Summen- und Limes-Grenzen ────────────────────────────
+% side = neben dem Zeichen (spart Höhe), stack = darüber/darunter,
+% auto = LaTeX entscheidet nach Kontext.
+% \SetZSFsumMode{auto}            % auto | side | stack
+% \SetZSFlimMode{auto}            % auto | side | stack
+
+\input{styles/11_math_advanced}   % opt-in: aufrechtes Im/Re, Grad, Area-Funktionen
+\input{styles/12_plots}           % opt-in: pgfplots (Funktionenübersicht Anhang)
+\input{styles/20_tables}
+
+% ── Tabellen: Zebra-Ton ──────────────────────────────────────────────
+% Default folgt der Kapitelfarbe. Ein fester Ton macht Tabellen über alle
+% Kapitel hinweg gleich — sinnvoll, wenn die Kapitelfarbe schon woanders trägt.
+% \SetZSFzebraBG{\TableZebraColor}
+
+\input{styles/30_layout_spacing}
+\input{styles/40_colors_structure}
+\input{styles/50_typography_semantics}
+
+% ── Marker-Darstellung ───────────────────────────────────────────────
+% Default: \ZSFkeyword und \ZSFlabel beide schlicht fett, ohne Farbe.
+% Inline-Betonung im Fliesstext trägt bewusst KEINE Kapitelfarbe — sie brächte
+% Unruhe in den Absatz und sagte nichts, was die Seite nicht ohnehin zeigt.
+% Farbe bleibt den Flächen, den Verweisen und den Formel-Markern vorbehalten.
+% Umstellen heisst GENAU diese eine Zeile, nie ein Kapitel:
+% \renewcommand{\ZSFkeywordStyle}[1]{\textbf{#1}}
+% \renewcommand{\ZSFlabelStyle}[1]{\textbf{#1}}
+% Dritter Marker derselben Familie: die Hervorhebung der Kernaussage.
+% \renewcommand{\ZSFhlStyle}[1]{{\bfseries #1}}
+
+% ── Grössenfarben: Farbe als Identität einer Grösse ──────────────────
+% Für Fächer, in denen dieselben Grössen über das ganze Dokument hinweg in
+% Formeln auftauchen (Kraft, Moment, Spannung, Durchmesser …).
+%
+% In den Theoriekapiteln arbeitet Analysis 2 positional mit \ZSFmhlA..D
+% innerhalb einer Herleitung — f, x, t sind Variablen und keine Grössenfamilien.
+%
+% Die Integraltabelle im Anhang ist der eine Fall, wo Identität gilt: Über
+% mehrere Dutzend Stammfunktionen hinweg bezeichnen `a` und `b` durchgehend
+% dieselben zwei freien Parameter. Wer eine Formel überträgt, muss auf einen
+% Blick sehen, welcher Parameter wo landet — genau die Zusage dieses Systems.
+% Neutrale Namen mit Absicht: In \int \frac{1}{(x-a)(x-b)} sind beide
+% gleichrangige Nullstellen, eine Benennung wie »Streckung/Verschiebung«
+% wäre dort schlicht falsch.
+\ZSFDeclareQuantity{ParameterA}{9}   % danach: \ZSFqParameterA{a}  (Himmelblau)
+\ZSFDeclareQuantity{ParameterB}{6}   % danach: \ZSFqParameterB{b}  (Grün)
+
+% ── Eigener Ton: eine wiederkehrende Farbwelt fürs Fach ──────────────
+% `tone` hat drei mitgelieferte Werte (chapter, neutral, warn). Braucht das
+% Fach eine WIEDERKEHRENDE visuelle Kategorie, die keiner davon trägt (ein
+% Beispiel-Block, ein Merksatz), ist die Antwort ein weiterer Ton — keine
+% weitere Box. Nach der Deklaration gilt `tone=beispiel` auf JEDER Box.
+% \ZSFDeclareTone{beispiel}{ ... }
+
+\input{styles/55_readability}
+
+% ── Fliesstext: Flattersatz ──────────────────────────────────────────
+% \ZSFReadableBodyOn ist der Default, weil die ~50 mm schmalen Spalten im
+% Blocksatz entweder trennen oder Wortzwischenräume aufblähen müssen.
+% \ZSFReadableBodyOff             % zurück zu Blocksatz
+
+\input{styles/60_boxes}
+\input{styles/66_index}           % opt-in: Stichwortverzeichnis
+\ZSFIndexShowPageNumbertrue       % Abschnitt · (S. Seite)
+%
+%
+%
+%
+%
+%
+%
+\ifdefined\ZSFShowcaseMode
+  \input{styles/65_code_style}
+  \input{styles/67_code_comments}
+\else
+  % \input{styles/65_code_style}    % opt-in: Informatik
+  % \input{styles/67_code_comments} % opt-in: annotierte Code-Zeilen
+\fi
+\input{styles/75_pdf_identity}
+\input{styles/70_document_settings}
+
+% Keine Umbruchsteuerung an Titelbalken in dieser ZSF: weder Platzreserven
+% noch der negative Penalty, der vor jedem Balken einen Spaltenumbruch
+% anbietet. Die Spalten laufen LaTeX-nativ voll; wo der Umbruch nicht passt,
+% steht ein \ZSFNewColumn im Kapitel. Steht hier und nicht bei den Reglern
+% oben, weil es ein Befehl ist und 60_boxes dafür geladen sein muss.
+%
+% Das Umbruchverbot direkt hinter einem Balken bleibt aktiv — ein Balken
+% bleibt weiterhin nie als letztes Element einer Spalte stehen.
+\ZSFBreakReservesOff

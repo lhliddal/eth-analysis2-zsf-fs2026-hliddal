@@ -1,0 +1,224 @@
+\StartChapter{Vektoranalysis}
+
+\SubsectionBar[sec:vektorfelder]{Skalarfeld- und Vektorfeld}
+\textVorBox{In einem \ZSFkeyword{Skalarfeld} wird jedem Punkt ein Skalar zugewiesen:}
+\begin{formulabox}
+    \ZSFformulaline{f:(x,y,z)\to f(x,y,z)}{Skalarfeld}
+\end{formulabox}
+
+\textVorBox{In einem \ZSFkeyword{Vektorfeld} wird jedem Punkt ein Vektor zugewiesen:}
+\begin{formulabox}
+    \ZSFformulaline{\vec f:(x,y,z)\to \vec v(x,y,z)}{Vektorfeld}
+\end{formulabox}
+
+Wenn $K$ eine Kurve ist, sodass $\vec v$ an jedem Punkt tangential an $K$ anliegt, dann ist $K$ eine \ZSFkeyword{Feldlinie} des Vektorfeldes.
+
+Zeitunabhängige Vektorfelder nennt man \ZSFkeyword{stationär} und solche die zeitabhängig sind \ZSFkeyword{instationär}.
+
+Wenn $\vec v(\vec r)=c\cdot\vec r$, dann ist $\vec v$ \ZSFkeyword[homogenes Vektorfeld@homogenes Vektorfeld]{homogen}. Das Feld ist radial; seine Feldlinien verlaufen auf Geraden durch den Ursprung.
+
+\SubsectionBar{Differentialoperatoren}
+\textVorBox{\ZSFkeyword[Differentialoperatoren@Differentialoperatoren]{Operatoren} wandeln Skalarfelder in Vektorfelder um und umgekehrt:}
+\ZSFfig{graphics/media/vektor_operatoren_schema.png}{}{}
+
+\textVorBox{Der Gradient ist bereits bekannt:}
+\begin{formulabox}
+    $\displaystyle \grad(f)=\begin{pmatrix}f_x\\f_y\\f_z\end{pmatrix}$
+\end{formulabox}
+\ZSFindex{Gradient}
+\ZSFindexsee{Nabla}{Differentialoperatoren}
+\textVorBox{In \ZSFkeyword{Zylinderkoordinaten} $(r,\varphi,z)$ bleibt die Struktur erhalten, die $\varphi$-Komponente erhält jedoch den Vorfaktor $\tfrac{1}{r}$:}
+\begin{formulabox}
+    $\displaystyle \grad(f)=\begin{pmatrix}f_r\\[2pt]\dfrac{1}{r}\,f_\varphi\\[2pt]f_z\end{pmatrix}
+    = f_r\,\vec e_r+\frac{1}{r}\,f_\varphi\,\vec e_\varphi+f_z\,\vec e_z$
+\end{formulabox}
+\begin{ZSFlist}
+    \ZSFItem{Für ein Skalarfeld $f$ ist $\grad(f)$ das zugehörige Vektorfeld, das sogenannte \ZSFkeyword{Gradientenfeld}.}
+\end{ZSFlist}
+
+\textVorBox{Die \ZSFkeyword{Divergenz} eines Vektorfeldes $\vec v$ gibt an, wie \textquotedbl quellenhaltig\textquotedbl{} dieses ist und berechnet sich mit:}
+\begin{formulabox}
+    $\displaystyle \divg\,\vec v
+    = \frac{\partial v_1}{\partial x} + \frac{\partial v_2}{\partial y} + \frac{\partial v_3}{\partial z}
+    = \vec\nabla\cdot\vec v$
+\end{formulabox}
+\begin{tablebox}
+\begin{ZSFtable}[header=false]{Y{0.85} Y{1.15}}
+    $\divg\,\vec v=0$ & Feld ist \ZSFkeyword{quellenfrei} \\
+    $\divg\,\vec v(P_0)>0$ & \ZSFkeyword{Quelle} in $P_0$ \\
+    $\divg\,\vec v(P_0)<0$ & \ZSFkeyword{Senke} in $P_0$
+\end{ZSFtable}
+\end{tablebox}
+
+\textVorBox{Die \ZSFkeyword{Rotation} eines Vektorfeldes $\vec v$ gibt an, wie \textquotedbl wirbelig\textquotedbl{} dieses ist und berechnet sich mit:}
+\begin{formulabox}
+    $\displaystyle \rot\,\vec v=\vec\nabla\times\vec v
+    =\begin{pmatrix}
+        v_{3,y}-v_{2,z}\\
+        v_{1,z}-v_{3,x}\\
+        v_{2,x}-v_{1,y}
+    \end{pmatrix}$
+\end{formulabox}
+\begin{ZSFlist}
+    \ZSFItem{Wenn $\rot\,\vec v=\vec 0$, dann ist das Feld \ZSFkeyword{wirbelfrei}.}
+\end{ZSFlist}
+
+In anderen Koordinatensystemen ändern sich die Formeln. Deshalb jeweils die Formel des verwendeten Koordinatensystems einsetzen.
+
+\textVorBox{Der \ZSFkeyword[Laplace-Operator@Laplace-Operator]{Laplace Operator} ist für $f:(x,y,z)\to f(x,y,z)$ und $f:(r,\varphi)\to f(r,\varphi)$ definiert durch:}
+\begin{formulabox}
+    $\displaystyle \Delta f=\divg(\grad f)=f_{xx}+f_{yy}+f_{zz}$
+
+    $\displaystyle \Delta f=\divg(\grad f)=f_{rr}+\frac{1}{r}f_r+\frac{1}{r^2}f_{\varphi\varphi}$
+\end{formulabox}
+
+\textVorBox{Weitere Identitäten lauten:}
+\begin{formulabox}
+    $\displaystyle \divg(\rot\,\vec v)=0$
+
+    $\displaystyle \rot(\grad f)=\vec 0$
+
+    $\displaystyle \divg(f\,\rot\,\vec v)=\grad f\cdot \rot\,\vec v$
+
+    $\displaystyle \divg(f\,\vec v)=f\,\divg\vec v+\grad f\cdot\vec v$
+\end{formulabox}
+
+\SubsectionBar{Flächen in Parameterdarstellung}
+\ZSFindex[Oberflache]{Oberfläche}
+\ZSFindex[Flachenparametrisierung]{Flächenparametrisierung}
+\ZSFindex{Normaleneinheitsvektor}
+\textVorBox{Sei $\tilde r:U\to A$ mit $\tilde r(u,v)=(x(u,v),y(u,v),z(u,v))$ die Parametrisierung einer Fläche $A$, dann beträgt ihr Normaleneinheitsvektor:}
+\begin{formulabox}
+    $\displaystyle \vec n(u,v)=\pm\frac{\vec r_u\times\vec r_v}{\left|\vec r_u\times\vec r_v\right|}$
+\end{formulabox}
+\textNachBox{$U$: Fläche im $uv$-Koordinatensystem. Jeder Punkt $(u,v)$ auf $U$ ergibt durch $\tilde r(u,v)$ einen Punkt auf der Fläche $A$ im Raum.
+$\vec r_u$ bedeutet, dass jeder Vektoreintrag nach $u$ abgeleitet ist. Das Vorzeichen wählt die gewünschte Seite der Fläche.}
+
+\textVorBox{Der Oberflächeninhalt der parametrisierten Fläche $A$ lautet:}
+\begin{formulabox}
+    $\displaystyle O_A=\iint_U \left|\vec r_u\times\vec r_v\right|\,du\,dv$
+\end{formulabox}
+\textNachBox{$U$: Fläche im $uv$-Koordinatensystem; $A$: daraus durch $\tilde r(u,v)$ erzeugte Fläche im Raum.}
+
+\textVorBox{Das \ZSFkeyword{skalare Oberflächenintegral} summiert eine skalare Grösse $f$ über die Fläche $A$, beispielsweise eine Flächendichte:}
+\begin{formulabox}
+    $\displaystyle \iint_A f\,dO=\iint_U f(\tilde r(u,v))\left|\vec r_u\times\vec r_v\right|\,du\,dv$
+\end{formulabox}
+\textNachBox{Für $f=1$ entsteht der Oberflächeninhalt; beim Fluss wird der Integrand durch das Skalarprodukt mit dem Normalenvektor ersetzt.}
+
+\textVorBox{Hält man einen der Parameter fest und variiert den anderen, so erhält man eine Parameterlinie.
+Sei $C$ eine parametrisierte Raumkurve $\vec r(u)=(x(u),y(u),z(u))$, so ist die Tangentialfläche an $C$:}
+\begin{formulabox}
+    $\displaystyle \tilde r(u,v)=\vec r(u)+v\vec r\,'(u)$
+\end{formulabox}
+\ZSFindex{Tangentialfläche}
+
+\ZSFNewColumn
+\SubsectionBar{Fluss}
+\textVorBox{Der \ZSFkeyword{Fluss} $\Phi$ beschreibt, wie viel Vektorfeld $\vec v$ durch eine Oberfläche $A$ fliesst:}
+\begin{formulabox}
+    \ZSFformulaline{\Phi=\iint_A \vec v\cdot\vec n\,dO}{Fluss}
+\end{formulabox}
+\textNachBox{wobei $\vec n$ der Flächennormalenvektor ist.}
+
+\textVorBox{Der Fluss durch ein homogenes, ebenes Vektorfeld durch eine ebene Fläche $A$ mit Oberflächeninhalt $O_A$ gilt:}
+\begin{formulabox}
+    \ZSFformulaline{\Phi=(\vec v\cdot\vec n)\cdot O_A}{Fluss, homogen}
+\end{formulabox}
+
+\textVorBox{Ist die Fläche $A$ durch $\tilde r:U\to A$ parametrisiert, dann gilt:}
+\begin{formulabox}
+    $\displaystyle \Phi=\iint_A \vec v\cdot\vec n\,dO
+    =\iint_U \vec v(\tilde r(u,v))\cdot\ZSFbraceunder{\pm(\vec r_u\times\vec r_v)}{$d\vec O=\vec n\,dO$}\,du\,dv$
+\end{formulabox}
+\textNachBox{Links wird direkt über die Fläche $A$ im Raum integriert. Rechts wird über die Fläche $U$ im $uv$-Koordinatensystem integriert; $\tilde r(u,v)$ erzeugt daraus dieselben Punkte auf $A$. $\pm$ so wählen, dass $\pm[\vec r_u\times\vec r_v]$ und $\vec n$ gleich orientiert sind.}
+
+\textVorBox{Der \ZSFkeyword{Divergenzsatz von Gauss} besagt, dass ein stetig differenzierbares Vektorfeld (Komponenten sind differenzierbar und die Ableitungen stetig) in einem beschränkten Volumen $V\subset D(\vec v)$ mit Rand $\partial V$ von innen nach aussen den Fluss besitzt:}
+\ZSFindexsee{Gauss}{Divergenzsatz von Gauss}
+\ZSFindexsee{Satz von Gauss}{Divergenzsatz von Gauss}
+\begin{formulabox}
+    $\displaystyle \Phi=\ZSFbraceunder{\ZSFmhlA{\iint_{\partial V}\vec v\cdot\vec n\,dO}}{Fluss durch Rand $\partial V$}=\ZSFbraceunder{\ZSFmhlB{\iiint_V \divg\,\vec v\,dV}}{Quellen im Volumen $V$}$
+\end{formulabox}
+\textNachBox{\ZSFdanger{Achtung:} z.B. nicht anwendbar bei einer Kugel im Ursprung mit $D(\vec v)=\R^3\setminus\{(0,0,0)\}$.}
+
+\textVorBox{Für einen geschlossenen Körper $V$ mit Oberflächenstücken $A_1$ und $A_2$ gilt:}
+\begin{formulabox}
+    $\displaystyle \ZSFmhlB{\iiint_V \divg\,\vec v\,dV}=\ZSFmhlA{\iint_{A_1\cup A_2}\vec v\cdot\vec n\,dO}
+    =\ZSFmhlA{\iint_{A_1} \vec v\cdot\vec n\,dO}+\ZSFmhlA{\iint_{A_2} \vec v\cdot\vec n\,dO}$
+\end{formulabox}
+\textNachBox{$V$: Körper bzw. sein Volumen; $A_1,A_2$: Teile seines Randes; $\vec n$: jeweils nach aussen.}
+
+\SubsectionBar{Arbeit}
+\ZSFindexsee{Kurvenintegral}{Arbeit}
+\ZSFindexsee{Linienintegral}{Arbeit}
+\textVorBox{Die \ZSFkeyword{Arbeit} $W$ eines ebenen homogenen Vektorfelds $\vec v$ entlang eines Weges $C$ der Länge $L$ beträgt:}
+\begin{formulabox}
+    \ZSFformulaline{W=|\vec v|L\cos(\alpha)}{Arbeit}
+\end{formulabox}
+\textNachBox{wobei $\alpha$ der Winkel zwischen $\vec v$ und $C$ ist.}
+
+\textVorBox{In Integralform lässt sich diese wie folgt darstellen:}
+\begin{formulabox}
+    \ZSFformulaline{W=\int_C\vec v\cdot d\vec r}{Arbeit}
+\end{formulabox}
+\textNachBox{$C$: Weg, entlang dessen integriert wird.}
+
+\textVorBox{Ist der Weg nicht geschlossen, so kann man mit $\vec r(t)$ und $t\in[t_1,t_2]$ parametrisieren:}
+\begin{formulabox}
+    $\displaystyle W=\int_{t_1}^{t_2}\vec v(\vec r(t))\cdot\dot{\vec r}(t)\,dt$
+\end{formulabox}
+
+\textVorBox{Der \ZSFkeyword{Satz von Stokes} besagt, dass für ein stetig differenzierbares Vektorfeld $\vec v$ und eine beschränkte Fläche $A$ mit Rand $\partial A$ gilt:}
+\ZSFindexsee{Stokes}{Satz von Stokes}
+\begin{formulabox}
+    $\displaystyle
+    W=
+    \ZSFbraceunder{\ZSFmhlA{\int_{\partial A}\vec v\cdot d\vec r}}{Arbeit / Umlauf entlang Randkurve}
+    =
+    \ZSFbraceunder{\ZSFmhlB{\iint_A \rot\,\vec v\cdot\vec n\,dO}}{Fluss von $\rot\,\vec v$ durch $A$}$
+\end{formulabox}
+\textNachBox{$\vec n$ ist normiert und so orientiert, dass $\partial A$ bezüglich $\vec n$ im Gegenuhrzeigersinn durchlaufen wird (rechte Hand Regel).}
+
+\textVorBox{Ist $\rot\,\vec v\cdot\vec n$ konstant und $O_A$ der Oberflächeninhalt von $A$, so gilt:}
+\begin{formulabox}
+    $\displaystyle W=\ZSFmhlB{(\rot\,\vec v\cdot\vec n)\,O_A}$
+\end{formulabox}
+
+\ZSFfig{graphics/media/stokes_skizze.png}{}{}
+
+\SubsectionBar{Konservative Vektorfelder, Potential}
+\ZSFindex{Wegunabhängigkeit}
+Ein Vektorfeld ist \ZSFkeyword{konservativ}, wenn die Arbeit aller möglichen Wege zwischen zwei Punkten gleich ist, unabhängig vom gewählten Weg.
+
+\begin{ZSFlist}[Charakterisierungen konservativer Felder]
+    \ZSFItem{Arbeit entlang aller geschlossenen Wege $\displaystyle \oint_C \vec v\cdot d\vec r=0$.}
+    \ZSFItem{Vektorfeld ist ein \ZSFkeyword{Potentialfeld}.}
+\end{ZSFlist}
+
+Ein \ZSFkeyword{Potentialfeld} ist ein Vektorfeld der Form $\vec v=\grad(f)$ mit Potential $f$.
+
+\begin{ZSFlist}[Eigenschaften von Potentialfeldern]
+    \ZSFItem{Für zwei Punkte $P,Q$: Arbeit $W=f(Q)-f(P)$.}
+    \ZSFItem{Wirbelfrei: $\rot\,\vec v=\vec 0$.}
+\end{ZSFlist}
+
+\begin{ZSFlist}[Vorgehen: Potential $f$ bestimmen][ordered]
+    \ZSFItem{Prüfung}{$\rot\,\vec v = \vec 0$ auf einfach zusammenhängendem $D(\vec v)$ prüfen.}
+    \ZSFItem{1. Integration}{$f(x,y,z) = \int v_1 \dd x + C(y,z)$ ansetzen.}
+    \ZSFItem{1. Abgleich}{$f_y \stackrel{!}{=} v_2 \Rightarrow C_y$ bestimmen und zu $C(y,z) = \int C_y \dd y + D(z)$ integrieren.}
+    \ZSFItem{2. Abgleich}{$f_z \stackrel{!}{=} v_3 \Rightarrow D'(z)$ bestimmen und zu $D(z) = \int D'(z) \dd z + c$ integrieren.}
+\end{ZSFlist}
+\ZSFindex{Potentialbestimmung}
+
+\ZSFdanger{Achtung:} Wirbelfreie Vektorfelder sind umgekehrt nur dann Potentialfelder, wenn $D(\vec v)$ \ZSFkeyword{einfach zusammenhängend} ist.
+
+\textVorBox{Eine Menge $M$ ist \ZSFkeyword{einfach zusammenhängend}, wenn sich alle Wege in $M$ auf einen Punkt zusammenziehen lassen, ohne dass $M$ verlassen werden muss:}
+\begin{tablebox}
+\begin{ZSFtable}[header=false]{Y{0.2} Z{1.8}}
+    $\checkmark$ & $\R^2$, $\R^3$, $\R^3\setminus\{\text{Punkt}\}$, Kugeloberfläche, $\R^3\setminus\{\text{gefüllte Kugel}\}$, konvexer gefüllter Körper \\
+    $\times$ & $\R^3\setminus\{\text{Gerade}\}$, Torus, $\R^2\setminus\{\text{Punkt}\}$
+\end{ZSFtable}
+\end{tablebox}
+
+\textVorBox{\ZSFdanger{Achtung:} Für ein Potentialfeld gilt stets $\rot\,\vec v=\vec 0$. Umgekehrt folgt aus $\rot\,\vec v=\vec 0$ nur bei einfach zusammenhängendem $D(\vec v)$ wieder ein Potentialfeld.}
+\ZSFfig{graphics/media/potentialfeld_schema.png}{}{}

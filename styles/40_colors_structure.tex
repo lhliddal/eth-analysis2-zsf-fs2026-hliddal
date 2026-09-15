@@ -1,0 +1,646 @@
+% ============================================================
+% 40_colors_structure.tex — Farbpaletten & Kapitel-Orchestrierung
+% ============================================================
+
+% ------------------------------------------------------------
+% Index-Palette (18 Slots, kuratiert fuer 3-Fenster-Kontrast)
+% ------------------------------------------------------------
+% Reihenfolge: ETH-Signaturfarben zuerst, danach global distanzierte
+% Zusatzfarben. Benachbarte Kapitel (Abstand 1 UND 2) bleiben deutlich
+% unterscheidbar; globale Fast-Dopplungen werden vermieden, soweit es mit
+% 18 kontraststarken Slots und fixierten ETH-Seeds sinnvoll moeglich ist.
+% Alle Vollfarben sind dunkel genug fuer farbige Querverweise auf Weiss;
+% die *Text-Tokens halten Balkentext austauschbar.
+% Slot 0 ist reserviert fuer den Frontchapter (\StartFrontChapter) -- ETH-Blau.
+% Niemals ChapterColor* in Kapiteldateien hart-coden; über \chaptercolor /
+% \chaptercolorlight / \chaptercolortext referenzieren.
+\definecolor{ChapterColor0}{HTML}{215CAF}       % ETH Blue
+\definecolor{ChapterColor0Light}{HTML}{CEDBED}
+\definecolor{ChapterColor0Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor1}{HTML}{6E3B6E}       % ETH Purple
+\definecolor{ChapterColor1Light}{HTML}{DFD4DF}
+\definecolor{ChapterColor1Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor2}{HTML}{5A7F2B}       % ETH Green
+\definecolor{ChapterColor2Light}{HTML}{DBE3D0}
+\definecolor{ChapterColor2Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor3}{HTML}{8C6239}       % ETH Bronze
+\definecolor{ChapterColor3Light}{HTML}{E6DCD3}
+\definecolor{ChapterColor3Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor4}{HTML}{007894}       % ETH Petrol
+\definecolor{ChapterColor4Light}{HTML}{C7E1E7}
+\definecolor{ChapterColor4Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor5}{HTML}{B7352D}       % ETH Red
+\definecolor{ChapterColor5Light}{HTML}{EFD3D1}
+\definecolor{ChapterColor5Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor6}{HTML}{23523B}       % Dark Spruce
+\definecolor{ChapterColor6Light}{HTML}{CFD9D4}
+\definecolor{ChapterColor6Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor7}{HTML}{8F2459}       % Raspberry
+\definecolor{ChapterColor7Light}{HTML}{E6CFDA}
+\definecolor{ChapterColor7Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor8}{HTML}{17205E}       % Midnight Blue
+\definecolor{ChapterColor8Light}{HTML}{CCCEDC}
+\definecolor{ChapterColor8Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor9}{HTML}{2D8659}       % Emerald
+\definecolor{ChapterColor9Light}{HTML}{D1E4DA}
+\definecolor{ChapterColor9Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor10}{HTML}{523523}      % Walnut
+\definecolor{ChapterColor10Light}{HTML}{D9D3CF}
+\definecolor{ChapterColor10Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor11}{HTML}{8F2481}      % Orchid
+\definecolor{ChapterColor11Light}{HTML}{E6CFE3}
+\definecolor{ChapterColor11Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor12}{HTML}{1D581D}      % Deep Green
+\definecolor{ChapterColor12Light}{HTML}{CDDACD}
+\definecolor{ChapterColor12Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor13}{HTML}{5E1720}      % Oxblood
+\definecolor{ChapterColor13Light}{HTML}{DCCCCE}
+\definecolor{ChapterColor13Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor14}{HTML}{4C248F}      % Violet
+\definecolor{ChapterColor14Light}{HTML}{D8CFE6}
+\definecolor{ChapterColor14Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor15}{HTML}{233552}      % Slate Navy
+\definecolor{ChapterColor15Light}{HTML}{CFD3D9}
+\definecolor{ChapterColor15Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor16}{HTML}{207E73}      % Sea Teal
+\definecolor{ChapterColor16Light}{HTML}{CEE3E0}
+\definecolor{ChapterColor16Text}{HTML}{FFFFFF}
+\definecolor{ChapterColor17}{HTML}{58581D}      % Olive Brown
+\definecolor{ChapterColor17Light}{HTML}{DADACD}
+\definecolor{ChapterColor17Text}{HTML}{FFFFFF}
+
+% ------------------------------------------------------------
+% Code-Farben — nur für das optionale Code-Modul
+% (styles/65_code_style.tex + 67_code_comments.tex) benötigt.
+% Schadlos wenn das Modul in preamble.tex deaktiviert ist.
+% ------------------------------------------------------------
+\definecolor{ce_yellow}{rgb}{0.8,0.6,0.1}
+\definecolor{ce_pink}{rgb}{0.8,0.1,0.3}
+% Vordergrundfarbe des Code-Blocks. Nach ihrer Rolle benannt wie code_bg und
+% code_rule — der Block ist hell, ein Token namens "white" fuer die Textfarbe
+% darauf beschreibt das Gegenteil dessen, was er tut.
+\definecolor{code_fg}{rgb}{0,0,0}
+\definecolor{ce_green}{rgb}{0.0,0.4,0.1}
+\definecolor{code_bg}{HTML}{F4F4F6}
+\definecolor{code_rule}{HTML}{D8D8DE}
+
+% ------------------------------------------------------------
+% Warn- und Semantik-Farben
+% ------------------------------------------------------------
+\definecolor{ETHRot}{HTML}{CC0000}
+\colorlet{WarnboxBack}{ETHRot!15}
+% Weicher Rahmen des Warn-Tons. Eigener Wert statt des Kapitelrahmens: sonst
+% ist der Warn-Ton der einzige, dessen Rahmen der Kapitelfarbe folgt — eine
+% Warnbox sähe damit in jedem Kapitel anders umrandet aus.
+\colorlet{WarnboxFrame}{ETHRot!25}
+
+% Semantisches Formel-Highlighting (kapitelunabhängig, siehe \ZSFmhlA/B/C/D).
+% Dedizierte Farben -- bewusst NICHT aus der Kapitelrotation (ChapterColorN), sonst
+% Kollision mit der Kapitel-Identitaetsfarbe (Section 3 = Orange, Section 4 = Teal).
+\definecolor{MathHLPrimary}{HTML}{00796B}    % Teal    -- Quelle / gegeben / erster Strang
+\definecolor{MathHLSecondary}{HTML}{C2410C}  % Orange  -- Gegenstueck / abgeleitet / zweiter Strang
+\definecolor{MathHLTertiary}{HTML}{A50D68}   % Magenta -- dritter paralleler Strang (sparsam)
+\definecolor{MathHLTarget}{HTML}{1D4ED8}     % Blau    -- Ziel / Endform / Resultat
+
+% Text-Box-Bindungen
+\definecolor{TextVorBoxColor}{HTML}{0A0A1E}   % sehr dunkles Blau (einleitend)
+\definecolor{TextNachBoxColor}{HTML}{0A1A0A}  % sehr dunkles Grün (ergänzend)
+
+% Statische, kapitelunabhängige Box-Farben (Slate-Palette aehnlich Tailwind)
+\definecolor{StaticBoxTitleBack}{HTML}{E2E8F0}
+\definecolor{StaticBoxTitleText}{HTML}{0F172A}
+\definecolor{StaticSubBoxBack}{HTML}{F8FAFC}
+\definecolor{StaticSubBoxBorder}{HTML}{CBD5E1}
+% Betonte Fläche des neutralen und des Warn-Tons — die Gegenstücke zu
+% \FormulaboxBackColor im Kapitelton. Jede Flächen-Rolle muss in jedem Ton
+% definiert sein, sonst faellt eine Kombination auf die Farbe eines fremden
+% Tons zurueck (dieselbe Begruendung wie bei den drei Rahmenstaerken unten).
+\colorlet{StaticEmphasisBack}{StaticBoxTitleBack!40}
+\colorlet{WarnboxEmphasisBack}{ETHRot!22}
+\colorlet{FormulaSeparatorColor}{black!30}
+\colorlet{MutedTextColor}{black!60}
+\colorlet{IdentityMarkerColor}{black!10}
+\colorlet{ReleaseFooterColor}{black}
+% Seitenzahl im Footer — eigener Token neben der Release-Kennung, damit beide
+% Footer-Elemente unabhaengig einstellbar sind statt eines davon roh auf black.
+\colorlet{ZSFPageNumberColor}{black}
+% Link- und URL-Farbe. Als Rolle benannt statt als Palettenindex: "Linkfarbe"
+% ist eine Entscheidung, "ChapterColor0" ist ein Slot der Kapitelrotation.
+\colorlet{ZSFLinkColor}{ChapterColor0}
+\colorlet{ZSFUrlColor}{ChapterColor4}
+\colorlet{DangerTagColor}{red!80!black}
+\newcommand{\DangerTagTextColor}{white}
+
+% ------------------------------------------------------------
+% Ink-Vertrag — wem gehoert die Farbe an dieser Stelle?
+% ------------------------------------------------------------
+% Farbtragende Inline-Makros (\ZSFref, \ZSFkeyword, \ZSFmhl*, die
+% Groessenfarben aus 10_math) setzen ihre Farbe nicht selbst, sondern durch
+% \ZSFInk. Das ist die EINE Stelle, an der entschieden wird, ob eine
+% Inline-Farbe ueberhaupt angewendet wird.
+%
+% Der Grund ist eine stille Fehlerart: Auf einer gesaettigten Flaeche, die
+% ihre eigene Kontrastfarbe setzt (Kapitel-, Abschnitts-, Unterabschnittsbalken,
+% Tabellenkopf, Boxtitel, Dokumenttitel), steht eine Inline-Farbe entweder
+% unlesbar auf der Flaeche oder ueberschreibt den Kontrast. Der Build meldet
+% nichts, der Linter auch nicht, und die Box sieht fuer sich plausibel aus.
+% Belegt an zwei realen Faellen: \ZSFref loest auf ChapterColorN auf, waehrend
+% \SubsectionBarColor \chaptercolor!75 ist — derselbe Farbton bei voller
+% Saettigung; und gefaerbte Mathematik im Balkentitel verliert denselben Weg.
+%
+% Das Kriterium ist bewusst EINES und aus dem Code ablesbar, damit es keine
+% Einzelfallabwaegung braucht:
+%
+%   Jede Flaeche, die ihre eigene Kontrast-Textfarbe setzt, besitzt die Farbe.
+%
+% Wo das gilt, steht \ZSFInkOwned direkt neben dem \color/\textcolor, das den
+% Kontrast setzt — nicht an einer entfernten Stelle, wo es beim naechsten
+% Eingriff vergessen wird.
+%
+% Und weil es dort steht, kann es die Farbe FESTHALTEN statt sie nur zu
+% beanspruchen: \ZSFInk setzt sie im Inneren erneut. Das ist der Unterschied
+% zwischen "erbt die Kontrastfarbe" und "setzt keine eigene Farbe" — und
+% zwischen den beiden liegt ein realer Fehler:
+%
+%   Nichts zu setzen erbt nur dann die Flaechenfarbe, wenn zwischen Flaeche und
+%   Marker niemand sonst faerbt. \hyperref tut aber genau das: Es legt in jedem
+%   Link seine linkcolor an. Ein \ZSFref im Titel eines Kapitelbalkens stand
+%   deshalb BLAU auf gesaettigtem Grund — also genau die Unlesbarkeit, gegen
+%   die der Vertrag geschrieben wurde, und ohne Fehler oder Warnung.
+%
+% Festgehalten wird der Farbwert selbst (\current@color), nicht ein Farbname:
+% Die Flaechen setzen ihre Kontrastfarbe ueber verschiedene Wege (\textcolor,
+% \color, tcolorbox' coltitle), und nur der Wert ist an allen dreien derselbe.
+% Deshalb braucht keine einzige Aufrufstelle ein Argument.
+%
+% Gruppenlokal: Balken und Titel sind tcolorbox-Gruppen, der Schalter faellt
+% mit ihnen zurueck. Ein manueller Reset, den man vergessen kann, existiert
+% deshalb nicht — und genau deshalb steht hier auch keiner mehr. Es gab ein
+% \ZSFInkFree, das den Schalter von Hand zuruecknahm: nirgends benutzt,
+% nirgends dokumentiert, und es widersprach dem Satz eine Zeile darueber.
+\makeatletter
+\newif\ifZSF@inkOwned
+\ZSF@inkOwnedfalse
+\let\ZSF@inkOwnedColor\current@color
+\newcommand{\ZSFInkOwned}{%
+  \ZSF@inkOwnedtrue
+  \let\ZSF@inkOwnedColor\current@color
+}
+\newcommand{\ZSFInk}[2]{{%
+  \ifZSF@inkOwned
+    \let\current@color\ZSF@inkOwnedColor\set@color
+  \else
+    \color{#1}%
+  \fi
+  #2}}
+\makeatother
+
+% ------------------------------------------------------------
+% Groessenfarben — Farbe als Identitaet, nicht als Position
+% ------------------------------------------------------------
+% Diese Palette ist das Gegenstueck zu MathHLPrimary/Secondary/Tertiary/Target
+% oben. Die vier dort sind POSITIONAL ("Quelle", "Gegenstueck", "Ziel") und
+% gelten innerhalb EINER Herleitung. Diese hier sind IDENTITAET: ein Slot
+% gehoert im ganzen Dokument derselben fachlichen Groesse, damit man beim
+% Zusammensetzen einer Formel sieht, welche Groesse wo landet, ohne nachzulesen.
+%
+% Vergeben werden die Slots pro ZSF ueber \ZSFDeclareQuantity (10_math); hier
+% stehen nur die Farben. Zwoelf sind bewusst die Obergrenze: Darueber hinaus
+% sind Farben bei 8pt nicht mehr zuverlaessig unterscheidbar, und eine Palette,
+% die man nicht auseinanderhalten kann, kostet Lesezeit statt sie zu sparen.
+% Der Deklarations-Zaehler laeuft deshalb in einen Fehler und nicht in einen
+% stillen Umlauf.
+%
+% Auswahlkriterium: als TEXT bei 8pt lesbar (also durchweg dunkel) und
+% paarweise unterscheidbar — nicht "schoene Palette". Nachbarn im Farbkreis
+% sind absichtlich ausgelassen.
+\definecolor{ZSFQuantityColor1}{HTML}{B3261E}   % Rot
+\definecolor{ZSFQuantityColor2}{HTML}{1D4ED8}   % Blau
+\definecolor{ZSFQuantityColor3}{HTML}{0F766E}   % Petrol
+\definecolor{ZSFQuantityColor4}{HTML}{B45309}   % Amber
+\definecolor{ZSFQuantityColor5}{HTML}{6D28D9}   % Violett
+\definecolor{ZSFQuantityColor6}{HTML}{15803D}   % Gruen
+\definecolor{ZSFQuantityColor7}{HTML}{BE185D}   % Magenta
+\definecolor{ZSFQuantityColor8}{HTML}{334155}   % Schiefer
+\definecolor{ZSFQuantityColor9}{HTML}{0284C7}   % Himmelblau
+\definecolor{ZSFQuantityColor10}{HTML}{7C2D12}  % Rostbraun
+\definecolor{ZSFQuantityColor11}{HTML}{4D7C0F}  % Oliv
+\definecolor{ZSFQuantityColor12}{HTML}{9333EA}  % Purpur
+\newcommand{\ZSFQuantityPaletteSize}{12}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+\newcommand{\ZSF@quantityOwner}[1]{\csname ZSF@qslot@#1\endcsname}
+\newcommand{\ZSFDeclareQuantity}[2]{%
+  \ifnum#2<1\relax
+    \PackageError{ZSF}{Groessen-Slot #2 liegt unter 1}%
+      {Gueltig sind 1..\ZSFQuantityPaletteSize.}%
+  \else
+    \ifnum#2>\ZSFQuantityPaletteSize\relax
+      \PackageError{ZSF}{Groessen-Slot #2 existiert nicht}%
+        {Die Palette hat \ZSFQuantityPaletteSize\space Slots. Mehr Farben sind
+         in der Satzgroesse der ZSF nicht mehr zuverlaessig unterscheidbar;
+         eine weitere Groesse braucht deshalb keinen neuen Slot, sondern die
+         Entscheidung, welche Groesse die Farbe wirklich braucht.}%
+    \else
+      \@ifundefined{ZSF@qslot@#2}{}{%
+        \PackageError{ZSF}{Groessen-Slot #2 ist schon an
+          '\ZSF@quantityOwner{#2}' vergeben}%
+          {Eine Farbe gehoert genau einer Groesse — sonst sind zwei Groessen
+           gleich eingefaerbt und die Farbe sagt nichts mehr aus. Einen freien
+           Slot waehlen oder die vorhandene Deklaration aendern.}%
+      }%
+      \expandafter\gdef\csname ZSF@qslot@#2\endcsname{#1}%
+      \expandafter\newcommand\csname ZSFq#1\endcsname[1]{%
+        \ifZSFQuantityColors\ZSFInk{ZSFQuantityColor#2}{##1}\else##1\fi}%
+    \fi
+  \fi
+}
+\makeatother
+% Globaler Hauptschalter — eine der wenigen Entscheidungen pro ZSF
+% (preamble.tex). Aus, wenn die ZSF in S/W gedruckt wird oder das Fach keine
+% Groessen-Identitaet braucht: die Deklarationen bleiben stehen, nur die Farbe
+% entfaellt. Getrennt vom Ink-Vertrag, weil der KONTEXTBEZOGEN ist (diese
+% Flaeche besitzt die Farbe) und dieser hier DOKUMENTWEIT.
+\newif\ifZSFQuantityColors
+\ZSFQuantityColorstrue
+\newcommand{\ZSFQuantityColorsOn}{\ZSFQuantityColorstrue}
+\newcommand{\ZSFQuantityColorsOff}{\ZSFQuantityColorsfalse}
+
+% ------------------------------------------------------------
+% Dokumenttitel-Masthead: bewusst unabhängig von der Kapitelrotation.
+\colorlet{ZSFDocumentTitleBarColor}{ChapterColor0}
+\colorlet{ZSFDocumentTitleTextColor}{ChapterColor0Text}
+\colorlet{ZSFDocumentTitleBylineColor}{ChapterColor0Text!88}
+
+% Aktive Kapitelfarben (per Kapitel-Index automatisch umgeschaltet)
+% ------------------------------------------------------------
+\newcommand{\chaptercolor}{ChapterColor1}
+\newcommand{\chaptercolorlight}{ChapterColor1Light}
+\newcommand{\chaptercolortext}{ChapterColor1Text}
+\newcommand{\ChapterBarColor}{\chaptercolor}
+\newcommand{\ChapterBarTextColor}{\chaptercolortext}
+% Gleicher Farbton wie das Kapitel, aber eine Stufe heller: sichtbare
+% Unterhierarchie bei beibehaltener weisser Schrift.
+\newcommand{\SubsectionBarColor}{\chaptercolor!75}
+\newcommand{\SubsectionBarTextColor}{\chaptercolortext}
+\newcommand{\SubsubsectionBarColor}{\chaptercolorlight!78!white}
+\newcommand{\SubsubsectionTitleColor}{\chaptercolor!72!black}
+\newcommand{\FormulaboxBackColor}{\chaptercolorlight!40}
+\newcommand{\TableZebraColor}{\chaptercolorlight!70}
+% Skriptverweis (\ZSFScriptRef): steht IM Boxinhalt, nicht auf einem Balken.
+% Deshalb der Ton für dezente Anmerkungen und nicht \ChapterBarTextColor —
+% der ist die Kontrastfarbe des Balkens und damit Weiss; auf der hellen
+% Boxfläche wäre der Verweis unsichtbar, ohne dass etwas meldet.
+\newcommand{\ScriptRefColor}{MutedTextColor}
+
+\newcommand{\BoxTitleColor}{\chaptercolorlight}
+\newcommand{\BoxTitleTextColor}{TextVorBoxColor}
+\newcommand{\BoxBackColor}{\chaptercolorlight!8}
+\newcommand{\BoxFrameColor}{\chaptercolorlight!25}
+% Ungetönter Boxhintergrund (tablebox, goalbox, valuegrid, leise Boxen,
+% codebox). Als Token statt als literalem "white" in jeder Box-Definition:
+% der Grundton aller ungetönten Boxen hängt damit an einer Zeile.
+\newcommand{\BoxPlainBackColor}{white}
+
+% Warn-Box — die einzige semantisch gefärbte Box. Ihre Farben standen bisher
+% roh in der Box-Definition und waren dadurch weder auffindbar noch mit den
+% übrigen Box-Tokens gemeinsam verstellbar.
+\newcommand{\WarnboxBackColor}{WarnboxBack}
+\newcommand{\WarnboxTitleColor}{ETHRot}
+\newcommand{\WarnboxTitleTextColor}{white}
+
+% Zielketten-Bedingung trägt bewusst eine harte Kontur statt des dezenten
+% Kapitelrahmens; auch das ist eine Gestaltungsentscheidung und gehört
+% deshalb hierher, nicht in styles/60_boxes.tex. Die Farben der Kette stehen
+% weiter unten bei den Tönen — sie lesen deren Rollen.
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+% Die Live-Landepunkte. Eine Box liest sie; welcher Ton sie zuletzt gefuellt
+% hat, entscheidet die Optionsliste. Sie stehen hier und nicht in 60_boxes,
+% weil sie Farben tragen.
+\newcommand{\ZSFtoneAccent}{}
+\newcommand{\ZSFtoneLoudBack}{}
+\newcommand{\ZSFtoneQuietBack}{}
+\newcommand{\ZSFtoneEmphasisBack}{}
+\newcommand{\ZSFtoneFrameSoft}{}
+\newcommand{\ZSFtoneFrameStrong}{}
+\newcommand{\ZSFtoneFrameHard}{}
+% Die neun Rollen — EINE Liste, aus der die Pruefung laeuft. Eine zehnte Rolle
+% einzufuehren heisst: hier eintragen, den Schluessel darunter ergaenzen, und
+% jede vorhandene Deklaration meldet sich, bis sie die Rolle besetzt.
+\newcommand{\ZSF@toneRoles}{%
+  accent,titleback,titletext,loudback,quietback,emphasisback,%
+  framesoft,framestrong,framehard}
+\pgfkeys{
+  /zsf/tone/.is family, /zsf/tone,
+  accent/.store in=\ZSF@tone@accent,
+  titleback/.store in=\ZSF@tone@titleback,
+  titletext/.store in=\ZSF@tone@titletext,
+  loudback/.store in=\ZSF@tone@loudback,
+  quietback/.store in=\ZSF@tone@quietback,
+  emphasisback/.store in=\ZSF@tone@emphasisback,
+  framesoft/.store in=\ZSF@tone@framesoft,
+  framestrong/.store in=\ZSF@tone@framestrong,
+  framehard/.store in=\ZSF@tone@framehard,
+  % Alle Rollen leeren — so ist "nicht gesetzt" von "vom Vorgaenger geerbt"
+  % unterscheidbar. Ohne das Leeren erbte ein unvollstaendiger Ton still die
+  % Farbe des zuvor deklarierten.
+  ZSF@toneClear/.style={accent=,titleback=,titletext=,loudback=,quietback=,
+    emphasisback=,framesoft=,framestrong=,framehard=},
+}
+\newcommand{\ZSF@toneName}{}
+\newcommand{\ZSF@toneCheck}[1]{%
+  \expandafter\ifx\csname ZSF@tone@#1\endcsname\@empty
+    \PackageError{ZSF}{Ton '\ZSF@toneName' laesst die Rolle '#1' offen}%
+      {Ein Ton muss alle neun Rollen besetzen (\ZSF@toneRoles). Eine offene
+       Rolle faellt auf die Farbe eines fremden Tons zurueck und sieht im PDF
+       wie eine gueltige Einfaerbung aus.}%
+  \fi
+}
+% \ZSFDeclareTone{<Name>}{<Rolle=Farbe, ...>} legt den Ton an und macht ihn
+% als `tone=<Name>` auf jeder Box verfuegbar.
+%
+% Die Rollen werden per \let in die Live-Makros kopiert, nicht per \edef
+% eingesetzt: \chaptercolor muss ungeloest bleiben, sonst truege der Ton die
+% Farbe des Kapitels, in dem er DEKLARIERT wurde, statt der des Kapitels, in
+% dem er benutzt wird.
+\newcommand{\ZSF@toneOpts}{}
+\newcommand{\ZSF@toneTmp}{}
+% Die Rollen eines Tons in die Live-Makros kopieren. Die EINE Stelle, an der
+% Rollenname und Landepunkt einander zugeordnet sind — der erzeugte Stil und
+% der Dokument-Default benutzen beide diesen Helfer.
+\newcommand{\ZSF@toneApply}[1]{%
+  \expandafter\let\expandafter\ZSFtoneAccent
+    \csname ZSF@tone@#1@accent\endcsname
+  \expandafter\let\expandafter\ZSFtoneLoudBack
+    \csname ZSF@tone@#1@loudback\endcsname
+  \expandafter\let\expandafter\ZSFtoneQuietBack
+    \csname ZSF@tone@#1@quietback\endcsname
+  \expandafter\let\expandafter\ZSFtoneEmphasisBack
+    \csname ZSF@tone@#1@emphasisback\endcsname
+  \expandafter\let\expandafter\ZSFtoneFrameSoft
+    \csname ZSF@tone@#1@framesoft\endcsname
+  \expandafter\let\expandafter\ZSFtoneFrameStrong
+    \csname ZSF@tone@#1@framestrong\endcsname
+  \expandafter\let\expandafter\ZSFtoneFrameHard
+    \csname ZSF@tone@#1@framehard\endcsname
+}
+\newcommand{\ZSFDeclareTone}[2]{%
+  \def\ZSF@toneName{#1}%
+  % \pgfkeys@spdef streift fuehrende Leerzeichen ab. Noetig, weil eine
+  % mehrzeilige Deklaration mit dem Zeilenumbruch nach der oeffnenden Klammer
+  % beginnt und pgfkeys nur nach einem KOMMA selbst abstreift, nicht am
+  % Listenanfang: Der erste Schluessel hiesse sonst ' accent' und wuerde als
+  % unbekannt gemeldet. Nachgemessen an einer Minimalprobe, nicht vermutet.
+  \pgfkeys@spdef\ZSF@toneOpts{#2}%
+  \edef\ZSF@toneOpts{/zsf/tone,ZSF@toneClear,%
+    \unexpanded\expandafter{\ZSF@toneOpts}}%
+  \expandafter\pgfkeys\expandafter{\ZSF@toneOpts}%
+  \expandafter\@for\expandafter\ZSF@toneRole\expandafter:\expandafter=%
+    \ZSF@toneRoles\do{\expandafter\ZSF@toneCheck\expandafter{\ZSF@toneRole}}%
+  % Die Rollenwerte unter den Ton-Namen ablegen. Der Umweg ueber \ZSF@toneTmp
+  % ist noetig, weil \let sonst das Literal \csname zugewiesen bekaeme statt
+  % des Makros, das es erzeugt — der Rest der Zeile liefe dann als Text weiter.
+  \expandafter\@for\expandafter\ZSF@toneRole\expandafter:\expandafter=%
+    \ZSF@toneRoles\do{%
+      \expandafter\let\expandafter\ZSF@toneTmp
+        \csname ZSF@tone@\ZSF@toneRole\endcsname
+      \expandafter\global\expandafter\let
+        \csname ZSF@tone@#1@\ZSF@toneRole\endcsname\ZSF@toneTmp}%
+  \tcbset{tone/#1/.style={
+    colbacktitle=\csname ZSF@tone@#1@titleback\endcsname,
+    coltitle=\csname ZSF@tone@#1@titletext\endcsname,
+    /utils/exec={\ZSF@toneApply{#1}}}}%
+}
+\makeatother
+\tcbset{tone/.is choice}
+
+% Die drei mitgelieferten Toene. Jede Zeile ist eine Farbentscheidung, keine
+% Mechanik — die Mechanik steht einmal darueber.
+%
+%   chapter  folgt der Kapitelfarbe (Default)
+%   neutral  kapitelunabhaengig grau — fuer Boxen, die bewusst NICHT zum
+%            Kapitel gehoeren (Meta-Hinweise, Konventionen, Legenden)
+%   warn     rote Kopfzeile (die warnbox verwendet genau diesen Ton)
+%
+% `quietback` im Kapitelton ist bewusst ungetoent: Die leise Box soll dezent
+% bleiben und sich nicht der Titelbox angleichen. Erst ein bewusst gewaehlter
+% Ton faerbt sie, und genau dann ist die Faerbung das Signal.
+\ZSFDeclareTone{chapter}{
+  accent       = \chaptercolor,
+  titleback    = \BoxTitleColor,
+  titletext    = \BoxTitleTextColor,
+  loudback     = \BoxBackColor,
+  quietback    = \BoxPlainBackColor,
+  emphasisback = \FormulaboxBackColor,
+  framesoft    = \BoxFrameColor,
+  framestrong  = \BoxTitleColor,
+  framehard    = black,
+}
+\ZSFDeclareTone{neutral}{
+  accent       = StaticBoxTitleText,
+  titleback    = StaticBoxTitleBack,
+  titletext    = StaticBoxTitleText,
+  loudback     = StaticSubBoxBack,
+  quietback    = StaticSubBoxBack,
+  emphasisback = StaticEmphasisBack,
+  framesoft    = StaticSubBoxBorder,
+  framestrong  = StaticBoxTitleText,
+  framehard    = StaticBoxTitleText,
+}
+\ZSFDeclareTone{warn}{
+  accent       = ETHRot,
+  titleback    = \WarnboxTitleColor,
+  titletext    = \WarnboxTitleTextColor,
+  loudback     = \WarnboxBackColor,
+  quietback    = \WarnboxBackColor,
+  emphasisback = WarnboxEmphasisBack,
+  framesoft    = WarnboxFrame,
+  framestrong  = ETHRot,
+  framehard    = ETHRot,
+}
+
+% Welcher Ton gilt, wenn keine Box gefragt hat. Gebraucht wird das von
+% Bausteinen, die ohne tcolorbox auskommen — allen voran die titellose
+% ZSFlist, deren Aufzaehlungszeichen den Akzent liest, ohne dass je eine
+% Optionsliste lief. Ohne diese Zeile ist der Akzent dort die leere Farbe.
+\makeatletter
+\ZSF@toneApply{chapter}
+\makeatother
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\GoalConditionBackColor}{\BoxPlainBackColor}
+\newcommand{\GoalConditionFrameColor}{\ZSFtoneFrameSoft}
+\newcommand{\GoalConditionBorderColor}{\ZSFtoneFrameHard}
+\newcommand{\GoalTargetBackColor}{\ZSFtoneEmphasisBack}
+\newcommand{\GoalTargetFrameColor}{\ZSFtoneAccent}
+
+% ------------------------------------------------------------
+% Index-basierte Palette (automatisch via \StartChapter)
+% ------------------------------------------------------------
+\newcount\ZSFchapterPaletteIndex
+\newcount\ZSFchapterPaletteLookupIndex
+\newcommand{\ZSFchapterPaletteSize}{18}
+\newcommand{\ZSFSetChapterPaletteByIndex}[1]{%
+  \renewcommand{\chaptercolor}{ChapterColor#1}%
+  \renewcommand{\chaptercolorlight}{ChapterColor#1Light}%
+  \renewcommand{\chaptercolortext}{ChapterColor#1Text}%
+}
+\newcommand{\ZSFSetPaletteColorNameFromNumber}[2]{%
+  \ZSFchapterPaletteLookupIndex=#1\relax
+  \loop
+  \ifnum\ZSFchapterPaletteLookupIndex>\numexpr\ZSFchapterPaletteSize-1\relax
+    \advance\ZSFchapterPaletteLookupIndex by -\ZSFchapterPaletteSize
+  \repeat
+  \edef#2{ChapterColor\the\ZSFchapterPaletteLookupIndex}%
+}
+\newcommand{\SetChapterPaletteByNumber}{%
+  \ZSFchapterPaletteIndex=\value{section}%
+  \loop
+  \ifnum\ZSFchapterPaletteIndex>\numexpr\ZSFchapterPaletteSize-1\relax
+    \advance\ZSFchapterPaletteIndex by -\ZSFchapterPaletteSize
+  \repeat
+  \ifnum\value{section}>\numexpr\ZSFchapterPaletteSize-1\relax
+    \PackageWarning{ZSF}{Chapter palette wrapped at section \thesection. Increase palette if unique colors are required.}%
+  \fi
+  \ZSFSetChapterPaletteByIndex{\the\ZSFchapterPaletteIndex}%
+}
+
+%
+%
+%
+%
+
+% ------------------------------------------------------------
+% Chapter-Start-Orchestrierung
+% ------------------------------------------------------------
+\makeatletter
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\let\ZSF@frontIdxLabel\@empty
+\newcommand{\StartChapter}[2][]{%
+  \refstepcounter{section}
+  \SetChapterPaletteByNumber
+  \setcounter{subsection}{0}
+  \setcounter{subsubsection}{0}
+  \let\ZSF@frontIdxLabel\@empty
+  \if\relax\detokenize{#1}\relax\else\label{#1}\fi
+  \ChapterBar{\thesection. #2}
+}
+
+% Für ein Kapitel auf neuer Spalte: \ZSFNewColumn davorsetzen
+% (styles/60_boxes.tex) statt einer eigenen Kapitel-Variante.
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\StartFrontChapter}[2][]{%
+  \renewcommand{\chaptercolor}{ChapterColor0}%
+  \renewcommand{\chaptercolorlight}{ChapterColor0Light}%
+  \renewcommand{\chaptercolortext}{ChapterColor0Text}%
+  \setcounter{subsection}{0}%
+  \setcounter{subsubsection}{0}%
+  \def\ZSF@frontIdxLabel{#1}%
+  \ChapterBar{#2}%
+}
+\makeatother

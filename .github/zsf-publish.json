@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "analysis2-fs2026",
+  "kind": "zsf",
+  "title": "Analysis 2",
+  "semesterCode": "fs2026",
+  "semesterLabel": "FS 2026",
+  "status": "archive",
+  "githubRepository": "lhliddal/eth-analysis2-zsf-fs2026-hliddal",
+  "pdfFilename": "analysis2_fs2026_hliddal.pdf",
+  "presentation": {
+    "drawingNumber": "AN · FS26",
+    "description": "Analysis 2 in mein System übertragen für eine schnelle und direkte Nutzung unter Prüfungsdruck.",
+    "stage": "layout-final",
+    "diagram": "analysis"
+  },
+  "releaseBaseline": "v3.6.9"
+}

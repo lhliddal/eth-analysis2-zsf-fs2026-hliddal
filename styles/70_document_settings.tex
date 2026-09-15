@@ -1,0 +1,103 @@
+% ============================================================
+% 70_document_settings.tex — Finale Dokument-Einstellungen
+% ============================================================
+% Hinweis: hyperref wird bereits in 00_packages.tex geladen.
+
+% Link-Farben: stabile ETH-Slots aus der Index-Palette (Blau/Petrol),
+% unabhängig von der aktiven Kapitelfarbe.
+\hypersetup{colorlinks=true, linkcolor=ZSFLinkColor, urlcolor=ZSFUrlColor}
+
+% Build-Kennung unten mittig, Seitenzahl unten rechts (overlay).
+% Lokal automatisch DEV + Datum; im Release-Workflow der SemVer-Tag.
+%
+% Das Overlay zeichnet ausserhalb des Textflusses und reserviert keine Höhe.
+% Der Satzspiegel muss ihm den Platz deshalb selbst freihalten, sonst
+% überdruckt der Footer die letzte Zeile einer voll gefüllten Spalte — was
+% erst auffällt, sobald eine ZSF dicht genug gesetzt ist, um eine Spalte
+% wirklich auszufüllen. Höhe wird aus der Footer-Schrift gemessen statt
+% geraten, damit sie einer Schriftänderung folgt.
+\geometry{bottom=\ZSFfooterClearance}
+
+\AddToShipoutPictureFG{%
+  \AtPageLowerLeft{%
+    \put(\dimexpr\paperwidth/2\relax,\ZSFfooterBottomInset){%
+      \makebox(0,0)[b]{{\transparent{\ZSFfooterOpacity}\ZSFfontFooter\color{ReleaseFooterColor}\ZSFReleaseLabel}}%
+    }%
+    \put(\dimexpr\paperwidth-\ZSFfooterRightInset\relax,\ZSFfooterBottomInset){%
+      \makebox(0,0)[rb]{\ZSFfontFooter\color{ZSFPageNumberColor}\thepage}%
+    }%
+  }%
+}
+
+% Enge Math-Display-Abstände (wie Analysis: keine grossen Lücken um Formeln).
+% Die Werte stehen in \ZSFApplyDisplaySkips (30_layout_spacing), weil jeder
+% Schriftgrössenwechsel sie zurücksetzt und die Politik deshalb wiederholbar
+% sein muss — hier wird sie nur zum Dokumentstart einmal angewandt.
+% Zusammen mit dem Spaltenkopf-Abstand: \baselineskip steht erst hier fest
+% (\ZSFLeadingFactor wirkt über \linespread und damit erst zu Dokumentbeginn).
+% Vorher trugen \topskip und \splittopskip die Klassenvorgaben und folgten der
+% Zeilenhöhe deshalb nicht — wer die ZSF enger setzte, bekam am Spaltenkopf
+% weiterhin den Abstand der Vorgabe.
+\AtBeginDocument{%
+  \ZSFApplyDisplaySkips
+  \setlength{\ZSFcolumnTopSkip}{\baselineskip}%
+  \setlength{\topskip}{\ZSFcolumnTopSkip}%
+  \setlength{\splittopskip}{\ZSFcolumnTopSkip}%
+  % Das Gegenstück am Spaltenfuss: wie tief die letzte Zeile reichen darf.
+  % TeX koppelt es konventionell an die Hälfte von \topskip; die Klassenvorgabe
+  % hielt diese Kopplung nur zufällig ein und hätte sie bei jeder Änderung der
+  % Zeilenhöhe verloren.
+  \setlength{\maxdepth}{0.5\ZSFcolumnTopSkip}%
+  % Der Grundzustand des Dokuments ist die Fliesstext-Rolle, nicht die
+  % Bausteingrösse: Zwischen den Strukturmakros steht in einer ZSF blanker
+  % Text, der zu keinem Baustein gehört und deshalb sonst nirgends eine Rolle
+  % bekäme. Genau ihn traf frueher das rohe \fontsize in main.tex.
+  %
+  % Die Bausteine holen sich ihre Groesse selbst zurueck (\ZSFfontContent =
+  % \normalsize = die Grundgroesse), der Umgebungsfont beruehrt sie nicht.
+  %
+  % NACH den Spaltenskips: \topskip soll die groessere der beiden Groessen
+  % tragen. Eine Spalte kann mit einer Box beginnen, und ein zu knapper
+  % Spaltenkopf-Abstand laesst deren erste Zeile anstossen — zu viel Abstand
+  % kostet nur Platz, zu wenig kostet Lesbarkeit.
+  \ZSFfontFlow
+}
+
+% Kompakte Listen (wie Analysis: kein überschüssiges Whitespace)
+% Dieselben Register, die \ZSFlist seinen Listen mitgibt (60_boxes). Vorher
+% stand hier itemsep=0pt und dort \ZSFlistItemSep — zwei Antworten auf eine
+% Frage, je nachdem welcher Weg in die Liste fuehrte.
+\setlist{nosep, itemsep=\ZSFlistItemSep, parsep=0pt, topsep=\ZSFspaceXS, partopsep=0pt}
+\setlist[itemize]{leftmargin=\ZSFitemizeLeftMargin}
+\setlist[enumerate]{leftmargin=\ZSFenumerateLeftMargin}
+
+% Tabellen-Zellenabstand einheitlich
+\setlength{\tabcolsep}{\ZSFspaceM}
+\setlength{\extrarowheight}{\ZSFtextMinPad}
+
+% ------------------------------------------------------------
+% Kein leeres Schlussblatt
+% ------------------------------------------------------------
+% `multicols*` schippt seine letzte volle Seite selbst. Bleibt danach nichts
+% uebrig, steht eine UNBEGONNENE Seite da (\pagegoal=\maxdimen,
+% \pagetotal=0pt). Genau dort setzt LaTeXs \clearpage eine leere \hbox{} —
+% gedacht, um haengende Floats auf ein Blatt zu zwingen. Ohne Floats macht sie
+% daraus ein geschipptes Blatt: eine leere Schlussseite mit nur dem Footer.
+%
+% Ob das passiert, haengt allein davon ab, WO der Inhalt endet — bleibt nach
+% der letzten vollen Seite Material uebrig, schippt \clearpage dieses und
+% alles ist gut. Der Fehler kommt und geht deshalb mit jeder Inhaltsaenderung.
+%
+% Der Waechter greift nur im nachweislich leeren Fall und nur ohne haengende
+% Floats; dann hat \clearpage nichts zu erledigen.
+\makeatletter
+\AtEndDocument{%
+  \ifdim\pagegoal=\maxdimen
+    \ifdim\pagetotal=\z@
+      \ifx\@deferlist\@empty
+        \let\clearpage\relax
+      \fi
+    \fi
+  \fi
+}
+\makeatother

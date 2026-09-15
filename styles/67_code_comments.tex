@@ -1,0 +1,147 @@
+% ============================================================
+% 67_code_comments.tex — OPTIONALES Code-Kommentar-Modul
+% ============================================================
+% Opt-in: in preamble.tex NACH 65_code_style einkommentieren.
+% Smart Inline / Overflow Platzierung annotierter Code-Zeilen
+% ausserhalb von lstlisting (in einer defbox oder codebox).
+% Verantwortung dieser Datei ist nur die Platzierung; Längen,
+% Farben und Schrift werden aus den Style-Modulen bezogen:
+%
+%   \ZSFcodeCommentThreshold       -> 30_layout_spacing
+%   \ZSFcodeCommentGap             -> 30_layout_spacing
+%   \ZSFcodeCommentThresholdDefault-> 30_layout_spacing (immutabel)
+%   \ZSFfontCodeComment            -> 50_typography_semantics
+%   ce_green                       -> 40_colors_structure
+%
+% Public API:
+%   \CodeLine{code}[comment]      Auto: Kommentar rechts, sonst oben
+%   \CodeLine{code}               Nur Code
+%   \InlineComment{text}          Kommentar rechts (kein Auto-Layout)
+%   \OverlineComment{text}        Kommentar in eigener Zeile davor
+%   \SetCodeCommentThreshold{len} Schwelle anpassen (persistent bis Reset)
+%   \ResetCodeCommentThreshold    Schwelle auf Default zurücksetzen
+%
+% Hinweise:
+% - Funktioniert NICHT in lstlisting; in lstlisting native '#'
+%   Kommentare benutzen.
+% - Standard-Aufrufer-Pattern in Kapiteln endet jede gerenderte
+%   Zeile mit '\\' (ttfamily-Block), daher fuegt diese Datei kein
+%   abschliessendes '\\' an, ausser bei \OverlineComment, wo der
+%   Zeilenwechsel Teil der Semantik ist.
+% ============================================================
+
+\makeatletter
+
+% ------------------------------------------------------------
+% Sicherheits-Guard: setzt voraus dass 30_layout_spacing.tex
+% bereits geladen wurde (Reihenfolge in preamble.tex).
+% ------------------------------------------------------------
+\@ifundefined{ZSFcodeCommentThreshold}{%
+  \PackageError{ZSF/code-comments}%
+    {Required register \string\ZSFcodeCommentThreshold\space missing}%
+    {Load styles/30_layout_spacing.tex before styles/67_code_comments.tex.}%
+}{}
+\@ifundefined{ZSFfontCodeComment}{%
+  \PackageError{ZSF/code-comments}%
+    {Required macro \string\ZSFfontCodeComment\space missing}%
+    {Load styles/50_typography_semantics.tex before styles/67_code_comments.tex.}%
+}{}
+
+% ------------------------------------------------------------
+% Render-Helfer
+% ------------------------------------------------------------
+% Code wird verbatim-aehnlich gerendert: \detokenize macht alle
+% Tokens cat-12, sodass '#', '_', '%', '&' im Code-Argument
+% erscheinen wie geschrieben.
+\newcommand{\ZSF@CC@code}[1]{\texttt{\detokenize{#1}}}
+% Kommentare bekommen automatisch ein '# '-Praefix (Python-Stil) und
+% erben die Code-Schriftgrösse (kein \small), damit Code und Kommentar
+% optisch auf einer Zeile sitzen.
+\newcommand{\ZSF@CC@comment}[1]{{\ZSFfontCodeComment\#\,#1}}
+
+% Mess-Speicher für Auto-Layout
+\newsavebox{\ZSF@CC@codebox}
+\newsavebox{\ZSF@CC@cmtbox}
+\newlength{\ZSF@CC@codewd}
+\newlength{\ZSF@CC@cmtwd}
+\newlength{\ZSF@CC@effectiveThreshold}
+
+% ------------------------------------------------------------
+% \CodeLine{code} oder \CodeLine{code}[comment]
+% ------------------------------------------------------------
+% \NewDocumentCommand mit "m o"-Spec verwendet xparse-konforme
+% Argument-Erkennung; vermeidet \@ifnextchar[ und damit chktex-
+% Bracket-Counting-Probleme.
+\NewDocumentCommand{\CodeLine}{m o}{%
+  \IfNoValueTF{#2}%
+    {\ZSF@CC@code{#1}}%
+    {\ZSF@CC@autoPlace{#1}{#2}}%
+}
+
+\newcommand{\ZSF@CC@autoPlace}[2]{%
+  \sbox{\ZSF@CC@codebox}{\ZSF@CC@code{#1}}%
+  \sbox{\ZSF@CC@cmtbox}{\ZSF@CC@comment{#2}}%
+  \setlength{\ZSF@CC@codewd}{\wd\ZSF@CC@codebox}%
+  \setlength{\ZSF@CC@cmtwd}{\wd\ZSF@CC@cmtbox}%
+  % Effektive Schwelle: min(ZSFcodeCommentThreshold, \columnwidth) -- wird
+  % zur Render-Zeit ausgewertet, sodass der korrekte Spaltenbreite-Wert
+  % aus der aktiven multicols-Umgebung greift.
+  \setlength{\ZSF@CC@effectiveThreshold}{\ZSFcodeCommentThreshold}%
+  \ifdim\ZSF@CC@effectiveThreshold>\columnwidth
+    \setlength{\ZSF@CC@effectiveThreshold}{\columnwidth}%
+  \fi
+  \ifdim\dimexpr\ZSF@CC@codewd+\ZSF@CC@cmtwd+\ZSFcodeCommentGap\relax
+        > \ZSF@CC@effectiveThreshold\relax
+    \ZSF@CC@renderAbove
+  \else
+    \ZSF@CC@renderRight
+  \fi
+}
+
+% Code links, Kommentar rechts mit Mindest-Gap.
+\newcommand{\ZSF@CC@renderRight}{%
+  \leavevmode
+  \usebox{\ZSF@CC@codebox}%
+  \hspace*{\ZSFcodeCommentGap}%
+  \usebox{\ZSF@CC@cmtbox}%
+}
+
+% Kommentar in eigener Zeile davor, dann Code.
+\newcommand{\ZSF@CC@renderAbove}{%
+  \leavevmode
+  \usebox{\ZSF@CC@cmtbox}%
+  \newline
+  \usebox{\ZSF@CC@codebox}%
+}
+
+% ------------------------------------------------------------
+% \InlineComment{text} -- immer rechts, kein Auto-Layout.
+% Erwartet, dass davor bereits Code im selben Zeilenkontext
+% steht; fuegt nur den Kommentar mit Mindest-Gap an.
+% ------------------------------------------------------------
+\newcommand{\InlineComment}[1]{%
+  \hspace*{\ZSFcodeCommentGap}\ZSF@CC@comment{#1}%
+}
+
+% ------------------------------------------------------------
+% \OverlineComment{text} -- Kommentar in eigener Zeile, gefolgt
+% von einem Zeilenumbruch, sodass die nächste \CodeLine-Zeile
+% auf der Folgezeile beginnt.
+% ------------------------------------------------------------
+\newcommand{\OverlineComment}[1]{%
+  \leavevmode\ZSF@CC@comment{#1}\newline
+}
+
+% ------------------------------------------------------------
+% Threshold-API
+% ------------------------------------------------------------
+% Persistent: bleibt bis zum nächsten Reset oder Gruppen-Ende.
+\newcommand{\SetCodeCommentThreshold}[1]{%
+  \setlength{\ZSFcodeCommentThreshold}{#1}%
+}
+
+\newcommand{\ResetCodeCommentThreshold}{%
+  \setlength{\ZSFcodeCommentThreshold}{\ZSFcodeCommentThresholdDefault}%
+}
+
+\makeatother

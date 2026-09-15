@@ -1,0 +1,18 @@
+% ============================================================
+% 12_plots.tex — OPTIONALES Plot-Modul
+% ============================================================
+% Opt-in: in preamble.tex einkommentieren, wenn pgfplots-Diagramme
+% tatsächlich im Dokument verwendet werden.
+
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+% Achsen-, Tick- und Legendenbeschriftung an die zentrale Diagramm-Schriftrolle
+% binden. Ohne diese Zeile setzt pgfplots seine eigenen Defaults, und die
+% Beschriftung eines Plots waere die einzige im System, die nicht an
+% \ZSFfontDiagramLabel haengt — sie landete pro Plot im Kapitel.
+\pgfplotsset{every axis/.append style={
+  tick label style={font=\ZSFfontDiagramLabel},
+  label style={font=\ZSFfontDiagramLabel},
+  legend style={font=\ZSFfontDiagramLabel},
+  title style={font=\ZSFfontDiagramLabel},
+}}

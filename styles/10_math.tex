@@ -1,0 +1,85 @@
+% ============================================================
+% 10_math.tex — Math-Macros (generisch, fachunabhängig)
+% ============================================================
+
+% --- Zahlmengen (Blackboard Bold) ---
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+
+% --- Differentialoperator (aufrechtes d) ---
+\newcommand{\dd}{\,\mathrm{d}}
+
+% --- Operatornamen ---
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\divg}{div}
+\DeclareMathOperator{\rot}{rot}
+\newcommand{\vect}[1]{\vec{#1}}
+
+% --- Gepaarte Begrenzer (mathtools) ---
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+
+% --- Summen-Mode-System: zentrales Umschalten side/stack/auto ---
+\newcommand{\ZSFsumMode}{auto}
+\newcommand{\SetZSFsumMode}[1]{\renewcommand{\ZSFsumMode}{#1}}
+\newcommand{\ZSFsumSide}[2]{\sum\nolimits_{#1}^{#2}}
+\newcommand{\ZSFsumStack}[2]{\sum\limits_{#1}^{#2}}
+\newcommand{\ZSFsumAuto}[2]{%
+  \IfStrEqCase{\ZSFsumMode}{%
+    {side}{\ZSFsumSide{#1}{#2}}%
+    {stack}{\ZSFsumStack{#1}{#2}}%
+    {auto}{\sum_{#1}^{#2}}%
+  }[\sum_{#1}^{#2}]%
+}
+
+% --- Limes-Mode-System (analog) ---
+\newcommand{\ZSFlimMode}{auto}
+\newcommand{\SetZSFlimMode}[1]{\renewcommand{\ZSFlimMode}{#1}}
+\newcommand{\ZSFlimAuto}[1]{%
+  \IfStrEqCase{\ZSFlimMode}{%
+    {side}{\lim\nolimits_{#1}}%
+    {stack}{\lim\limits_{#1}}%
+    {auto}{\lim_{#1}}%
+  }[\lim_{#1}]%
+}
+
+% --- Semantisches Formel-Highlighting (POSITIONAL) ---
+% Verknüpft visuell zusammengehörige Teile einer Formel über mehrere
+% Umformungsschritte hinweg. Farben zentral in 40_colors_structure.tex.
+% Die Rolle ist die STELLE in der Herleitung, nicht die Grösse — für
+% dokumentweite Grössen-Identität siehe \ZSFDeclareQuantity unten.
+% Die Farbe läuft über \ZSFInk, damit sie auf einer Fläche, die ihre eigene
+% Kontrastfarbe setzt, nicht unlesbar wird (40_colors_structure → Ink-Vertrag).
+\newcommand{\ZSFmhlA}[1]{\ZSFInk{MathHLPrimary}{#1}}
+\newcommand{\ZSFmhlB}[1]{\ZSFInk{MathHLSecondary}{#1}}
+\newcommand{\ZSFmhlC}[1]{\ZSFInk{MathHLTarget}{#1}}
+\newcommand{\ZSFmhlD}[1]{\ZSFInk{MathHLTertiary}{#1}}
+
+% Für die dokumentweite Grössen-Identität (Farbe = Grösse statt Farbe =
+% Stelle in der Herleitung) siehe \ZSFDeclareQuantity in
+% styles/40_colors_structure.tex — dort, weil die Palette dort steht.
+
+% --- Term-Annotation mit geschweifter Klammer (Stilmittel) ---
+% Beschriftet einen Formelteil unter/über einer geschweiften Klammer.
+% Das Label wird via \text gesetzt (aufrecht, kein Mathe-Spacing); für
+% Mathe im Label $...$ verwenden, z.B. \ZSFbraceunder{x}{$=0$ im Vakuum}.
+%   \[ \varphi = \frac{q}{r} - \ZSFbraceover{\frac{q}{r_B}}{Bezugspotenzial} \]
+\newcommand{\ZSFbraceunder}[2]{\underbrace{#1}_{\text{#2}}}
+\newcommand{\ZSFbraceover}[2]{\overbrace{#1}^{\text{#2}}}
+
+% --- Lange Pfeile: bewusst auf die kurzen Varianten umgebogen ---
+% Historisch ein sansmath-Bugfix (der \neq-Fix von damals ist mit unicode-math
+% ersatzlos entfallen — die Schrift bringt das Zeichen selbst mit). Die
+% Umbiegung der langen Pfeile bleibt als Platz-Entscheidung: In ~50 mm
+% schmalen Spalten ist der kurze Pfeil die richtige Breite, und die Kapitel
+% verlassen sich auf diese Masse.
+\renewcommand{\implies}{\;\Rightarrow\;}
+\renewcommand{\iff}{\;\Leftrightarrow\;}
+\renewcommand{\Longrightarrow}{\Rightarrow}
+\renewcommand{\Longleftrightarrow}{\Leftrightarrow}
+\renewcommand{\longrightarrow}{\rightarrow}
+\renewcommand{\longleftarrow}{\leftarrow}

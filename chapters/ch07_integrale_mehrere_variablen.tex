@@ -1,0 +1,171 @@
+\StartChapter{Integrale -- Mehrere Variablen}
+
+\SubsectionBar{Gebietsintegral}
+\SubsubsectionBar{Grundform und Integrationsgrenzen}
+\ZSFindexsee{Doppelintegral}{Gebietsintegral}
+\ZSFindex{Integrationsgrenzen}
+\ZSFindex{Integrationsreihenfolge}
+Beim \ZSFkeyword{Gebietsintegral} integriert man über zwei Variablen. Dadurch kann man sowohl Volumen als auch Flächen berechnen.
+
+\textVorBox{Mit Gebietsintegralen können Flächeninhalte bestimmt werden. Hier das Beispiel einer Fläche $A$:}
+\begin{formulabox}
+    \ZSFformulaline{A = \iint_A 1\,dA}{Fläche}
+\end{formulabox}
+
+\textVorBox{Durch das Aufsummieren infinitesimaler Quader wird über dem Flächengebiet $A$ das Volumen unter dem Graphen von $f(x,y)$ berechnet:}
+\begin{formulabox}
+    \ZSFformulaline{V = \iint_A f(x,y)\,dA}{Volumen}
+\end{formulabox}
+
+\textVorBox{Die Integrationsgrenzen bei der Berechnung eines Volumens werden wie folgt gesetzt:}
+\begin{formulabox}
+    $\displaystyle V = \int_a^b\int_{g_1(x)}^{g_2(x)} f(x,y)\,dy\,dx$
+\end{formulabox}
+\textNachBox{$a,b$: x-Grenzen; $g_1(x),g_2(x)$: untere und obere y-Grenze. \ZSFdanger{Von innen nach aussen:} Falsche Reihenfolge lässt Variablen übrig; bei konstanten Grenzen ist die Reihenfolge beliebig. \ZSFlabel{Reihenfolge tauschen:} Gleiches Gebiet nach der neuen inneren Variable umstellen (trig. Grenzen \ZSFref{sec:trigo_funktionen}); äussere Grenzen = Gesamtbereich.}
+
+\SubsubsectionBar{Anwendungen}
+\ZSFindex{Schwerpunkt}
+\ZSFindex{Flächenträgheitsmoment}
+\ZSFindex{Massenträgheitsmoment}
+\textVorBox{Anwendungen für das Gebietsintegral:}
+\begin{formulabox}
+    \textVorBox{Flächenschwerpunkte}
+    $\displaystyle x_S A = \iint_A x\,dA$
+\end{formulabox}
+\begin{formulabox}
+    \textVorBox{Massenschwerpunkte}
+    $\displaystyle x_S\cdot m = \iint_A x\sigma(x,y)\,dA$
+\end{formulabox}
+\begin{formulabox}
+    \textVorBox{Polares Flächenträgheitsmoment}
+    $\displaystyle J_0 = \iint_A x^2 + y^2\,dA = \iint_A r^3\,dr\,d\varphi$
+\end{formulabox}
+\begin{formulabox}
+    \textVorBox{Polares Massenträgheitsmoment}
+    $\displaystyle \theta_0 = \iint_A \sigma(x,y)(x^2+y^2)\,dA$
+\end{formulabox}
+
+wobei $\sigma(x,y)$ die \ZSFkeyword[Flächendichte@Flächendichte]{Flächendichte in $\left[kg/m^2\right]$} ist.
+
+\SubsectionBar{Volumenintegral}
+\SubsubsectionBar{Grundform und Integrationsgrenzen}
+\ZSFindexsee{Dreifachintegral}{Volumenintegral}
+\ZSFindex{Integrationsgrenzen}
+\ZSFindex{Integrationsreihenfolge}
+\textVorBox{Bei einem \ZSFkeyword{Volumenintegral} wird über ein Volumen, also drei Variablen integriert. Das Ergebnis kann ein Volumen sein:}
+\begin{formulabox}
+    \ZSFformulaline{V = \iiint_V 1\,dV}{Volumen}
+\end{formulabox}
+
+\textVorBox{Mit einem Volumenintegral können auch andere Grössen über einem Volumen berechnet werden:}
+\begin{formulabox}
+    $\displaystyle \iiint_V f(x,y,z)\,dV,$
+
+    $\displaystyle \int_a^b\int_{g_1(x)}^{g_2(x)}\int_{h_1(x,y)}^{h_2(x,y)} f(x,y,z)\,dz\,dy\,dx$
+\end{formulabox}
+\textNachBox{$a,b$: x-Grenzen; $g_1(x),g_2(x)$: y-Grenzen; $h_1(x,y),h_2(x,y)$: z-Grenzen.}
+
+\ZSFNewColumn
+\SubsubsectionBar{Anwendungen}
+\textVorBox{Anwendungen für das Volumenintegral:}
+\begin{tablebox}
+\begin{ZSFtable}[header=false]{Y{0.85} Z{1.15}}
+    Massenträgheitsmoment: & $\displaystyle \theta_z = \iiint_V \rho(x,y,z)(x^2+y^2)\,dx\,dy\,dz$ \\
+    Schwerpunkt: & $\displaystyle z_S = \frac{\iiint_V z\rho\,dV}{\iiint_V \rho\,dV}$
+\end{ZSFtable}
+\end{tablebox}
+
+\textNachBox{wobei $\rho(x,y,z)$ die \ZSFkeyword{Massendichte} ist.}
+
+\SubsectionBar{Koordinatentransformation}
+\SubsubsectionBar{Allgemeines Vorgehen und Jacobi-Matrix}
+\ZSFindex{Koordinatentransformation}
+\ZSFindexsee{Substitution (mehrdimensional)}{Koordinatentransformation}
+\ZSFindex{Flächenelement}
+\ZSFindexsee{Jacobi-Determinante}{Jacobi-Matrix}
+Neue Koordinaten verzerren kleine Flächen- und Volumenstücke. Der Betrag der Determinante der \ZSFkeyword{Jacobi-Matrix} ist der Faktor, mit dem ein solches Stück vergrössert oder verkleinert wird.
+
+\textVorBox{In 2D lautet die Jacobi-Matrix für die Transformation
+$\tilde r(u,v)=(x(u,v),y(u,v))$:}
+\begin{formulabox}
+    $\displaystyle J=\begin{pmatrix}
+        x_u & x_v \\
+        y_u & y_v
+    \end{pmatrix}$
+\end{formulabox}
+\textVorBox{und das Flächenelement:}
+\begin{formulabox}
+    \ZSFformulaline{dA=\left|\det(J)\right|\,du\,dv}{Flächenelement}
+\end{formulabox}
+
+\textVorBox{In 3D lautet die Jacobi-Matrix für die Transformation
+$\tilde r(u,v,w)=(x(u,v,w),y(u,v,w),z(u,v,w))$:}
+\begin{formulabox}
+    $\displaystyle J=\begin{pmatrix}
+        x_u & x_v & x_w \\
+        y_u & y_v & y_w \\
+        z_u & z_v & z_w
+    \end{pmatrix}$
+\end{formulabox}
+\textVorBox{und das Volumenelement:}
+\begin{formulabox}
+    \ZSFformulaline{dV=\left|\det(J)\right|\,du\,dv\,dw}{Volumenelement}
+\end{formulabox}
+
+\textNachBox{Die Grenzen entscheiden über die Integrationsreihenfolge; der Jacobi-Faktor bleibt derselbe. Die Umkehrung einer linearen Koordinatentransformation ist ebenfalls linear.}
+\ZSFindex{Volumenelement}
+
+\SubsubsectionBar{Polarkoordinaten}
+\textVorBox{Beim \ZSFkeyword{Gebietsintegral in Polarkoordinaten} $(\rho\cos(\varphi),\rho\sin(\varphi))$ mit $\varphi\in[0,2\pi]$ für eine volle Umdrehung gilt:}
+\begin{formulabox}
+    $\displaystyle \iint_A f(x,y)\,dA
+    = \iint_{\tilde A} f\!\left(\rho\cos(\varphi),\rho\sin(\varphi)\right)\,\ZSFbraceunder{\rho}{\text{Det.}}\,d\rho\,d\varphi$
+\end{formulabox}
+\textNachBox{$\tilde A$: dieselbe Fläche $A$, beschrieben durch $\rho$ und $\varphi$. Bei Teilgebieten die Winkelgrenzen anpassen; den Faktor $\rho$ nicht vergessen.}
+\ZSFindex{Polarkoordinaten}
+
+\SubsubsectionBar{Zylinderkoordinaten}
+\textVorBox{Bei einem \ZSFkeyword{Volumenintegral in Zylinderkoordinaten} $(r\cos(\varphi),r\sin(\varphi),z)$ mit $\varphi\in[0,2\pi]$, $r\in[0,R]$ und $z\in[0,h]$ für einen vollständigen Zylinder gilt:}
+\begin{formulabox}
+    $\displaystyle dA_{\mathrm{Grund}} = r\,dr\,d\varphi,\qquad dV = r\,dr\,d\varphi\,dz,$
+    $\displaystyle dO_{\mathrm{Mantel}} = R\,d\varphi\,dz$
+\end{formulabox}
+\textNachBox{$r$: Abstand von der Achse; $\varphi$: Umdrehungswinkel; $z$: Höhe. Bei Teilkörpern die Grenzen entsprechend anpassen.}
+\ZSFindex{Zylinderkoordinaten}
+
+\SubsubsectionBar{Kugelkoordinaten}
+\textVorBox{Für ein Volumenintegral in \ZSFkeyword{Kugelkoordinaten}
+$(r\sin(\vartheta)\cos(\varphi),\allowbreak
+r\sin(\vartheta)\sin(\varphi),\allowbreak r\cos(\vartheta))$ \ZSFref{sec:hliddal_anhang} mit
+$\vartheta\in[0,\pi]$, $\varphi\in[0,2\pi]$ und $r\in[0,R]$ für eine volle Kugel gilt:}
+\begin{splitbox}[split=0.34, pady=tight]
+    \ZSFimage[height=2.4cm]{graphics/media/kugelkoordinaten_skizze.png}
+    \tcblower
+    \begin{formulabox}
+        $\displaystyle dV = \ZSFbraceunder{r^2\sin(\vartheta)}{\text{Jacobi-Det.}}\,dr\,d\vartheta\,d\varphi$\\[1pt]
+        $\displaystyle dO = R^2\sin(\vartheta)\,d\vartheta\,d\varphi$
+    \end{formulabox}
+    \textNachBox{$r$: Abstand vom Mittelpunkt; $\vartheta$: Neigung zur $z$-Achse (Höhe); $\varphi$: Richtung in $xy$-Ebene. Bei Teilkörpern Grenzen anpassen.}
+\end{splitbox}
+\noindent\ZSFlabel{Notation: }$\vartheta=\theta$, $\varphi=\phi$ und $\rho=\varrho$ bezeichnen dieselbe Grösse.
+
+\ZSFNewColumn
+\SubsectionBar{Integrale mit Parametern}
+\ZSFindex{Integrale mit Parametern}
+\ZSFindex{Leibniz-Regel}
+\textVorBox{Sei $f:(x,t)\to f(x,t)$ differenzierbar und $f_x$ stetig, so gilt:}
+\begin{formulabox}
+    \ZSFformulaline{\frac{d}{dx}\int_a^b f(x,t)\,dt = \int_a^b f_x(x,t)\,dt}{Leibniz}
+\end{formulabox}
+
+\textVorBox{Befindet sich in den Intervallgrenzen ein Parameter, so gilt:}
+\begin{formulabox}
+    $\displaystyle \frac{d}{dx}\int_{u(x)}^{v(x)}f(x,t)\,dt = \int_{u(x)}^{v(x)} f_x(x,t)\,dt$\\[2pt]
+    $\displaystyle \qquad\qquad\quad {}+ \ZSFbraceunder{f(x,v(x))v'(x)}{obere Grenze} - \ZSFbraceunder{f(x,u(x))u'(x)}{untere Grenze}$
+\end{formulabox}
+
+\textVorBox{Wenn $f$ nur von $t$ abhängig ist, gilt:}
+\begin{formulabox}
+    $\displaystyle \frac{d}{dx}\int_a^{v(x)} f(t)\,dt = f(v(x))v'(x)$
+\end{formulabox}
+\ZSFChapterDensityReset

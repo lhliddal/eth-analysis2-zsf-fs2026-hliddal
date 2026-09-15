@@ -1,0 +1,200 @@
+\ZSFNewColumn
+\ZSFChapterDensity{0.9}
+\StartChapter{Funktionen -- Mehrere Variablen}
+
+\SubsectionBar{Funktionen in zwei Variablen}
+\SubsubsectionBar{Grundlagen und Niveaulinien}
+
+Eine Funktion in zwei Variablen $f : (x,y) \to f(x,y)$ weist einem Punkt in $\R^2$ ein Skalar in $\R$ zu.
+\textVorBox{Folgend eine lineare Funktion:}
+\begin{formulabox}
+    \ZSFformulaline{f(x,y) = ax + by + c}{Ebene}
+\end{formulabox}
+
+Eine \ZSFkeyword{Niveaulinie} ist eine Kurve in der $xy$-Ebene, deren Punkte den gleichen Funktionswert $f(x,y)=C$ (Niveau) besitzen.
+\textVorBox{Jeder Punkt auf einer Niveaulinie befindet sich auf derselben Höhe. Niveaulinien lassen sich zeichnen, indem man umstellt:}
+\begin{formulabox}
+    \ZSFformulaline{f(x,y)=C\quad\Rightarrow\quad y=\varphi_C(x)}{Niveaulinie}
+\end{formulabox}
+
+\SubsubsectionBar[sec:partielle_ableitungen]{Partielle Ableitungen und Gradient}
+\textVorBox{$f(x,y)$ kann nach einer seiner Variablen abgeleitet werden; dies bezeichnet man als \ZSFkeyword{partielle Ableitung}:}
+\begin{formulabox}
+    $\displaystyle f_x = \frac{\partial f}{\partial x} = \ZSFlimAuto{\Delta x \to 0}\frac{f(x+\Delta x, y)-f(x,y)}{\Delta x}$
+\end{formulabox}
+
+\textVorBox{Der \ZSFkeyword{Satz von Schwarz} besagt, dass die Reihenfolge der Ableitungen einer Funktion $f(x,y)$ keine Rolle spielt:}
+\begin{formulabox}
+    \ZSFformulaline{f_{xy} = f_{yx}}{Satz von Schwarz}
+\end{formulabox}
+
+Die \ZSFkeyword{Integrabilitätsbedingungen} besagen, dass für zwei stetige Funktionen $\varphi$ und $\psi$ mit $\varphi_y=\psi_x$ eine Funktion $f(x,y)$ mit $f_x=\varphi$ und $f_y=\psi$ existiert.
+
+\textVorBox{Der \ZSFkeyword{Gradient} (auch Nabla-Operator) einer Funktion ist ein Vektor, dessen Einträge die partiellen Ableitungen von $f(x,y)$ sind:}
+\begin{formulabox}
+    $\displaystyle \grad(f(x,y)) = \begin{pmatrix} f_x \\ f_y \end{pmatrix} = \nabla f(x,y)$
+\end{formulabox}
+\ZSFlabel{Richtung:} Richtung der grössten Steigung. Steht senkrecht zur Niveaulinie und der Tangentialebene.
+
+\ZSFlabel{Betrag:} Stärke der Steigung
+
+\ZSFlabel{Nullvektor:} Wenn der Gradient an einem Punkt $(x,y)$ der Nullvektor ist, zeigt die lineare Näherung dort keine Steigung. Der Punkt ist ein Kandidat für ein Extremum oder einen Sattelpunkt, aber noch nicht klassifiziert.
+\ZSFindex{Gradient}
+\ZSFindexsee{Nabla-Operator}{Gradient}
+\ZSFindex{Integrabilitätsbedingungen}
+
+\SubsubsectionBar{Linearisierung und Fehlerrechnung}
+\ZSFindex{Linearisierung}
+\ZSFindex{Fehlerrechnung}
+\textVorBox{Für eine Funktion in zwei Variablen kann eine \ZSFkeyword{Ersatzfunktion} bei $(x_0,y_0)$ aufgestellt werden:}
+\begin{formulabox}
+    $\displaystyle t(x,y)=f(x_0,y_0)+f_x(x_0,y_0)(x-x_0)+f_y(x_0,y_0)(y-y_0)$
+\end{formulabox}
+wobei $f(x_0,y_0)$ der Stützpunkt ist.
+
+\textVorBox{Der durch die Linearisierung entstehende \ZSFkeyword[absoluter Fehler@absoluter Fehler]{absolute Fehler} beträgt:}
+\begin{formulabox}
+    $\displaystyle \Delta f = f(x,y)-f(x_0,y_0) \approx f_x(x_0,y_0)(x-x_0)+f_y(x_0,y_0)(y-y_0)$
+\end{formulabox}
+
+\textVorBox{Für das \ZSFkeyword{totale Differential} werden neue Koordinatensymbole mit $df$, $dx$ und $dy$ eingeführt:}
+\begin{formulabox}
+    \ZSFformulaline{df = f_x(x_0,y_0)\,dx + f_y(x_0,y_0)\,dy}{tot. Differential}
+\end{formulabox}
+\textNachBox{Es gilt $df \approx \Delta f$ für kleine $\Delta x$ und $\Delta y$.}
+
+\textVorBox{Die allgemeine Formel für den \ZSFkeyword[relativer Fehler@relativer Fehler]{relativen Fehler} beträgt:}
+\begin{formulabox}
+    $\displaystyle \left|\frac{\Delta f}{f(x_0,y_0)}\right|
+    = \left|\frac{f_x(x_0,y_0)}{f(x_0,y_0)}(x-x_0)
+    + \frac{f_y(x_0,y_0)}{f(x_0,y_0)}(y-y_0)\right|$
+\end{formulabox}
+\textNachBox{Fehler in \% sind relativ und entsprechen dem Term $\Delta x/x$. Fehler in absoluten Zahlen entsprechen dagegen dem Term $\Delta x$.}
+
+\textVorBox{Die allgemeine Dreiecksungleichung gibt Aufschluss über den Einfluss der individuellen Fehler auf den Gesamtfehler:}
+\begin{formulabox}
+    $\displaystyle |x+y| \le |x| + |y| \qquad \forall x,y \in \R$
+\end{formulabox}
+
+\textVorBox{Kleine relative Fehler können addiert werden. Beispiel: $V=\pi r^2 h$:}
+\begin{formulabox}
+    $\displaystyle \frac{\Delta V}{V} = 2\frac{\Delta r}{r} + \frac{\Delta h}{h}$
+\end{formulabox}
+
+\textNachBox{Um die obere Grenze des relativen Fehlers zu erhalten, können die Maxima/Minima des Definitionsbereiches der Variablen in den relativen Fehler eingesetzt werden.}
+
+\SubsubsectionBar{Extremalstellen}
+\ZSFindex{Satz des Maximums}
+\ZSFindex{Extrema in zwei Variablen}
+\ZSFindex{Randextrema}
+\ZSFindex{Randparametrisierung}
+Für \ZSFkeyword{Extremalstellen} in zwei Variablen gilt:
+\begin{ZSFlist}
+    \ZSFItem{Globale Maximalstelle}{$f(x_0,y_0)\geq f(x,y)$}
+    \ZSFItem{Globale Minimalstelle}{$f(x_0,y_0)\leq f(x,y)$}
+\end{ZSFlist}
+
+\begin{defbox}[Satz des Maximums][weight=quiet]
+Für eine beschränkte Fläche $A\subseteq D(f)\subseteq\R^2$ mit einem Rand existiert mindestens je eine globale Minimal- und Maximalstelle.
+\end{defbox}
+
+\begin{ZSFlist}[Vorgehen: Extremalstellen finden][ordered]
+    \ZSFItem{Definitionsgebiet}{Skizze des Bereichs zeichnen.}
+    \ZSFItem{Inneres}{$f_x=0$, $f_y=0$ setzen und nach $x,y$ auflösen. Auch nicht diff'bare Stellen (Brüche, Beträge) untersuchen.}
+    \ZSFItem{Rand}{Randkurven parametrisieren bzw. Randgleichung einsetzen (siehe Tabelle), ableiten und $=0$ setzen.}
+    \ZSFItem{Eckpunkte}{Intervallgrenzen und Schnittpunkte der Randkurven separat berechnen.}
+    \ZSFItem{Vergleich}{Funktionswerte aller Kandidaten berechnen und vergleichen.}
+\end{ZSFlist}
+
+\begin{tablebox}[Randparametrisierung \& Randextrema]
+\begin{ZSFtable}{Y{0.9} Z{1.1}}
+    \ZSFheaderRow \ZSFhead{Randkurve / Typ} & \ZSFhead{Parametrisierung / 1D-Reduktion} \\
+    Vertikale Kante $x=a$ & $(a,t) \implies h(t)=f(a,t)$ \\
+    Horizontale Kante $y=b$ & $(t,b) \implies h(t)=f(t,b)$ \\
+    Graph / Gerade $y=g(x)$ & $y$ einsetzen $\implies h(x)=f(x,g(x))$ \\
+    Kreis $x^2+y^2=R^2$ & $(R\cos t, R\sin t) \implies h(t)$ \\
+    Ellipse $\frac{x^2}{a^2}+\frac{y^2}{b^2}=1$ & $(a\cos t, b\sin t) \implies h(t)$ \\
+\end{ZSFtable}
+\textNachBox{1D-Funktion $h'(t)=0$ (bzw. $h'(x)=0$) nach stationären Punkten lösen. \ZSFdanger{Wichtig:} Endpunkte des Parameterintervalls (Eckpunkte des Gebiets) immer separat in $f$ einsetzen und vergleichen!}
+\end{tablebox}
+
+\SubsubsectionBar{Tangentialebene}
+\ZSFindex{Tangentialebene}
+\textVorBox{Eine \ZSFkeyword{Tangentialebene} kann durch Linearisierung hergeleitet werden. Wenn eine Fläche durch $f(x,y)=z$ explizit gegeben ist, ist die Tangentialebene in $(x_0,y_0,f(x_0,y_0))$:}
+\begin{formulabox}
+    $\displaystyle z = f(x_0,y_0) + f_x(x_0,y_0)(x-x_0) + f_y(x_0,y_0)(y-y_0)$
+\end{formulabox}
+
+\textVorBox{Für eine Niveaulinie $y=\varphi(x)$ beträgt die Tangentensteigung:}
+\begin{formulabox}
+    $\displaystyle \varphi'(x_0) = -\frac{f_x(x_0,y_0)}{f_y(x_0,y_0)}$
+\end{formulabox}
+
+\ZSFNewColumn
+\SubsectionBar{Funktionen in drei Variablen}
+\SubsubsectionBar{Grundlagen und Niveauflächen}
+Eine Funktion in drei Variablen $f:(x,y,z)\to f(x,y,z)$ weist einem Punkt in $\R^3$ ein Skalar in $\R$ zu.
+\textVorBox{Ihre lineare Funktion lautet:}
+\begin{formulabox}
+    $\displaystyle f(x,y,z)=ax+by+cz+d$
+\end{formulabox}
+
+Eine \ZSFkeyword{Niveaufläche} ist eine Fläche im $xyz$-Raum, deren Punkte den gleichen Funktionswert $C$ (Niveau) besitzen.
+
+\SubsubsectionBar{Partielle Ableitungen und Gradient}
+\textVorBox{Die partiellen Ableitungen für $f(x,y,z)$ sind:}
+\begin{formulabox}
+    $\displaystyle f_x=\frac{\partial f}{\partial x},\qquad f_y=\frac{\partial f}{\partial y},\qquad f_z=\frac{\partial f}{\partial z}$
+\end{formulabox}
+
+\textVorBox{Der \ZSFkeyword{Satz von Schwarz} für $f(x,y,z)$ besagt, dass die Reihenfolge der partiellen Ableitungen keine Rolle spielt:}
+\begin{formulabox}
+    $\displaystyle f_{xy}=f_{yx},\qquad f_{xz}=f_{zx},\qquad f_{yz}=f_{zy}$
+\end{formulabox}
+
+Die Integrabilitätsbedingungen in 3D besagen, dass für drei stetige Funktionen $\varphi$, $\psi$ und $\chi$ mit $\varphi_y=\psi_x$, $\varphi_z=\chi_x$ und $\psi_z=\chi_y$ eine Funktion $f(x,y,z)$ mit $f_x=\varphi$, $f_y=\psi$ und $f_z=\chi$ existiert.
+
+\textVorBox{Der Gradient für $f(x,y,z)$ berechnet sich mit:}
+\begin{formulabox}
+    $\displaystyle \grad(f(x,y,z))=\begin{pmatrix} f_x \\ f_y \\ f_z \end{pmatrix}=\vec{\nabla}f(x,y,z)$
+\end{formulabox}
+
+\SubsubsectionBar{Linearisierung und Fehlerrechnung}
+\ZSFindex{Linearisierung}
+\textVorBox{Für eine Funktion in drei Variablen kann eine \ZSFkeyword{Ersatzfunktion} bei $(x_0,y_0,z_0)$ aufgestellt werden:}
+\begin{formulabox}
+    $\displaystyle t(x,y,z)=f(x_0,y_0,z_0)+f_x(x_0,y_0,z_0)(x-x_0)$
+    $\displaystyle \qquad\qquad\quad + f_y(x_0,y_0,z_0)(y-y_0)$
+    $\displaystyle \qquad\qquad\quad + f_z(x_0,y_0,z_0)(z-z_0)$
+    $\displaystyle \qquad\qquad = f(\vec r_0)+\grad(f(\vec r_0))\cdot(\vec r-\vec r_0)$
+\end{formulabox}
+\textNachBox{Die Fehlerrechnung ist analog zu der in zwei Variablen.}
+
+\SubsubsectionBar{Tangentialebene und Tangentialfläche}
+\textVorBox{Tangentialebenen können mit der \ZSFkeyword{Gradientenmethode} aufgestellt werden. Die Tangentialebene der impliziten Funktion $f(x,y,z)=c$ im Punkt $\vec r_0=(x_0,y_0,z_0)$ beträgt:}
+\begin{formulabox}
+    \ZSFformulaline{\ZSFbraceunder{\grad(f(\vec r_0))}{Normalenvektor}\cdot(\vec r-\vec r_0)=0}{Tangentialebene}
+\end{formulabox}
+
+\textNachBox{Für $g(x,y,z)=K$ setzt man $f(x,y,z)=g(x,y,z)-K$. Einen Graphen $z=g(x,y)$ schreibt man als $f(x,y,z)=g(x,y)-z$.}
+
+\textVorBox{Eine \ZSFkeyword{Tangentialfläche} ist die Menge aller Tangenten einer Kurve im Raum. Wenn $\vec r(u)$ die Parametrisierung der Kurve ist, berechnet sich die Tangentialfläche wie folgt:}
+\begin{formulabox}
+    \ZSFformulaline{\vec\varphi(u,v)=\vec r(u)+v\,\vec r'(u)}{Tangentialfl.}
+\end{formulabox}
+
+\SubsectionBar{Richtungsableitung}
+\textVorBox{Die \ZSFkeyword{Richtungsableitung} $D_{\vec e}f(\vec r_0)$ von $f$ an der Stelle $\vec r_0$ in Richtung von $\vec e$ ist ein Skalar. Sie gibt an, wie sich die Funktionswerte an einer Stelle verändern, wenn man sich in Richtung von $\vec e$ bewegt:}
+\begin{formulabox}
+    $\displaystyle D_{\vec e}f(\vec r_0)=\grad(f(\vec r_0))\cdot\ZSFbraceunder{\vec e}{$\|\vec e\|=1$}$
+\end{formulabox}
+\textNachBox{wobei $\vec e$ ein normierter Vektor ist. Die maximale Richtungsableitung tritt in Richtung des Gradienten auf.}
+
+\SubsectionBar{Kettenregel}
+\textVorBox{Die \ZSFkeyword{verallgemeinerte Kettenregel} für $F(t)=f(\vec r(t))$ berechnet die Ableitung von $f$ entlang der Kurve $\vec r(t)$:}
+\begin{formulabox}
+    $\displaystyle F'(t)=\ZSFmhlA{f_x(\vec r(t))}\ZSFmhlB{\dot x(t)}+\ZSFmhlA{f_y(\vec r(t))}\ZSFmhlB{\dot y(t)}+\ZSFmhlA{f_z(\vec r(t))}\ZSFmhlB{\dot z(t)}$
+    $\displaystyle \qquad = \ZSFmhlA{\grad(f(\vec r(t)))}\cdot\ZSFmhlB{\dot{\vec r}(t)}$
+\end{formulabox}
+\textNachBox{wobei $\vec r(t)=(x(t),y(t),z(t))$.}
+\ZSFindex{Kettenregel}

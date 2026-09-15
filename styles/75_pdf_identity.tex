@@ -1,0 +1,83 @@
+% ============================================================
+% 75_pdf_identity.tex — PDF-Identitaet und Ownership-Nachweis
+% ============================================================
+% Alle dynamischen Felder (Titel, Release-ID, Build-Stamp, Git-Commit)
+% werden vom Makefile via -pdflualatex="...\def\Foo{...}..." injiziert.
+% Lokale Defaults via \providecommand sorgen dafür, dass das Dokument
+% auch ohne Makefile (z.B. direkter latexmk-Aufruf) baubar bleibt.
+
+% --- Owner (zentral hier setzen, einmal pro Person) ---
+\newcommand{\ZSFOwnerDisplayName}{Loris Einar Kristj\'an Hliddal}
+\newcommand{\ZSFOwnerNameASCII}{Loris Einar Kristjan Hliddal}
+\newcommand{\ZSFOwnerID}{LEKH-ZSF-A1B2}
+
+% --- Per Build injizierbare Felder (Defaults wenn ungesetzt) ---
+\providecommand{\ZSFSubjectTitle}{ZSF Analysis 2}
+\providecommand{\ZSFReleaseID}{DEV}
+\providecommand{\ZSFReleaseLabel}{\ZSFReleaseID}
+\providecommand{\ZSFBuildStamp}{manual}
+\providecommand{\ZSFGitCommit}{nogit}
+\newcommand{\ZSFBuildID}{\ZSFBuildStamp-\ZSFGitCommit}
+
+% Sichtbarer dezenter Marker auf Seite 1 (klein, hellgrau)
+\newif\ifZSFVisibleMarker
+\ZSFVisibleMarkerfalse
+
+% XMP optional (graceful, wenn nicht installiert)
+\IfFileExists{hyperxmp.sty}{\RequirePackage{hyperxmp}}{}
+\RequirePackage{eso-pic}
+
+\author{\ZSFOwnerNameASCII}
+\title{\ZSFSubjectTitle}
+\ifdefined\Author
+  \Author{\ZSFOwnerNameASCII}
+\fi
+\ifdefined\Title
+  \Title{\ZSFSubjectTitle}
+\fi
+\ifdefined\Subject
+  \Subject{Originalfassung; owner=\ZSFOwnerID; release=\ZSFReleaseID; license=CC-BY-SA-4.0; https://creativecommons.org/licenses/by-sa/4.0/}
+\fi
+\ifdefined\Keywords
+  \Keywords{owner-name:\ZSFOwnerNameASCII, owner-id:\ZSFOwnerID, release-id:\ZSFReleaseID, build-id:\ZSFBuildID}
+\fi
+
+\hypersetup{
+  pdftitle={\ZSFSubjectTitle},
+  pdfauthor={\ZSFOwnerNameASCII},
+  pdfsubject={Originalfassung; owner=\ZSFOwnerID; release=\ZSFReleaseID; license=CC-BY-SA-4.0; https://creativecommons.org/licenses/by-sa/4.0/},
+  pdfkeywords={owner-name:\ZSFOwnerNameASCII, owner-id:\ZSFOwnerID, release-id:\ZSFReleaseID, build-id:\ZSFBuildID},
+  pdfcreator={LaTeX},
+  pdfproducer={latexmk}
+}
+
+% Engine-Weiche: LuaTeX (>= 0.85) kennt \pdfinfo nicht mehr, sondern
+% \pdfextension info; pdfTeX kennt nur \pdfinfo. Eine Quelle, beide Engines.
+\ifdefined\pdfextension
+  \protected\def\ZSFpdfinfo{\pdfextension info }
+\else
+  \let\ZSFpdfinfo\pdfinfo
+\fi
+
+\AtBeginDocument{
+  % Low-level pdfinfo fallback (stabil bei Toolchains, die Author/Keywords sonst verwerfen).
+  \ZSFpdfinfo{
+    /Author (\ZSFOwnerNameASCII)
+    /Title (\ZSFSubjectTitle)
+    /Subject (Originalfassung; owner=\ZSFOwnerID; release=\ZSFReleaseID; license=CC-BY-SA-4.0; https://creativecommons.org/licenses/by-sa/4.0/)
+    /Keywords (owner-name:\ZSFOwnerNameASCII, owner-id:\ZSFOwnerID, release-id:\ZSFReleaseID, build-id:\ZSFBuildID)
+  }
+  \ifZSFVisibleMarker
+    \AddToHook{shipout/firstpage}{
+      \AtPageLowerLeft{
+        \raisebox{\ZSFidentityMarkerInset}[0pt][0pt]{%
+          \makebox[0pt][l]{%
+            \hspace{\ZSFidentityMarkerInset}%
+            {\color{IdentityMarkerColor}\ZSFfontIdentityMarker
+            id:\ZSFOwnerID\space|\space rel:\ZSFReleaseID}%
+          }%
+        }%
+      }%
+    }
+  \fi
+}

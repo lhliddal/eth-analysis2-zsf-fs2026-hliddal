@@ -1,0 +1,1876 @@
+% ============================================================
+% 60_boxes.tex — tcolorbox-Stile, Balken, Boxen, Formelnoten, Listen
+% ============================================================
+
+% ------------------------------------------------------------
+% Balken-Bindung: ein Titelbalken steht nie allein am Spaltenfuss
+% ------------------------------------------------------------
+% Ein Balken ohne den Anfang seines Inhalts ist der auffälligste Layoutfehler
+% einer ZSF: Man sieht die Überschrift, aber nicht, wozu sie gehört.
+%
+% Eine Platzreserve allein verhindert das nicht, sie verursacht es: Sie besteht
+% aus \penalty0 … \penalty-100 und legt damit einen BILLIGEN Umbruchpunkt an
+% genau die Stelle, an der ein Balken gerade fertig gesetzt wurde. Ihre Bremse
+% — Stretch-Glue, die einen Umbruch bei viel Restplatz unattraktiv macht —
+% trägt unter \raggedcolumns nicht, weil multicols den Spaltenboden ohnehin
+% frei auffüllt. Übrig bliebe die blosse Einladung zum Umbruch.
+%
+% Deshalb zwei getrennte Aufgaben statt einer:
+%   \ZSFReserveSpace  — „lieber vorher umbrechen, wenn es eng wird" (Bremse)
+%   \ZSFTitleBarLock  — „hier NICHT umbrechen, es kam noch kein Inhalt" (Sperre)
+% Die Sperre ist die verlässliche; sie hängt an keiner Höhenschätzung.
+%
+% Der Balken selbst setzt KEINEN Abstand. Genau der erste echte Follower
+% verbraucht den Merker und setzt einmal \ZSFbarAfterGap. Damit gibt es keine
+% Vorauszahlung ueber \parskip und keine spaetere Gegenkorrektur mehr.
+%
+% Boxen und weitere Balken rufen \ZSFTitleBarGapConsume direkt. Fuer freien
+% Text laeuft derselbe Verbraucher im LaTeX-Hook `para/before`, also noch im
+% vertikalen Modus. Zwischen Balken und erstem Follower steht \parskip deshalb
+% voruebergehend auf null; der Verbraucher setzt stattdessen genau den einen
+% positiven Balkenabstand und stellt \parskip noch vor dem Inhalt wieder her.
+% Ein Hook koexistiert mit den Paket-Hooks von tcolorbox und ueberschreibt
+% insbesondere nicht mehr das globale \everypar-Register.
+%
+% DER MERKER GEHOERT DER AEUSSEREN VERTIKALEN LISTE, und zwar dem Zeitpunkt,
+% an dem der Follower dort GESETZT wird. Genau daran hing ein Fehler, der jede
+% erste Box nach einem Balken traf:
+%
+% Eine Box verbrauchte den Merker ueber den `before`-Schluessel von tcolorbox.
+% Den fuehrt tcolorbox aber erst bei \end aus — den Titel der Box setzt es
+% dagegen schon bei \begin. Bis dahin stand der Merker also noch, und die erste
+% Zeile, die eine Box ueberhaupt setzt, ist ihr Titel: Der Absatzstart des
+% Titels loeste den `para/before`-Hook aus, und der schrieb \ZSFbarAfterGap,
+% \nointerlineskip und die globale \parskip-Wiederherstellung INS TITELFELD.
+% Dessen Hoehe hatte tcolorbox schon berechnet, und die Folge war ein Titel,
+% der oben aus seiner Box herauslief — der Rahmen schnitt durch die Oberlaengen
+% (nachgemessen: 2 pt Fehlbetrag im Titelstreifen).
+%
+% Deshalb verbraucht eine Box den Merker beim EINTRITT (\ZSF@claimBarGap in der
+% Fabrik), bevor tcolorbox irgendetwas von ihr setzt. Damit kann kein Material
+% im Inneren einer Box den Merker mehr sehen — auch nicht die Titelzeile der
+% leisen Fassung, der erste Absatz des Inhalts oder eine verschachtelte Box,
+% die den Abstand sonst in ihre Elternbox geschrieben haette.
+%
+% Ein Merker »wir sind in einer Box«, der den Hook stummschaltet, waere die
+% halbe Loesung: Er kaeme fuer den Titel zu spaet (tcolorbox setzt ihn, bevor
+% irgendein Box-Hook laeuft) und liesse die Verschachtelung offen.
+\newif\ifzsfTitleBarPending
+\newskip\ZSFTitleBarSavedParskip
+\newcommand{\ZSFTitleBarLockOn}{%
+  % Defensive Idempotenz: Ein direkter zweiter Balken muss den ersten zuerst
+  % verbrauchen. Falls ein neuer Balkentyp diesen Vertrag einmal vergisst,
+  % darf er wenigstens nicht den gespeicherten Dokument-\parskip mit dem
+  % voruebergehenden Nullwert ueberschreiben.
+  \ifzsfTitleBarPending\else
+    \global\ZSFTitleBarSavedParskip=\parskip
+    \global\parskip=0pt
+    \global\zsfTitleBarPendingtrue
+  \fi
+}
+\newcommand{\ZSFTitleBarLockOff}{%
+  \ifzsfTitleBarPending
+    \global\parskip=\ZSFTitleBarSavedParskip
+    \global\zsfTitleBarPendingfalse
+  \fi
+}
+\newcommand{\ZSFTitleBarGapConsume}{%
+  \ifzsfTitleBarPending
+    % Erneut direkt vor der Glue sperren: Ein Index-Write zwischen Balken und
+    % Follower darf die Bindung nicht auftrennen.
+    \penalty10000
+    \vskip\ZSFbarAfterGap
+    \nointerlineskip
+    \ZSFTitleBarLockOff
+  \fi
+}
+\AddToHook{para/before}[zsf/titlebar-lock]{%
+  \ifzsfTitleBarPending
+    % Der Absatzstart hat den voruebergehend auf null gesetzten \parskip
+    % bereits verarbeitet. Ab hier darf der Dokumentwert wieder gelten.
+    \ZSFTitleBarGapConsume
+  \fi
+}
+
+% Der Eintritt eines BLOCKS in die aeussere Liste: Steht ein Balkenabstand aus,
+% gehoert er diesem Block und wird hier gesetzt — vor allem, was der Block
+% selbst an Material erzeugt (Begruendung im Kopfkommentar oben).
+%
+% Der Merker bleibt, dass dieser Block den Abstand geholt hat. Ihn erneut aus
+% \ifzsfTitleBarPending zu lesen geht nicht mehr: Der ist danach verbraucht,
+% und ohne das Gedaechtnis legte \ZSF@blockBefore seinen eigenen Vorabstand
+% obendrauf — der Balkenabstand ERSETZT ihn (30_layout_spacing →
+% \ZSFBoxBeforeSkip). Gruppenlokal, damit die Antwort pro Block gilt und eine
+% verschachtelte Box sie nicht an ihre Elternbox weitergibt.
+\makeatletter
+\newif\ifZSF@barGapClaimed
+\newcommand{\ZSF@claimBarGap}{%
+  \ZSF@barGapClaimedfalse
+  \ifzsfTitleBarPending
+    \par
+    \ZSFTitleBarGapConsume
+    \ZSF@barGapClaimedtrue
+  \fi
+}
+\makeatother
+
+% Umbruchsteuerung an Balken — der Schalter für BEIDE Mechanismen unten
+% (\ZSFBarPenalty, \ZSFReserveSpace). Aus über \ZSFBreakReservesOff.
+%
+% Was der Schalter NICHT abschaltet: das \penalty10000, solange die Sperre
+% steht. Das ist keine Steuerung, sondern die Zusage, dass ein Balken nicht
+% als letztes Element einer Spalte stehenbleibt — ohne sie entstehen verwaiste
+% Überschriften, die man von Hand nicht sinnvoll nachräumt.
+\newif\ifZSFBarSteering \ZSFBarSteeringtrue
+
+% Jeder Umbruchpunkt, den das Balken-System selbst setzt, läuft hierüber:
+% solange noch kein Inhalt folgte, wird daraus ein Verbot.
+\newcommand{\ZSFBarPenalty}[1]{%
+  \ifzsfTitleBarPending\penalty10000\else\ifZSFBarSteering\penalty#1\fi\fi
+}
+
+%
+%
+%
+%
+\newcommand{\ZSFReserveSpace}[1]{%
+  \par
+  \ifzsfTitleBarPending
+    \penalty10000
+  \else
+    \penalty0\vspace{0pt plus #1}\penalty-100\vspace{0pt plus -#1}%
+  \fi
+  \relax
+}
+\newcommand{\BreakIfNotEnoughSpace}{\ZSFReserveSpace{\ZSFbreakThreshold}}
+\newcommand{\BreakIfNotEnoughSpaceChapter}{\ZSFReserveSpace{\ZSFbreakThresholdChapter}}
+\newcommand{\BreakIfNotEnoughSpaceSubsubsection}{\ZSFReserveSpace{\ZSFbreakThresholdSubsubsection}}
+
+% Einheitlicher Top-Spacing-Kontrakt für Kapitel- und Abschnittsbalken.
+%   #1 = normaler Abstand davor
+%   #2 = Reserve-Mechanismus dieser Balkenebene
+%
+% Folgt normaler Inhalt, muss \addvspace VOR der Reserve stehen, damit es per
+% Max-Semantik mit dem after-skip der Vorbox kollabiert. Folgt dagegen direkt
+% ein zweiter Balken, verbraucht er den ausstehenden gemeinsamen
+% Balkenabstand; sein normaler Vorabstand entfaellt vollstaendig.
+% tcolorbox-Definitionen, die diesen Helper rufen, MUESSEN before skip=0pt
+% setzen, damit das Spacing nicht doppelt eingerechnet wird.
+\newcommand{\ZSFTitleBarTopSpacing}[2]{%
+  \par
+  \ifzsfTitleBarPending
+    \ZSFTitleBarGapConsume
+  \else
+    \addvspace{#1}%
+    #2%
+  \fi
+}
+
+% ------------------------------------------------------------
+% Titelbalken — gemeinsame Basis
+% ------------------------------------------------------------
+% Alle vier Balken (Kapitel, Dokumenttitel, Abschnitt, Unterabschnitt) teilen
+% denselben Rahmenlos-Kontrakt. Sie setzen nur noch, worin sie sich wirklich
+% unterscheiden: Farbe, vertikale Polsterung, Skips und Schrift.
+% Der Balken-Ton ist immer Fläche = Rahmen, deshalb ein Schlüssel dafür.
+%
+% Nach einem Balken kommt zuerst das Umbruchverbot, dann erst der Abstand.
+% Die Reihenfolge ist der eigentliche Fix: tcolorbox' "after skip" setzt die
+% Glue direkt hinter die Box, und Glue nach einer Box IST ein gültiger
+% Umbruchpunkt. Ein \penalty10000, das erst danach kommt, greift zu spät.
+% Steht die Sperre davor, ist die Glue durch ein Penalty abgeschirmt und
+% damit kein Umbruchpunkt mehr. Deshalb ersetzen die Balken "after skip"
+% durch diesen Hook — "after" ersetzt die Default-Aktion von tcolorbox.
+%
+% Der Abstand selbst steht absichtlich nicht hier. Der Balken markiert nur den
+% ausstehenden Follower; dieser setzt \ZSFbarAfterGap ueber genau einen
+% Verbraucher. So bleiben unsichtbare Index-Writes erlaubt, ohne dass
+% Abstandszustand oder Bindung verloren gehen.
+\newcommand{\ZSFTitleBarAfter}{%
+  \par\penalty10000\ZSFTitleBarLockOn
+}
+
+\tcbset{
+  zsfbarcolor/.style={colback=#1, colframe=#1},
+  zsfbar/.style={
+    enhanced jigsaw,
+    breakable=false,
+    boxrule=0pt,
+    boxsep=0pt,
+    arc=\ZSFboxArc,
+    outer arc=\ZSFboxArc,
+    left=\ZSFboxPadX,
+    right=\ZSFboxPadX,
+    before skip=0pt,
+    % HIER KEIN `after skip`. Der Balken setzt nur den Pending-Merker; genau
+    % der erste sichtbare Follower besitzt und setzt \ZSFbarAfterGap. Ein
+    % tcolorbox-`after skip` schriebe daneben einen zweiten Abstand in dasselbe
+    % `after`-Makro und machte den Wert wieder vom folgenden \parskip abhaengig.
+    after={\par},
+  },
+}
+
+\newtcolorbox{chapterbar}[1][]{
+  zsfbar,
+  zsfbarcolor=\ChapterBarColor,
+  top=\ZSFbarPadY,
+  bottom=\ZSFbarPadY,
+  before skip=0pt,
+  fontupper=\ZSFfontChapter,
+  #1
+}
+% \ZSFInkOwned steht in ALLEN vier Balken direkt neben der Kontrastfarbe:
+% Ein Balken ist eine gesaettigte Flaeche mit eigener Textfarbe und besitzt
+% damit die Farbe (40_colors_structure -> Ink-Vertrag). Bewusst gleich
+% behandelt, auch wo die Flaeche hell ist (Unterabschnitt) — das Kriterium
+% ist "setzt eigene Kontrastfarbe" und nicht eine Einzelfallabwaegung, sonst
+% muesste man es bei jeder Farbaenderung neu entscheiden.
+\newcommand{\ChapterBar}[1]{
+  \ZSFTitleBarTopSpacing{\ZSFspaceL}{\BreakIfNotEnoughSpaceChapter}%
+  \begin{chapterbar}
+    \textcolor{\ChapterBarTextColor}{\ZSFInkOwned #1}
+  \end{chapterbar}%
+  \ZSFTitleBarAfter
+}
+
+% ------------------------------------------------------------
+% Dokument-Titel-Masthead — einmalig vor dem Front-Chapter
+% ------------------------------------------------------------
+\newtcolorbox{zsftitleheader}[1][]{
+  zsfbar,
+  zsfbarcolor=ZSFDocumentTitleBarColor,
+  left=\ZSFboxPadXBar,
+  right=\ZSFboxPadXBar,
+  top=\ZSFbarPadY,
+  bottom=\ZSFbarPadY,
+  halign=center,
+  #1
+}
+\newcommand{\ZSFTitleHeader}[2]{%
+  \ZSFBarPenalty{-500}%
+  \begin{zsftitleheader}
+    {\color{ZSFDocumentTitleTextColor}\ZSFInkOwned\ZSFfontTitleHeader #1\par}%
+    \vspace{\ZSFspaceXS}%
+    {\color{ZSFDocumentTitleBylineColor}\ZSFInkOwned\ZSFfontNote von~#2\par}%
+  \end{zsftitleheader}%
+  \ZSFTitleBarAfter
+}
+
+% ------------------------------------------------------------
+% Subsection-Bar (+ unnummerierte Star-Variante)
+% ------------------------------------------------------------
+\newtcolorbox{subsectionbar}[1][]{
+  zsfbar,
+  zsfbarcolor=\SubsectionBarColor,
+  top=\ZSFbarPadY,
+  bottom=\ZSFbarPadY,
+  fontupper=\ZSFfontSection,
+  #1
+}
+\newtcolorbox{subsubsectionbar}[1][]{
+  zsfbar,
+  zsfbarcolor=\SubsubsectionBarColor,
+  top=\ZSFbarPadYTight,
+  bottom=\ZSFbarPadYTight,
+  fontupper=\ZSFfontSubsubsection,
+  #1
+}
+\makeatletter
+% Pro Ebene EIN Rumpf; die Varianten liefern nur das Nummernpräfix (leer bei
+% der Sternvariante).
+%   #1 = Label (leer erlaubt)   #2 = Nummernpräfix   #3 = Titel
+\newcommand{\ZSF@subsectionBarBody}[3]{%
+  \ZSFTitleBarTopSpacing{\ZSFsubsectionBarBeforeSkip}{\BreakIfNotEnoughSpace}%
+  \ZSFBarPenalty{-500}%
+  \if\relax\detokenize{#1}\relax\else\label{#1}\fi
+  \begin{subsectionbar}
+    \textcolor{\SubsectionBarTextColor}{\ZSFInkOwned #2#3}
+  \end{subsectionbar}%
+  \ZSFTitleBarAfter
+}
+\newcommand{\ZSF@subsubsectionBarBody}[3]{%
+  \ZSFTitleBarTopSpacing{\ZSFsubsubsectionBarBeforeSkip}{\BreakIfNotEnoughSpaceSubsubsection}%
+  \ZSFBarPenalty{-300}%
+  \if\relax\detokenize{#1}\relax\else\label{#1}\fi
+  \begin{subsubsectionbar}
+    \textcolor{\SubsubsectionTitleColor}{\ZSFInkOwned #2#3}
+  \end{subsubsectionbar}%
+  \ZSFTitleBarAfter
+}
+
+\newcommand{\SubsectionBar}{\@ifstar{\SubsectionBarStar}{\SubsectionBarNumbered}}
+\newcommand{\SubsectionBarNumbered}[2][]{%
+  \refstepcounter{subsection}\setcounter{subsubsection}{0}%
+  \ZSF@subsectionBarBody{#1}{\thesubsection. }{#2}}
+\newcommand{\SubsectionBarStar}[2][]{\ZSF@subsectionBarBody{#1}{}{#2}}
+
+\newcommand{\SubsubsectionBar}{\@ifstar{\SubsubsectionBarStar}{\SubsubsectionBarNumbered}}
+\newcommand{\SubsubsectionBarNumbered}[2][]{%
+  \refstepcounter{subsubsection}%
+  \ZSF@subsubsectionBarBody{#1}{\thesubsubsection. }{#2}}
+\newcommand{\SubsubsectionBarStar}[2][]{\ZSF@subsubsectionBarBody{#1}{}{#2}}
+
+\makeatother
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSFNewColumn}{\columnbreak[4]}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\tcbset{zsftitlebar/.style={
+  fonttitle=\ZSFfontBoxTitle\ZSFInkOwned\strut,
+  halign title=center,
+  title style={minimum height=\ZSFtitleBarHeight},
+  toptitle=\ZSFspaceXS,
+  bottomtitle=\ZSFspaceXS,
+  before title={},
+  after title={},
+}}
+
+% Rechtsbuendiges Meta-/Kategorie-Tag im Titelbalken einer Titelbox.
+% Verwendung im Titel-Argument der Box, z.B.:
+%   \begin{defbox}[Quicksort\ZSFTitleTag{O(n log n)}] ... \end{defbox}
+%   \begin{codebox}[Algorithmus\ZSFTitleTag{Python}]  ... \end{codebox}
+% Schiebt das Tag per \hfill an den rechten Titelrand. Schrift: \ZSFfontTitleTag.
+\newcommand{\ZSFTitleTag}[1]{\hfill{\ZSFfontTitleTag #1}}
+
+% Zum "before"-Schlüssel in allen Box-Stilen unten: das führende \par ist Pflicht.
+% "before" ERSETZT die Default-Aktion von tcolorbox (die selbst ein \par enthält) —
+% es hängt nicht an. Ohne \par wird eine Box, vor der roher Fliesstext ohne
+% Leerzeile steht, inline an den offenen Absatz gehängt: sie bekommt keine
+% Spaltenbreite und ragt sichtbar in die Nachbarspalte. Im vertikalen Modus ist
+% \par ein No-op, der Zusatz ist also folgenlos, wo ohnehin alles korrekt war.
+% Gemeinsamer Grundvertrag aller Inhaltsboxen. Was hier steht, gilt fuer jede
+% Box — die einzelnen Stile setzen nur noch ihre Unterschiede. Besonders das
+% before-Hook ist Pflicht (Begruendung im Kommentar oben) und darf deshalb
+% nicht pro Box wiederholt werden, wo man es vergessen kann.
+% Schicht 1 — Fluss. Auch rahmenlose Boxen (weight=quiet, splitbox) laufen
+% hierüber, damit Abstände und Balken-Bindung überall identisch greifen.
+% DER ABSTAND VOR EINEM BLOCK — eine Stelle, und sie muss es sein.
+%
+% Hier standen `before skip` und `before` nebeneinander. In tcolorbox ist
+% `before skip` aber KEIN eigener Schluessel, sondern ein Stil, der `before`
+% schreibt (tcolorbox.sty: `before skip/.style={before={...}}`). Beide
+% schreiben also dasselbe Makro, und der spaetere gewinnt — `before` stand
+% hinten, damit war \ZSFBoxBeforeSkip wirkungslos. Nachgemessen: auf 40pt
+% gesetzt aendert sich am Satz nichts.
+%
+% Die Folgen reichten weiter als der eine Wert: Der Abstand vor JEDER Box kam
+% damit allein aus \parskip und gehoerte keinem Register. Die Kollaps-Mechanik
+% nach einem Balken (damals \ifzsfAfterSubsectionBar) rechnete einen Wert aus, den
+% niemand las, und \ZSFboxgroup schloss seine Zwischenraeume nicht wirklich.
+%
+% Deshalb EIN `before` fuer den Vorabstand. Die Skip-Logik ist die von
+% tcolorbox selbst — dieselben Faelle (nichts auf der Liste, vertikaler Modus),
+% damit hier keine zweite Auslegung derselben Frage entsteht.
+%
+% DER BALKENABSTAND STEHT NICHT HIER, und das ist die eigentliche Trennlinie:
+% Er haengt nicht an der Box, sondern an der Folge (was steht davor?), und wird
+% deshalb beim Eintritt geholt — \ZSF@claimBarGap, aufgerufen von der Fabrik
+% und von runintext. Der Vorabstand haengt umgekehrt an den OPTIONEN der Box
+% (\ZSFBoxBeforeSkip, von der codebox pro Teil auf 0pt gezogen), und die kennt
+% erst tcolorbox. Zwei Fragen, zwei Zeitpunkte — zusammengelegt bekam eine von
+% beiden zwangslaeufig den falschen (Kopfkommentar zum Merker oben).
+%
+% Den Minipage-Sonderfall von tcolorbox braucht es nicht: \addvspace prueft
+% LaTeXs eigenes @minipage selbst und tut am Anfang einer Minipage nichts —
+% genau das, was jener Zweig von Hand herstellt. Ihn nachzubauen hiesse,
+% \iftcb@minipage zu lesen, und das existiert ausserhalb einer tcolorbox gar
+% nicht (gemessen: undefined im runintext).
+\makeatletter
+\newcommand{\ZSF@blockBefore}{%
+  \ifZSF@barGapClaimed
+    % Der Balkenabstand steht bereits ueber diesem Block; ein eigener
+    % Vorabstand kaeme obendrauf. Das \par hat \ZSF@claimBarGap schon gesetzt.
+  \else
+    \ifnum\lastnodetype=-1\relax\else
+      \par
+      \ifvmode
+        \ifdim\ZSFBoxBeforeSkip>0pt\relax
+          \addvspace{\glueexpr\ZSFBoxBeforeSkip-\parskip\relax}%
+        \fi
+      \fi
+    \fi
+  \fi
+}
+\tcbset{zsfbox/.style={
+  enhanced jigsaw,
+  after skip=\ZSFBoxAfterSkip,
+  before={\ZSF@blockBefore},
+}}
+\makeatother
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+
+% Polsterung ist zweidimensional: waagrecht entscheidet über Kante und
+% Balkenfreiraum, senkrecht über die Höhe. Getrennt, weil die Fälle sich
+% tatsächlich kreuzen (Wertegitter: waagrecht bündig, senkrecht knapp).
+%
+% `padx` setzt den Abstand von Inhalt UND Titel zur Kante — es ist eine Kante
+% und deshalb ein Wert (Begründung bei zsftitlebar oben). Für zwei der drei
+% Werte steht deshalb NUR `left`/`right` da: Das sind Sammelschlüssel von
+% tcolorbox (`left={lefttitle=#1, leftupper=#1, leftlower=#1}`), der Titel
+% folgt also von selbst. Ihn danebenzuschreiben wäre derselbe Wert zweimal —
+% und beim nächsten Eingriff einmal anders.
+%
+% `padx=none` ist der Fall, in dem Titel und Inhalt auseinandergehen MÜSSEN,
+% und deshalb der einzige, der beide nennt: Die Box polstert nicht, weil ihr
+% Inhalt es selbst tut — tablebox und valuegrid lassen ihre Farbfläche bis an
+% den Rahmen laufen und halten den Rand in der äussersten Zelle
+% (\ZSFtableEdgePad, siehe 20_tables). Der Titel hat keine Zelle und muss den
+% Wert direkt lesen; ohne diese Zeile stünde er als einziges Element der Box
+% an der blanken Kante.
+\tcbset{
+  padx/.is choice,
+  padx/normal/.style={left=\ZSFboxPadX,    right=\ZSFboxPadX},
+  padx/bar/.style   ={left=\ZSFboxPadXBar, right=\ZSFboxPadX},
+  padx/none/.style  ={left=0pt,            right=0pt,
+                      lefttitle=\ZSFtableEdgePad, righttitle=\ZSFtableEdgePad},
+  pady/.is choice,
+  pady/normal/.style={top=\ZSFboxPadY,    bottom=\ZSFboxPadY},
+  pady/tight/.style ={top=\ZSFtextMinPad, bottom=\ZSFtextMinPad},
+  pady/none/.style  ={top=0pt,            bottom=0pt},
+}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newenvironment{ZSFinset}{%
+  \par\advance\leftskip\ZSFboxPadX\advance\rightskip\ZSFboxPadX
+}{%
+  \par
+}
+
+% Ausrichtung des Boxinhalts. Als Hook statt als direktem 'before upper',
+% damit die Eintritts-Sequenz einer Box an EINER Stelle steht und die
+% Ausrichtung sie nicht ersetzen muss.
+\newcommand{\ZSFBoxAlign}{}
+\newif\ifZSFalignLeft
+% Kontext-Flag der Box (heute nur die formulabox). Ebenfalls Teil derselben
+% Sequenz — sonst bräuchte jede Box mit Kontext ein eigenes 'before upper'.
+\newcommand{\ZSFBoxContext}{}
+% Absatzabstand im Boxinhalt. Textboxen setzen ihn eigenständig (\ZSFspaceS),
+% Container um Tabellen und Listen erben den Dokumentwert — dort gibt es keine
+% Absätze, und ein eigener Wert würde nur die Liste verschieben. Als Regler
+% statt als Auslassung, damit „erbt bewusst" und „vergessen" unterscheidbar sind.
+\newcommand{\ZSFBoxParskip}{}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSFBoxFont}{}
+% Die Ausrichtung ERSETZT die Justierung, sie ergänzt sie nicht: `align=left`
+% ist der Flattersatz für schmale Spalten (55_readability), `align=center` ist
+% zentrierter Satz. Beides zusammen wäre kein zentrierter Flattersatz, sondern
+% zentrierter Satz mit den Umbruch-Penalties des Flattersatzes — sichtbar an
+% anders gebrochenen Formelzeilen.
+\tcbset{
+  align/.is choice,
+  align/left/.style  ={/utils/exec={\ZSFalignLefttrue\renewcommand{\ZSFBoxAlign}{\ZSFReadableAuto}}},
+  align/center/.style={/utils/exec={\ZSFalignLeftfalse\renewcommand{\ZSFBoxAlign}{\centering}}},
+  bodyparskip/.is choice,
+  bodyparskip/box/.style={
+    /utils/exec={\renewcommand{\ZSFBoxParskip}{\setlength{\parskip}{\ZSFspaceS}}}},
+  bodyparskip/inherit/.style={
+    /utils/exec={\renewcommand{\ZSFBoxParskip}{}}},
+  font/.is choice,
+  font/normal/.style={/utils/exec={\renewcommand{\ZSFBoxFont}{\ZSFfontContent}}},
+  font/dense/.style ={/utils/exec={\renewcommand{\ZSFBoxFont}{\ZSFfontContentDense}}},
+}
+% Titel-Merker der leisen Fassung. Gefüllt wird er von der Fabrik, gesetzt vom
+% Gewicht-Regler weiter unten; hier stehen nur die Deklarationen, damit sie vor
+% beidem existieren.
+%
+% \ifZSF@boxQuiet trägt die Gewicht-Wahl. Sie steht schon fest, BEVOR die
+% Optionsliste läuft — die Fabrik liest sie in einem Vor-Lauf aus dem Aufruf
+% (siehe dort). Deshalb darf der Ton weiter unten sie bereits abfragen.
+\makeatletter
+\newcommand{\ZSF@boxTitleText}{}
+\newif\ifZSF@boxHasTitle
+\newif\ifZSF@boxQuiet
+\makeatother
+\newcommand{\ZSFBoxQuietTitle}{}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSFBoxSetup}{\ZSFBoxFont\ZSFBoxParskip\ZSFBoxAlign\ZSFBoxContext}
+\newcommand{\ZSFBoxEnter}{\ZSFBoxSetup\ZSFBoxQuietTitle}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\tcbset{ZSF@breakability/.style={breakable=false}}
+\tcbset{zsfboxcontract/.style={
+  zsfbox,
+  ZSF@breakability,
+  tone=chapter,
+  align=left,
+  bodyparskip=box,
+  font=normal,
+  % Hooks zurücksetzen, damit eine verschachtelte Box die Einstellungen der
+  % äusseren nicht erbt — sie sind gruppenlokal, aber nicht selbstlöschend.
+  /utils/exec={\renewcommand{\ZSFBoxContext}{}\renewcommand{\ZSFBoxQuietTitle}{}},
+  before upper={\ZSFBoxEnter},
+  % Der Abstand zwischen oberer und unterer Haelfte, wenn sie gestapelt
+  % stehen. Er gehoert in den Vertrag und nicht in ein Preset: JEDE Box kann
+  % ein \tcblower tragen. Gesetzt hatte ihn nur die formulabox — alle
+  % uebrigen bekamen tcolorbox' 2mm, ein Mass, das niemand gewaehlt hat und
+  % das der Dichte nicht folgt. Derselbe Wert wie \ZSFsep: Es ist derselbe
+  % Blockwechsel, nur von tcolorbox gezogen statt vom Autor.
+  middle=\ZSFspaceSep,
+  frame=soft,
+  ZSF@surface=auto,
+  ZSF@titlefill=tone,
+  splitalign=top,
+}}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+\newcommand{\ZSF@frameChoice}{soft}
+\tcbset{
+  frame/.is choice,
+  frame/soft/.code  ={\renewcommand{\ZSF@frameChoice}{soft}},
+  frame/strong/.code={\renewcommand{\ZSF@frameChoice}{strong}},
+  frame/hard/.code  ={\renewcommand{\ZSF@frameChoice}{hard}},
+  frame/none/.code  ={\renewcommand{\ZSF@frameChoice}{none}},
+}
+% Läuft als letzte Option jeder Box und übersetzt die gemerkte Stärke gegen
+% den dann feststehenden Ton. Jede Box, die einen Rahmen haben kann, muss ihn
+% durchlaufen — sonst bleibt sie beim tcolorbox-Default.
+\tcbset{ZSF@resolveframe/.code={%
+  \IfStrEqCase{\ZSF@frameChoice}{%
+    {soft}  {\tcbset{colframe=\ZSFtoneFrameSoft}}%
+    {strong}{\tcbset{colframe=\ZSFtoneFrameStrong}}%
+    {hard}  {\tcbset{colframe=\ZSFtoneFrameHard}}%
+    {none}  {\tcbset{frame hidden, boxrule=0pt, arc=0pt, outer arc=0pt}}%
+  }%
+}}
+\makeatother
+
+% Fläche — der Baustein wählt die ROLLE, die Farbe dazu kommt aus dem Ton.
+%
+% Wortgleich zum Rahmen darüber und aus demselben Grund: tcolorbox löst
+% `colback` und `colbacktitle` beim Setzen der Option sofort per \colorlet auf.
+% Beide gehören damit dem letzten Schreiber. Ein Preset, das seine Fläche
+% direkt setzt, verliert sie deshalb an jede spätere Tonwahl des Aufrufers —
+% und ein ausgeschriebenes `tone=chapter` sähe anders aus als ein
+% weggelassenes, obwohl es dieselbe Wahl ist. Verzögert aufgelöst stehen
+% Rolle und Ton beide fest, wenn der Resolver läuft; die Reihenfolge im
+% Aufruf ist dann bedeutungslos.
+%
+%   auto      laut oder ruhig — entscheidet das Gewicht (Default)
+%   plain     ungetönt; Basis für Zebra, Gitterlinien, Syntaxfarben
+%   quiet     immer die ruhige Fläche, unabhängig vom Gewicht
+%   emphasis  betont; für Boxen, deren Inhalt selbst die Aussage ist
+%
+% `ZSF@titlefill` beantwortet dieselbe Frage für die Kopfzeile: `tone` gibt
+% ihr den Titelbalken des Tons, `surface` setzt sie auf die Fläche der Box
+% (Formelbox — dort ist der Titel eine Zeile, kein Balken).
+\makeatletter
+\newcommand{\ZSF@surfaceRole}{auto}
+\newcommand{\ZSF@titleFillRole}{tone}
+\tcbset{
+  ZSF@surface/.is choice,
+  ZSF@surface/auto/.code    ={\renewcommand{\ZSF@surfaceRole}{auto}},
+  ZSF@surface/plain/.code   ={\renewcommand{\ZSF@surfaceRole}{plain}},
+  ZSF@surface/quiet/.code   ={\renewcommand{\ZSF@surfaceRole}{quiet}},
+  ZSF@surface/emphasis/.code={\renewcommand{\ZSF@surfaceRole}{emphasis}},
+  ZSF@titlefill/.is choice,
+  ZSF@titlefill/tone/.code   ={\renewcommand{\ZSF@titleFillRole}{tone}},
+  ZSF@titlefill/surface/.code={\renewcommand{\ZSF@titleFillRole}{surface}},
+}
+% Läuft als letzte Option jeder Box, direkt neben dem Rahmen-Resolver.
+% Erst die Rolle in eine Farbe übersetzen, dann setzen — so kann die Kopfzeile
+% dieselbe Farbe bekommen, ohne die Fallunterscheidung zu wiederholen.
+\newcommand{\ZSF@resolvedBack}{\ZSFtoneLoudBack}
+\tcbset{ZSF@resolvesurface/.code={%
+  \IfStrEqCase{\ZSF@surfaceRole}{%
+    {auto}    {\ifZSF@boxQuiet\renewcommand{\ZSF@resolvedBack}{\ZSFtoneQuietBack}%
+               \else\renewcommand{\ZSF@resolvedBack}{\ZSFtoneLoudBack}\fi}%
+    {plain}   {\renewcommand{\ZSF@resolvedBack}{\BoxPlainBackColor}}%
+    {quiet}   {\renewcommand{\ZSF@resolvedBack}{\ZSFtoneQuietBack}}%
+    {emphasis}{\renewcommand{\ZSF@resolvedBack}{\ZSFtoneEmphasisBack}}%
+  }%
+  \tcbset{colback=\ZSF@resolvedBack}%
+  \IfStrEqCase{\ZSF@titleFillRole}{%
+    {tone}   {}%
+    {surface}{\tcbset{colbacktitle=\ZSF@resolvedBack}}%
+  }%
+}}
+\makeatother
+
+% Atomar: bricht nie über eine Spaltengrenze, auch nicht im Pack-Modus.
+% Muss in der Optionsliste NACH dem Basisstil stehen: Dessen gemeinsamer
+% Breakability-Vertrag liest zuerst den Pack-Modus, `atomic` überschreibt ihn
+% danach bewusst. Die Reihenfolge ist in den Presets festgeschrieben.
+\tcbset{atomic/.style={unbreakable}}
+
+% Schicht 2 — Form. Alles, was die Geometrie einer geschlossenen Inhaltsbox
+% bestimmt. Wer Rahmenstärke, Ecken oder Innenabstand des Systems ändern will,
+% ändert hier — und nur hier. padx/pady gehören dazu, damit \linewidth in jeder
+% Box identisch ist (sonst variierende Tabellen-Breiten je Box-Typ).
+%
+% Was NICHT hier steht, sondern im Vertrag darüber: alles, was auch für eine
+% Box mit eigener Form gilt (Ton, Justierung, Eintritt, Reset der verzögerten
+% Wahlen). Sonst müsste jede rahmenlose Box es abschreiben.
+%
+% `titlerule` ist die Kante zwischen Kopfzeile und Inhalt und gehoert damit zum
+% Rahmen — sie hat dessen Staerke und dessen Tinte (tcolorbox zieht sie in
+% `colframe`). Sie stand auf 0 pt, und das fiel erst auf, seit die Tabellen ihr
+% Gitter selbst zeichnen: Die Aussenkante der Tabelle IST der Boxrahmen
+% (20_tables), oben war er aber nicht da — der Titelbalken stiess ohne Linie an
+% die erste Zeile, waehrend links, rechts und unten eine stand.
+%
+% Eine Box ohne Rahmen bekommt auch keine: `frame=none` setzt `boxrule=0pt`,
+% und `boxrule` ist in tcolorbox eine Sammeloption, die `titlerule` mitnimmt.
+% Genau deshalb steht die Zeile hier und nicht spaeter — ein `boxrule=` NACH
+% ihr wuerde sie ueberschreiben (siehe Rahmen-Regler oben).
+\tcbset{zsfboxshape/.style={
+  zsfboxcontract,
+  boxsep=0pt,
+  boxrule=\ZSFboxRuleWidth,
+  titlerule=\ZSFboxRuleWidth,
+  arc=\ZSFboxInnerArc,
+  outer arc=\ZSFboxArc,
+  padx=normal,
+  pady=normal,
+}}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+
+% Schicht 3 — Titelbox. Der EINZIGE Vertrag für Boxen mit Titelbalken; alle
+% Presets unten stehen darauf.
+%
+% Dass hier nur noch zwei Zeilen stehen, ist der Punkt: Form kommt aus
+% zsfboxshape, alles Übrige aus dem Vertrag darüber. Eine Titelbox ist damit
+% genau das, was ihr Name sagt — eine Box mit Titelbalken.
+\tcbset{zsftitlebox/.style={
+  zsfboxshape,
+  zsftitlebar,
+}}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+% Die Fallunterscheidung sitzt in einem tcolorbox-Schlüssel, nicht um das
+% \begin herum: So gibt es genau EIN \begin{tcolorbox} und genau ein \end —
+% sonst zählt chktex sie gegeneinander auf und meldet sie bis zum Dateiende
+% als unbalanciert (Warnung 15, dort nicht mehr lokal unterdrückbar).
+\tcbset{zsftitle/.code={\IfBlankTF{#1}{\tcbset{notitle}}{\tcbset{title={#1}}}}}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSF@ownedKeyError}[2]{%
+  \PackageError{ZSF}{%
+    Schluessel '#1' gehoert dem Box-System, nicht dem Aufruf%
+  }{%
+    Flaeche und Rahmen werden am Ende jeder Optionsliste aus Rolle und Ton
+    zusammengesetzt (ZSF@resolveframe / ZSF@resolvesurface). Ein '#1' im
+    Aufruf wird dabei ueberschrieben und bliebe wirkungslos -- frueher
+    stillschweigend, jetzt hier. Stattdessen den Regler '#2' verwenden;
+    fehlt dafuer ein Wert, ist das eine Luecke und gehoert gemeldet
+    (fehlender Optionswert).%
+  }%
+}
+% Box-spezifische Regler gehören genau einer Box. Auf jeder anderen nimmt
+% tcolorbox sie klaglos entgegen, und niemand liest sie je wieder — dieselbe
+% stille Klasse wie die Farbschlüssel oben, nur eine Ecke weiter:
+% `\begin{defbox}[T][ordered]` setzte die Listen-Nummerierung, ohne dass eine
+% Liste existiert; `[grid=none]` leerte die Gitterwahl einer Box ohne Gitter.
+%
+% Welche Box welchen Regler besitzt, sagt sie selbst, bevor sie die Fabrik
+% ruft; leer heisst »keinen«. Die Kommas sind Begrenzer, damit ein Reglername,
+% der Teil eines anderen ist, nicht versehentlich durchgeht.
+\newcommand{\ZSF@boxOwnKnobs}{}
+\newcommand{\ZSF@requireOwnKnob}[2]{%
+  \IfSubStr{\ZSF@boxOwnKnobs}{,#1,}{}{%
+    \PackageError{ZSF}{%
+      Regler '#1' gehoert zu #2, nicht zu dieser Box%
+    }{%
+      Auf dieser Box hat '#1' nichts, worauf er wirken koennte -- er wuerde
+      stillschweigend verschwinden. Entweder die Box verwenden, der er
+      gehoert (#2), oder die Option weglassen.%
+    }%
+  }%
+}
+\pgfkeys{
+  /zsf/boxpre/.is family, /zsf/boxpre,
+  weight/.is choice,
+  weight/loud/.code ={\ZSF@boxQuietfalse},
+  weight/quiet/.code={\ZSF@boxQuiettrue},
+  ordered/.code={\ZSF@requireOwnKnob{ordered}{ZSFlist}},
+  grid/.code   ={\ZSF@requireOwnKnob{grid}{valuegrid}},
+  part/.code   ={\ZSF@requireOwnKnob{part}{codebox}},
+%
+%
+%
+%
+%
+%
+  colback/.code     ={\ZSF@ownedKeyError{colback}{tone}},
+  colframe/.code    ={\ZSF@ownedKeyError{colframe}{frame}},
+  colbacktitle/.code={\ZSF@ownedKeyError{colbacktitle}{tone}},
+  coltitle/.code    ={\ZSF@ownedKeyError{coltitle}{tone}},
+  .unknown/.code={},% chktex 26
+}
+\NewDocumentEnvironment{ZSF@box}{m m m}{%
+  \renewcommand{\ZSF@boxTitleText}{#2}%
+  \IfBlankTF{#2}{\ZSF@boxHasTitlefalse}{\ZSF@boxHasTitletrue}%
+  % Zentraler Reset statt einer Zeile pro Basisstil: Sonst erbt eine Box, deren
+  % Stil den Merker nicht zurücksetzt, die Titelzeile der Box, in der sie steht.
+  \renewcommand{\ZSFBoxQuietTitle}{}%
+  \ZSF@boxQuietfalse
+  \pgfkeys{/zsf/boxpre, #3}%
+  % Der Besitz gilt für GENAU diese Box. Zurückgesetzt direkt nach dem
+  % Vor-Lauf, damit eine verschachtelte Box ihn nicht erbt und dort ein
+  % fremder Regler wieder stumm durchginge.
+  \renewcommand{\ZSF@boxOwnKnobs}{}%
+  % Ein ausstehender Balkenabstand gehoert dieser Box und wird HIER geholt —
+  % in der aeusseren Liste und bevor tcolorbox die Box oeffnet. Danach steht
+  % kein Merker mehr, den ihr Titel, ihr Inhalt oder eine Box in ihr sehen und
+  % versehentlich verbrauchen koennte (Begruendung beim Merker oben).
+  \ZSF@claimBarGap
+  \begin{tcolorbox}[#1, zsftitle={#2}, ZSF@weightBase, #3,
+                    ZSF@resolveframe, ZSF@resolvesurface, ZSF@resolvesplit]%
+}{%
+  \end{tcolorbox}%
+}
+\makeatother
+
+% ------------------------------------------------------------
+% Presets — jede Box ist eine Liste aus den Reglern oben
+% ------------------------------------------------------------
+% Prüffrage an jedes Preset: Steht hier ein Schlüssel, für den es einen Regler
+% gäbe? Dann gehört der Regler hin. Rohe Schlüssel bleiben nur, wo die
+% Eigenschaft wirklich einmalig ist (der Zebra-Beschnitt der Tabelle, die harte
+% Kontur der Formelbox) — und dann mit Begründung.
+
+% Tabelle: Hintergrund bis an die Kante, damit das Zebra nicht kurz vor dem
+% Rahmen endet. 'clip upper' schneidet die Streifen an der Rundung ab.
+% Die Fläche bleibt ungetönt, weil das Zebra sie als Basis braucht.
+% `frame=hard` ist hier keine Betonung, sondern der Abschluss des Gitters:
+% Die ZSFtable zeichnet ihre Linien nur ZWISCHEN Zeilen und Spalten, die
+% Aussenkante gehoert der Box (20_tables → senkrecht). Nur sie kann die
+% runden Ecken nachfahren; ein blasser Rahmen daneben liess die Gitterlinien
+% im Nichts enden. Staerke und Tinte stimmen deshalb ueberein — boxrule ist
+% \ZSFboxRuleWidth wie \arrayrulewidth, `hard` ist \ZSFtoneFrameHard wie
+% \arrayrulecolor.
+\tcbset{preset/table/.style={
+  zsftitlebox,
+  ZSF@surface=plain,
+  padx=none, pady=none,
+  bodyparskip=inherit,
+  frame=hard,
+  clip upper,
+}}
+%
+%
+\tcbset{preset/fig/.style={zsftitlebox, atomic}}
+
+% ------------------------------------------------------------
+% Gewicht — laut oder leise, dieselbe Box
+% ------------------------------------------------------------
+% Laut oder leise ist eine Eigenschaft derselben Box, keine zweite Box:
+%
+%   weight=loud   Titelbalken, Rahmen, getönte Fläche  (Default)
+%   weight=quiet  linker Akzentbalken, rahmenlos, ruhige Fläche
+%
+% Der Titel wandert dabei aus der Kopfzeile in die erste Inhaltszeile. Den
+% Titeltext liefert die Fabrik (siehe dort), deshalb gilt der Regler auf JEDER
+% Box und nicht nur auf der defbox.
+\makeatletter
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSF@emitQuietTitle}{%
+  \ifZSF@boxHasTitle
+    {\ZSFfontBoxTitle\color{\ZSFtoneAccent}\ZSFInkOwned\ZSF@boxTitleText}%
+    \par\vspace{\ZSFspaceXS}%
+  \fi
+}
+% Die Basis der leisen Fassung. Sie wird von der Fabrik VOR den
+% Aufrufer-Optionen eingesetzt (Begründung dort), nicht mittendrin — deshalb
+% darf sie Vorbelegungen wie `frame=none` oder `padx=bar` mitbringen, ohne
+% eine Wahl des Aufrufers zu verwerfen.
+%
+% Die Fläche setzt sie bewusst NICHT selbst: Sie kommt vom Ton, der beide
+% Fassungen kennt und anhand des Gewichts wählt (siehe `ZSF@toneSurface`).
+% Täte sie es hier, wäre sie wieder ein Schreiber auf `colback` neben dem Ton
+% — und welcher gewinnt, hinge erneut an der Reihenfolge.
+\tcbset{ZSF@weightBase/.code={%
+  \ifZSF@boxQuiet
+    \tcbset{preset/quiet, notitle,
+            /utils/exec={\renewcommand{\ZSFBoxQuietTitle}{\ZSF@emitQuietTitle}}}%
+  \fi
+}}
+% Der Schlüssel selbst bleibt als No-op bestehen: Er steht weiterhin in der
+% Aufrufer-Liste, wo tcolorbox ihn sonst als unbekannt meldete. Gelesen wurde
+% er zu diesem Zeitpunkt längst — im Vor-Lauf der Fabrik.
+\tcbset{
+  weight/.is choice,
+  weight/loud/.code ={},
+  weight/quiet/.code={},
+}
+\makeatother
+
+\NewDocumentEnvironment{defbox}{O{} O{}}
+  {\begin{ZSF@box}{zsftitlebox}{#1}{#2}}{\end{ZSF@box}} % chktex 9
+
+\NewDocumentEnvironment{tablebox}{O{} O{}}
+  {\begin{ZSF@box}{preset/table}{#1}{#2}}{\end{ZSF@box}} % chktex 9
+% figbox und splitbox tragen einen Block — dort gilt fuer ein \ZSFimage das
+% Budget einer Abbildung, nicht das der Tabellenzelle (siehe \ZSF@imgBudget).
+% \makeatletter ist noetig, weil \ZSF@imgBudget ein Kontrollwort mit @ ist;
+% \begin{ZSF@box} daneben braucht es nicht — ein Umgebungsname ist Text.
+\makeatletter
+\NewDocumentEnvironment{figbox}{O{} O{}}
+  {\begingroup
+   \renewcommand{\ZSF@imgBudget}{\ZSFfigMaxHeight}%
+   \begin{ZSF@box}{preset/fig}{#1}{#2}}
+  {\end{ZSF@box}\endgroup} % chktex 9
+\makeatother
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\NewDocumentEnvironment{warnbox}{O{Achtung} O{}}
+  {\begin{ZSF@box}{zsftitlebox, tone=warn}{#1}{#2}}{\end{ZSF@box}} % chktex 9
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+\newcommand{\ZSFgroupcols}{}
+\newcommand{\ZSF@groupHead}{}
+\newlength{\ZSF@groupOuterAfter}
+%
+%
+%
+%
+%
+%
+%
+%
+\pgfkeys{
+  /zsf/boxgroup/.is family, /zsf/boxgroup,
+  cols/.store in=\ZSFgroupcols,
+  head/.store in=\ZSF@groupHead,
+  font/.is choice,
+  font/normal/.code={\renewcommand{\ZSF@tblFontDefault}{\ZSFfontContent}},
+  font/dense/.code ={\renewcommand{\ZSF@tblFontDefault}{\ZSFfontContentDense}},
+  ZSF@groupDefaults/.style={cols=, head=, font=normal},
+}
+\NewDocumentEnvironment{ZSFboxgroup}{O{}}{%
+  \par
+  \setlength{\ZSF@groupOuterAfter}{\ZSFBoxAfterSkip}%
+  \ifzsfTitleBarPending\else
+    \addvspace{\ZSFBoxBeforeSkip}%
+  \fi
+  \begingroup
+  \pgfkeys{/zsf/boxgroup, ZSF@groupDefaults, #1}%
+  % Innen keine Abstände: erst dadurch liest sich der Stapel als ein Block.
+  \renewcommand{\ZSFBoxBeforeSkip}{0pt}%
+  \setlength{\ZSFBoxAfterSkip}{0pt}%
+  \ifx\ZSF@groupHead\@empty\else
+    \begin{tablebox}%
+      % Kein `\\' nach der Kopfzeile: Der Zeilenwechsel setzt die waagrechte
+      % Linie (20_tables), und hinter der letzten Zeile faellt sie mit dem
+      % Boxrahmen zusammen — die Kante saehe doppelt so stark aus.
+      \begin{ZSFtable}[zebra=false]{\ZSFgroupcols}%
+        \ZSFheaderRow\ZSF@groupHead
+      \end{ZSFtable}%
+    \end{tablebox}%
+  \fi
+}{%
+  \endgroup
+  \par\addvspace{\ZSF@groupOuterAfter}%
+}
+\makeatother
+
+% ------------------------------------------------------------
+% Formula-Box
+% ------------------------------------------------------------
+% Der Unterschied zur Titelbox ist bewusst und klein: Der Titel sitzt auf dem
+% Boxhintergrund statt auf einem eigenen Balken, der Inhalt ist zentriert,
+% und zwischen upper und lower liegt eine Trennlinie. Alles andere — Rahmen,
+% Ecken, Innenabstand, Titelschrift — kommt aus zsftitlebox.
+%
+% \ifZSF@inFormulaBox (deklariert in 30_layout_spacing) schaltet
+% \textVorBox/\textNachBox auf ihre Formelform um. Das Flag wird in
+% 'before upper' gesetzt und ist damit auf die Boxgruppe beschränkt — es
+% braucht kein Zurücksetzen.
+\makeatletter
+\tcbset{preset/formula/.style={
+  zsftitlebox,
+  align=center,
+  ZSF@surface=emphasis,
+  ZSF@titlefill=surface,
+  frame=hard,
+  % Der waagrechte Titelabstand stand hier, weil er in zsftitlebar auf 0pt
+  % festgenagelt war und auf der Fläche der Formelbox besonders auffiel. Er
+  % kommt jetzt aus `padx` und gilt damit auf jeder Box — der Unterschied der
+  % Formelbox ist allein, dass ihr Titel keine eigene Fläche hat.
+  bottomtitle=0pt,
+  /utils/exec={\renewcommand{\ZSFBoxContext}{\ZSF@inFormulaBoxtrue}},
+  after upper={\par},
+}}
+\NewDocumentEnvironment{formulabox}{O{} O{}}
+  {\begin{ZSF@box}{preset/formula}{#1}{#2}}{\end{ZSF@box}} % chktex 9
+\makeatother
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSFBoxRule}{%
+  \noindent\textcolor{FormulaSeparatorColor}{\rule{\linewidth}{\ZSFboxRuleWidth}}%
+}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\NewDocumentCommand{\ZSFsep}{o}{%
+  \ZSFInterlude{\ZSFspaceSep}%
+  \ZSFBoxRule
+  \IfValueT{#1}{\ZSFInterlude{\ZSFspaceS}{\ZSFfontBlockLabel #1\par}}%
+  \ZSFInterlude{\ZSFspaceSep}%
+  \penalty-50%
+}
+
+% Dezente Anmerkung als eigene Zeile — für die Erläuterung unter einer Formel
+% oder Formelgruppe. Für eine Anmerkung, die auf der Formelzeile bleiben soll,
+% \ZSFformulaline; für einen Satz, der eng an die Formel bindet, \textNachBox.
+\newcommand{\formulanote}[1]{%
+  \ZSFInterlude{\ZSFspaceS}%
+  \noindent\ZSFBoxNote{#1}%
+  \ZSFInterlude{\ZSFspaceS}%
+}
+% \ZSFformulaline{<mathe>}{<Anmerkung>} — Formelzeile mit rechtsbündiger
+% Kurz-Anmerkung auf derselben Höhe (Gültigkeitsbereich, Einheit, Fallname).
+\newcommand{\ZSFformulaline}[2]{%
+  \ifZSFalignLeft
+    \par\noindent$\displaystyle #1$\hfill\makebox[0pt][r]{\ZSFBoxNote{#2}}\par
+  \else
+    \par\noindent\hfill$\displaystyle #1$\hfill\makebox[0pt][r]{\ZSFBoxNote{#2}}\par
+  \fi
+}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+% Die Schriftrolle steht hier und nicht im Aufruf: runintext ist der Baustein
+% »freier Fliesstext«, und wie laut der neben dem Bausteininhalt steht, ist
+% eine Dokumententscheidung (\ZSFFlowTextScale, 50_typography_semantics).
+\newenvironment{runintext}{%
+  \ZSF@claimBarGap
+  \ZSF@blockBefore
+  \ZSFfontFlow
+  \noindent\ZSFReadableAuto\ignorespaces
+}{\par}
+\makeatother
+
+% Dezente Bildunterschrift (leerer Text -> nichts)
+\newcommand{\ZSFfigcaption}[1]{%
+  \if\relax\detokenize{#1}\relax\else
+    \par\vspace{\ZSFspaceXS}%
+    \ZSFBoxNote{#1}\par
+  \fi
+}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+\newcommand{\ZSF@figWidthFrac}{}
+\newcommand{\ZSF@figBoxOpts}{}
+\newlength{\ZSF@figHeightLimit}
+% Oeffnet die figbox mit EXPANDIERTER Optionsliste. Ohne diesen Umweg landet
+% der Makroname selbst in der Optionsliste: tcolorbox parst sie, bevor es
+% expandiert, und meldet die ganze gesammelte Liste als einen unbekannten
+% Schluessel. Der \expandafter am Aufrufort loest genau eine Stufe auf.
+\newcommand{\ZSF@figOpen}[2]{\begin{figbox}[{#2}][#1]} % chktex 9
+\pgfkeys{
+  /zsf/fig/.is family, /zsf/fig,
+  width/.store in=\ZSF@figWidthFrac,
+  height/.code={\setlength{\ZSF@figHeightLimit}{#1}},
+  .unknown/.code={% chktex 26
+    \IfBlankTF{#1}%
+      {\edef\ZSF@figBoxOpts{\ZSF@figBoxOpts,\pgfkeyscurrentname}}%
+      {\edef\ZSF@figBoxOpts{\ZSF@figBoxOpts,\pgfkeyscurrentname=\unexpanded{#1}}}%
+  },
+  ZSF@figDefaults/.style={width=, height=\ZSFfigMaxHeight},
+}
+
+% ------------------------------------------------------------
+% \ZSFimage — das Bild OHNE Box
+% ------------------------------------------------------------
+% \ZSFimage[width=<Anteil>, height=<Mass>]{pfad}
+%
+% Die Bild-Makros darüber liefern immer einen Block: figbox, Titel, Caption.
+% Genau das ist falsch, sobald das Bild INHALT eines anderen Bausteins ist —
+% in einer Tabellenzelle (Bauform neben Bezeichnung neben Kennwerten) gibt es
+% keinen Platz für eine zweite Box. Bis hierher gab es dafür keinen Weg: rohes
+% \includegraphics ist in Kapiteln verboten, \ZSFfig öffnet eine figbox.
+%
+% Zugleich die EINE Stelle im System, an der \includegraphics steht. Vorher
+% dreimal fast gleich (Bildreihe, Einzelbild, Bild-neben-Text) — und wer die
+% Skalierung ändern wollte, musste alle drei finden.
+%
+% Bewusst ohne \par und ohne \centering: Der Baustein, in dem das Bild steht,
+% bestimmt Ausrichtung und Umbruch. Beides hier zu setzen machte das Makro in
+% einer Tabellenzelle unbrauchbar — dem Fall, für den es existiert.
+\newcommand{\ZSF@imgWidthFrac}{1}
+\newlength{\ZSF@imgHeightLimit}
+% Das Hoehenbudget gehoert dem CONTAINER, nicht dem Bild.
+%
+% Dasselbe \ZSFimage bedeutet an zwei Orten zwei Groessenordnungen: In einer
+% Tabellenzelle muss es in eine Zeile passen (\ZSFimageMaxHeight), als
+% Abbildung fuellt es einen Block (\ZSFfigMaxHeight). Das Bild selbst kann das
+% nicht wissen — es sieht seinen Container nicht.
+%
+% Stuende hier ein fester Default, waere genau eine der beiden Lagen still
+% falsch: Ein \ZSFimage in einer figbox wuerde ohne Fehler und ohne Warnung auf
+% Zellenhoehe gestaucht, und die Hoehe muesste an jedem Aufruf wiederholt
+% werden — also genau die Wiederholung, die ein zentraler Default vermeidet.
+% Deshalb ist der Default eine INDIREKTION: Jeder Baustein, der Bilder tragen
+% kann, bindet sie auf sein eigenes Mass um (figbox/splitbox auf Abbildungs-,
+% ZSFtable/valuegrid auf Zellenhoehe). Wer nichts bindet, bekommt die Zelle —
+% der Fall, fuer den \ZSFimage existiert.
+\newcommand{\ZSF@imgBudget}{\ZSFimageMaxHeight}
+\pgfkeys{
+  /zsf/image/.is family, /zsf/image,
+  width/.store in=\ZSF@imgWidthFrac,
+  height/.code={\setlength{\ZSF@imgHeightLimit}{#1}},
+  ZSF@imgDefaults/.style={width=1, height=\ZSF@imgBudget},
+}
+%
+% Die senkrechte Luft in einer Tabellenzelle bringt das Bild NICHT selbst mit.
+% Sie kommt von \ZSFtableCellPadY (20_tables): »Zellinhalt haelt Abstand zur
+% Zeilenkante« gilt fuer ein Bild wie fuer einen Bruch, und der Regler `rows`
+% entscheidet darueber. Ein eigener Bildwert waere dieselbe Aussage ein
+% zweites Mal.
+\newcommand{\ZSFimage}[2][]{%
+  \begingroup
+  \pgfkeys{/zsf/image, ZSF@imgDefaults, #1}%
+  \includegraphics[width=\ZSF@imgWidthFrac\linewidth,
+                   height=\ZSF@imgHeightLimit, keepaspectratio]{#2}%
+  \endgroup
+}
+
+%
+%
+%
+%
+%
+%
+%
+\newcounter{ZSF@figNum}
+\newlength{\ZSF@figWidth}
+\newcommand{\ZSFfig}[4][]{%
+  \begingroup
+  \renewcommand{\ZSF@figBoxOpts}{}%
+  \pgfkeys{/zsf/fig, ZSF@figDefaults, #1}%
+  \expandafter\ZSF@figOpen\expandafter{\ZSF@figBoxOpts}{#3}%
+    \setcounter{ZSF@figNum}{0}%
+    \@for\ZSF@figItem:=#2\do{\stepcounter{ZSF@figNum}}%
+    \ifnum\value{ZSF@figNum}>1\relax
+      \setlength{\ZSF@figWidth}{\dimexpr
+        \ifx\ZSF@figWidthFrac\@empty\ZSFfigUsableFraction\else\ZSF@figWidthFrac\fi
+        \linewidth/\value{ZSF@figNum}\relax}%
+      \noindent
+      \@for\ZSF@figItem:=#2\do{%
+        \begin{minipage}[c]{\ZSF@figWidth}%
+          \centering
+          \ZSFimage[width=1, height=\ZSF@figHeightLimit]{\ZSF@figItem}%
+        \end{minipage}%
+        \hfill
+      }%
+      \unskip
+      \par
+    \else
+      \centering
+      % Vorbelegung erst hier aufloesen: In der Optionsliste von \ZSFimage
+      % stuende sonst eine Fallunterscheidung, die pgfkeys als Wert speichert
+      % statt sie auszuwerten.
+      \ifx\ZSF@figWidthFrac\@empty\renewcommand{\ZSF@figWidthFrac}{1}\fi
+      \ZSFimage[width=\ZSF@figWidthFrac, height=\ZSF@figHeightLimit]{#2}%
+    \fi
+    \ZSFfigcaption{#4}%
+  \end{figbox}% chktex 10
+  \endgroup
+}
+
+% \ZSFfigside[<Optionen>]{pfad}{Titel}{Inhalt rechts} — Bild links, Inhalt
+% rechts. `width` ist hier der Anteil des BILDES (Vorbelegung 0.30); er wird
+% erst am Einsatzort gegen die dortige \linewidth ausgewertet.
+\newcommand{\ZSFfigside}[4][]{%
+  \begingroup
+  \renewcommand{\ZSF@figBoxOpts}{}%
+  \pgfkeys{/zsf/fig, ZSF@figDefaults, width=0.30, #1}%
+  \expandafter\ZSF@figOpen\expandafter{\ZSF@figBoxOpts}{#3}%
+    \noindent
+    \begin{minipage}[c]{\ZSF@figWidthFrac\linewidth}%
+      \centering
+      \ZSFimage[width=1, height=\ZSF@figHeightLimit]{#2}%
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[c]{\dimexpr\ZSFfigUsableFraction\linewidth
+                              -\ZSF@figWidthFrac\linewidth\relax}%
+      \raggedright
+      #4%
+    \end{minipage}%
+    \par
+  \end{figbox}% chktex 10
+  \endgroup
+}
+\makeatother
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\tcbset{split/.style={
+  sidebyside,
+  sidebyside gap=\ZSFspaceM,
+  lower separated=false,
+  lefthand width=#1\linewidth,
+  before lower={\ZSFBoxSetup},
+}}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+\newcommand{\ZSF@splitAlign}{top}
+\tcbset{
+  splitalign/.is choice,
+  splitalign/top/.code   ={\renewcommand{\ZSF@splitAlign}{top}},
+  splitalign/center/.code={\renewcommand{\ZSF@splitAlign}{center}},
+  splitalign/bottom/.code={\renewcommand{\ZSF@splitAlign}{bottom}},
+}
+\tcbset{ZSF@resolvesplit/.code={\tcbset{sidebyside align=\ZSF@splitAlign}}}
+\makeatother
+% splitbox ist das rahmenlose, titellose Preset dieses Reglers — der mit
+% Abstand häufigste Fall, deshalb ein eigener Name statt vier Optionen.
+%
+% Sie steht auf derselben Form wie jede andere Box (zsfboxshape) und nimmt mit
+% Reglern zurück, was sie rahmenlos macht. Ein 'blankest' wäre kürzer, würde
+% aber den Rahmen per Skin entfernen statt per Regler: Ein `frame=soft` vom
+% Aufrufer liefe danach ins Leere, weil der Skin gar nichts zeichnet — der
+% Regler wäre auf dieser einen Box stillschweigend wirkungslos.
+\tcbset{preset/split/.style={
+  zsfboxshape,
+  bodyparskip=inherit,
+  frame=none,
+  padx=none, pady=none,
+  ZSF@surface=quiet,
+  split=0.3,
+}}
+\makeatletter
+\NewDocumentEnvironment{splitbox}{O{}}
+  {\begingroup
+   \renewcommand{\ZSF@imgBudget}{\ZSFfigMaxHeight}%
+   \begin{ZSF@box}{preset/split}{}{#1}}
+  {\end{ZSF@box}\endgroup} % chktex 9
+\makeatother
+
+% ------------------------------------------------------------
+% Aussagen / Verfahren / Listen
+% ------------------------------------------------------------
+% Die leise Fassung: dezent, linker Balken im Akzent des Tons. Steht auf derselben
+% Form wie die Titelboxen und nimmt genau das zurück, was sie rahmenlos macht
+% — Rahmen, Ecken und die obere/untere Polsterung.
+%
+% Ton, Justierung und Eintritt kommen aus dem Vertrag (zsfboxcontract, via
+% zsfboxshape); hier steht nur noch der Unterschied. Die Fläche setzt dieser
+% Stil bewusst NICHT — sie kommt vom Flächen-Resolver am Listenende, der Rolle
+% und Ton zusammensetzt.
+\tcbset{preset/quiet/.style={
+  zsfboxshape,
+  bodyparskip=inherit,
+  frame=none,
+  borderline west={\ZSFstatementBarWidth}{0pt}{\ZSFtoneAccent},
+  padx=bar, pady=tight,
+}}
+
+% ------------------------------------------------------------
+% ZSFlist — eine Liste, zwei Nummerierungen
+% ------------------------------------------------------------
+% Nummerierte Schrittfolge und Faktenliste sind dieselbe Sache: „eine Liste in
+% einer optionalen leisen Box". Sie unterscheiden sich in Nummerierung und
+% Item-Layout — beides Eigenschaften einer Liste, keine verschiedenen Absichten.
+%
+%   \begin{ZSFlist}[Titel]            Aufzählung, Marke inline
+%   \begin{ZSFlist}[Titel][ordered]   Nummerierung, Marke über dem Text
+%   \begin{ZSFlist}                   ohne Titel: ganz ohne Box
+%
+% Das Item-Layout folgt der Listenart, weil es daran hängt: Ein nummerierter
+% Schritt trägt Fliesstext und braucht die Marke als eigene Zeile, ein Fakt
+% ist ein Einzeiler. Wer beides entkoppeln muss, bekommt einen Regler — aber
+% erst, wenn der Fall wirklich auftritt.
+\makeatletter
+\newif\ifZSF@listOrdered
+\newif\ifZSF@listBoxed
+\tcbset{ordered/.is if=ZSF@listOrdered, ordered/.default=true}
+\newcommand{\ZSF@listOpen}[1]{%
+  \ifZSF@listOrdered
+    \begin{enumerate}[
+      leftmargin=\ZSFlistLeftMarginOrdered, labelsep=\ZSFlistLabelSep,
+      itemsep=\ZSFlistItemSep, topsep=#1, parsep=0pt, partopsep=0pt]%
+  \else
+    \begin{itemize}[
+      leftmargin=\ZSFlistLeftMargin, labelsep=\ZSFlistLabelSep,
+      label={\textcolor{\ZSFtoneAccent}{\textbullet}},
+      itemsep=\ZSFlistItemSep, topsep=#1, parsep=0pt, partopsep=0pt]%
+  \fi
+}
+\newcommand{\ZSF@listClose}{%
+  \ifZSF@listOrdered\end{enumerate}\else\end{itemize}\fi % chktex 9
+}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\pgfkeys{
+  /zsf/listplain/.is family, /zsf/listplain,
+  ordered/.code={\tcbset{ordered=#1}},
+  ordered/.default=true,
+  tone/.code={\tcbset{tone=#1}},
+  .unknown/.code={% chktex 26
+    \PackageError{ZSF}{%
+      Regler '\pgfkeyscurrentname' ist auf einer ZSFlist ohne Titel wirkungslos%
+    }{%
+      Ohne Titel hat die Liste keine Box, auf die ein Box-Regler wirken kann.
+      Entweder einen Titel setzen (dann gelten alle Box-Regler) oder die
+      Option weglassen. In dieser Form gelten nur: ordered, tone.%
+    }%
+  },
+}
+\NewDocumentEnvironment{ZSFlist}{O{} O{}}
+  {\ZSF@listOrderedfalse
+   \renewcommand{\ZSF@boxOwnKnobs}{,ordered,}%
+   \IfBlankTF{#1}%
+     {\ZSF@listBoxedfalse\pgfkeys{/zsf/listplain, #2}\ZSF@listOpen{\ZSFspaceXS}}%
+     {\ZSF@listBoxedtrue\begin{defbox}[#1][weight=quiet, #2]\ZSF@listOpen{0pt}}}
+  {\ZSF@listClose\ifZSF@listBoxed\end{defbox}\fi} % chktex 9
+\makeatother
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+% +m/+g: beide Argumente sind lang. Ein Schritt darf mehrere Absätze tragen
+% (Erklärung, Displayformel, Schlusssatz) — xparse-Argumente wären sonst kurz,
+% wo das frühere \newcommand lang war.
+\NewDocumentCommand{\ZSFItem}{+m +g}{%
+  \item
+  \IfNoValueTF{#2}%
+    {#1}%
+    {\IfBlankTF{#1}%
+       {#2}%
+       {\ifZSF@listOrdered
+          {\ZSFfontBlockLabel #1}\\[\ZSFlistMarkGap]#2%
+        \else
+          {\ZSFfontBlockLabel #1}\,---\,#2%
+        \fi}}%
+}
+\makeatother
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+\newif\ifZSF@goalStarted
+\tcbset{preset/goal/.style={
+  zsftitlebox,
+  align=center,
+  pady=normal,
+  frame=strong,
+  ZSF@surface=plain,
+  /utils/exec={\ZSF@goalStartedfalse},
+  after upper={\par},
+  atomic,
+}}
+\makeatother
+\NewDocumentEnvironment{goalbox}{O{} O{}}
+  {\begin{ZSF@box}{preset/goal}{#1}{#2}}{\end{ZSF@box}} % chktex 9
+
+\newtcbox{\GoalConditionBox}{%
+  on line, enhanced,
+  boxsep=0pt,
+  boxrule=\ZSFgoalConditionRuleWidth,
+  colback=\GoalConditionBackColor,
+  colframe=\GoalConditionFrameColor,
+  borderline={\ZSFgoalConditionBorderlineWidth}{0pt}{\GoalConditionBorderColor},
+  arc=\ZSFgoalConditionInnerArc,
+  outer arc=\ZSFboxArc,
+  left=\ZSFgoalPillPadX, right=\ZSFgoalPillPadX,
+  top=\ZSFgoalPillPadY, bottom=\ZSFgoalPillPadY,
+  nobeforeafter,
+  tcbox raise base,
+}
+\newtcbox{\GoalTargetBox}{%
+  on line, enhanced,
+  boxsep=0pt,
+  boxrule=\ZSFboxRuleWidth,
+  colback=\GoalTargetBackColor,
+  colframe=\GoalTargetFrameColor,
+  arc=\ZSFboxInnerArc,
+  outer arc=\ZSFboxArc,
+  left=\ZSFgoalPillPadX, right=\ZSFgoalPillPadX,
+  top=\ZSFgoalPillPadY, bottom=\ZSFgoalPillPadY,
+  nobeforeafter,
+  tcbox raise base,
+}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\makeatletter
+\newcommand{\ZSF@goalLink}[1]{%
+  \ifZSF@goalStarted\ZSFInterlude{\ZSFgoalLinkSep}\else\par\ZSF@goalStartedtrue\fi
+  #1\par
+}
+\newcommand{\GoalCondition}[1]{\ZSF@goalLink{\leavevmode\GoalConditionBox{\ZSFfontNote #1}\hfill}}
+\newcommand{\GoalStep}[1]{\ZSF@goalLink{$\displaystyle #1$}}
+\newcommand{\GoalTarget}[1]{\ZSF@goalLink{\GoalTargetBox{$\displaystyle #1$}}}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\NewDocumentCommand{\ZSFDerivationCase}{s m m m}{%
+  \GoalCondition{#2}%
+  \IfBooleanTF{#1}%
+    {\GoalStep{#3 = \GoalTargetBox{$\displaystyle #4$}}}%
+    {\GoalStep{#3}\GoalStep{{}= \GoalTargetBox{$\displaystyle #4$}}}%
+}
+\makeatother
+% Inline-Danger-Tag (rotes Pill-Label für Stolperfallen im Fliesstext)
+\newtcbox{\ZSFdanger}{
+  colback=DangerTagColor, colframe=DangerTagColor, coltext=\DangerTagTextColor,
+  on line, boxsep=\ZSFspaceXS,
+  left=\ZSFspaceS, right=\ZSFspaceS, top=\ZSFspaceXS, bottom=\ZSFspaceXS,
+  boxrule=0pt, arc=\ZSFboxArc, outer arc=\ZSFboxArc,
+  fontupper=\ZSFfontDangerTag
+}
+
+% ------------------------------------------------------------
+% Valuegrid: kompakte (tabularray-)Wertegrids in einer Panel-Box
+% ------------------------------------------------------------
+% Interner Panel-Rahmen des Valuegrids — kein öffentlicher Baustein.
+% Kapitel greifen ausschliesslich über \begin{valuegrid}{n}[Titel] zu.
+\makeatletter
+% Die Gitterlinien sind ein Regler, keine Eigenschaft des Bausteins: Ob ein
+% Wertegitter seine Zellen einzeln umrandet, hängt am Inhalt und wird pro
+% Stelle entschieden (Reglertest, styles/README.md). Ein dichtes Zahlengitter
+% will beide Linienrichtungen, eine dreispaltige Zuordnungsliste kommt mit
+% waagrechten aus, und wo die Spalten selbst sprechen, stört jedes Lineal.
+%
+% Das Komma steht IM Wert, nicht in der Spec: `grid=none` liefert sonst einen
+% leeren Eintrag in der tblr-Optionsliste.
+% Die Linienstaerke ist \ZSFboxRuleWidth und nicht tabularrays Vorgabe: Eine
+% Linie ist in diesem System EIN Mass — der Boxrahmen zog 0.5pt, das Gitter
+% daneben 0.4pt, und entschieden hatte das niemand.
+%
+% Gezeichnet wird NUR innen — `2-Y` laesst die erste und die letzte Linie
+% jeder Richtung weg. Die Aussenkante gehoert dem Boxrahmen, weil nur er die
+% runden Ecken nachfahren kann; eine gerade Linie davor endete an vier
+% Stellen im Nichts. Dieselbe Entscheidung und dieselbe Begruendung wie an
+% der ZSFtable (20_tables → senkrecht), und damit sie zusammengehen, teilen
+% sie Staerke (\ZSFboxRuleWidth) und Tinte (\ZSFtoneFrameHard) mit dem
+% Rahmen bei `frame=hard`.
+\newcommand{\ZSF@gridSpec}{{wd=\ZSFboxRuleWidth,fg=\ZSFtoneFrameHard}}
+\newcommand{\ZSF@gridLines}{hline{2-Y}=\ZSF@gridSpec,vline{2-Y}=\ZSF@gridSpec,}
+\tcbset{
+  grid/.is choice,
+  grid/both/.code      ={\renewcommand{\ZSF@gridLines}{hline{2-Y}=\ZSF@gridSpec,vline{2-Y}=\ZSF@gridSpec,}},
+  grid/horizontal/.code={\renewcommand{\ZSF@gridLines}{hline{2-Y}=\ZSF@gridSpec,}},
+  grid/none/.code      ={\renewcommand{\ZSF@gridLines}{}},
+  % Dieselben zwei Fragen wie an der ZSFtable, unter denselben Namen und mit
+  % derselben Antwort (\ZSF@setRows / \ZSF@setColsep in 20_tables). Sie stehen
+  % hier als tcolorbox-Schlüssel, weil das valuegrid eine Box ist und seine
+  % Optionsliste die der Box IST — die ZSFtable hat dafür ihre eigene Familie.
+  % Zwei Aufrufwege, eine Bedeutung; die Werte kommen aus einer Hand.
+  rows/.is choice,
+  rows/normal/.code={\ZSF@setRows{normal}},
+  rows/roomy/.code ={\ZSF@setRows{roomy}},
+  rows/tight/.code ={\ZSF@setRows{tight}},
+  colsep/.is choice,
+  colsep/normal/.code={\ZSF@setColsep{normal}},
+  colsep/tight/.code ={\ZSF@setColsep{tight}},
+}
+% `rows` und `colsep` gehören in die Vorbelegung: Die Register sind sonst das,
+% was die zuletzt gesetzte ZSFtable hinterlassen hat — ausserhalb ihrer Gruppe
+% also null, und das Gitter stünde ohne jede Polsterung da.
+\tcbset{preset/valuegrid/.style={
+  zsftitlebox,
+  padx=none, pady=tight,
+  ZSF@surface=plain,
+  frame=hard,
+  grid=both,
+  rows=normal, colsep=normal,
+  atomic,
+}}
+% `width` ist Pflicht, nicht Kosmetik: Ohne sie setzt tabularray die Spalten
+% auf ihre natuerliche Breite, und das Gitter endet mitten in der Box —
+% sichtbar, seit die Optionen ueberhaupt ankommen (siehe unten). Eine Tabelle
+% fuellt in diesem System immer die Zeilenbreite (20_tables, Kopf).
+%
+% Zellpolsterung und Zeilenluft kommen aus DENSELBEN Registern wie bei der
+% ZSFtable (\ZSF@setColsep / \ZSF@setRows in 20_tables). Vorher standen hier
+% Eigenwerte: `rows=roomy` und `colsep=tight` bedeuteten auf den beiden
+% Tabellen-Bausteinen verschiedene Dinge, und \ZSFvaluegridRowSep war ein
+% zweites Register fuer dieselbe Frage.
+\newcommand{\ZSFvaluegridCommon}{
+  width=\linewidth,
+  colsep=\ZSF@tblColSep,
+  rowsep=\ZSFtableCellPadY,
+  \ZSF@gridLines
+  rows={valign=m},
+  cell{odd}{even}={bg=\TableZebraColor},
+  cell{even}{odd}={bg=\TableZebraColor}
+}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSF@vgOpts}{}
+\newcommand{\ZSF@vgOpen}[1]{\begin{tblr}{#1}} % chktex 9
+\NewDocumentEnvironment{valuegrid}{O{} O{} m}
+  {\begingroup
+   \renewcommand{\ZSF@boxOwnKnobs}{,grid,rows,colsep,}%
+   \renewcommand{\ZSF@imgBudget}{\ZSFimageMaxHeight}%
+   \begin{ZSF@box}{preset/valuegrid}{#1}{#2}%
+   \edef\ZSF@vgOpts{colspec={*{#3}{X[c]}},\ZSFvaluegridCommon}%
+   \expandafter\ZSF@vgOpen\expandafter{\ZSF@vgOpts}}
+  {\end{tblr}\end{ZSF@box}\endgroup} % chktex 9
+\makeatother
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSFBoxesBreakableOn}{%
+  \tcbset{ZSF@breakability/.style={breakable,break at=-\baselineskip/0pt}}%
+}
+\newcommand{\ZSFBoxesBreakableOff}{%
+  \tcbset{ZSF@breakability/.style={breakable=false}}%
+}
+% Nimmt die Umbruchsteuerung an Balken zurück: die Platzreserven UND den
+% negativen Penalty, der vor jedem Balken einen Spaltenumbruch anbietet.
+% Beides ist dieselbe Absicht — »hier soll nicht früh umgebrochen werden« —
+% und war deshalb als zwei getrennte Hälften ein Fehler: Wer nur die Reserven
+% abschaltete, bekam den Sog weiterhin.
+%
+% Dokumentweit in preamble.tex für eine ZSF, die ihre Spaltenumbrüche von Hand
+% setzt (\ZSFNewColumn); pro Kapitel für einen dicht packenden Anhang.
+% Das Umbruchverbot direkt hinter einem Balken bleibt in beiden Fällen.
+\newcommand{\ZSFBreakReservesOff}{%
+  \global\ZSFBarSteeringfalse
+  \renewcommand{\BreakIfNotEnoughSpace}{}%
+  \renewcommand{\BreakIfNotEnoughSpaceChapter}{}%
+  \renewcommand{\BreakIfNotEnoughSpaceSubsubsection}{}%
+}

@@ -1,0 +1,339 @@
+% ============================================================
+% 50_typography_semantics.tex — Schriftmakros für Box-Typen & semantische Inhaltsmakros
+% ============================================================
+
+% ── Die eine Rechenstelle für jede benannte Schriftrolle ─────────────
+% Jede Grösse unten wird GERECHNET, nicht geschrieben: Sie ist ihr bp-Mass
+% mal dem Rollenfaktor mal der Grundgrösse der ZSF (\ZSFBodyScale aus
+% 30_layout_spacing, 1 solange \ZSFBodyFontSize nicht steht). Über \the und
+% damit in pt, weil \fontsize sein Argument sonst als Zahl ohne Einheit lesen
+% müsste — der Faktor kommt so als fertiges Mass an und nicht als Term.
+%
+% \ZSFBodyScale steht hier fest verdrahtet und nicht als vierter Parameter:
+% Es gibt keine Schriftrolle im Textkörper, die der Grundgrösse NICHT folgen
+% soll. Wäre sie ein Argument, wäre die Frage bei jeder neuen Rolle wieder
+% offen — und genau eine Rolle bekäme sie irgendwann anders beantwortet.
+\makeatletter
+\newlength{\ZSF@fontSize}
+\newlength{\ZSF@fontSkip}
+\newcommand{\ZSF@scaledFont}[3]{%
+  \setlength{\ZSF@fontSize}{\ZSFBodyScale\dimexpr #1\dimexpr #2\relax\relax}%
+  \setlength{\ZSF@fontSkip}{\ZSFBodyScale\dimexpr #1\dimexpr #3\relax\relax}%
+  \fontsize{\the\ZSF@fontSize}{\the\ZSF@fontSkip}\selectfont}
+
+% Explizite bp-Grössen (wie Analysis) für präzise, font-unabhängige Kontrolle.
+% Der Rollenfaktor ist 1, wo die Rolle keinen eigenen Regler hat — nur die
+% Diagramm-Beschriftung bringt mit \ZSFDiagramLabelScale einen mit.
+\newcommand{\ZSFfontChapter}{\sffamily\bfseries\ZSF@scaledFont{1}{8.1bp}{9.1bp}}
+\newcommand{\ZSFfontSection}{\sffamily\bfseries\ZSF@scaledFont{1}{8.1bp}{9.1bp}}
+\newcommand{\ZSFfontSubsubsection}{\sffamily\bfseries\ZSF@scaledFont{1}{7.2bp}{8.0bp}}
+\newcommand{\ZSFfontBoxTitle}{\sffamily\bfseries\ZSF@scaledFont{1}{8.1bp}{9.1bp}}
+% chktex 6
+\newcommand{\ZSFfontNote}{\sffamily\itshape\ZSF@scaledFont{1}{6.7bp}{7.5bp}}
+% Rechtsbuendiges Meta-/Kategorie-Tag im Titelbalken (vgl. \ZSFTitleTag in
+% styles/60_boxes.tex). Etwas kleiner und kursiv, damit es den Titel begleitet
+% statt mit ihm zu konkurrieren.
+\newcommand{\ZSFfontTitleTag}{\sffamily\itshape\ZSF@scaledFont{1}{6.4bp}{7.0bp}}
+\newcommand{\ZSFfontTitleHeader}{\sffamily\bfseries\ZSF@scaledFont{1}{11bp}{12.5bp}}
+\makeatother
+
+% ── Seitenmöbel: bewusst OHNE \ZSFBodyScale ──────────────────────────
+% Fusszeile und Identity-Marker gehören zur SEITE und nicht zur Textspalte.
+% Die Seitenzahl am Fuss ist eine feste physische Grösse — sie schrumpft nicht
+% mit, nur weil der Text der ZSF enger gesetzt ist, und der 4pt-Marker wäre
+% eine Stufe kleiner nicht mehr lesbar. Deshalb rohes \fontsize: Das ist hier
+% die Aussage »absolut gemeint«, nicht ein vergessener Regler.
+\newcommand{\ZSFfontFooter}{\sffamily\bfseries\fontsize{9.5pt}{9.5pt}\selectfont}
+\newcommand{\ZSFfontIdentityMarker}{\fontsize{4pt}{4pt}\selectfont}
+
+% Schrift/Farbe für Code-Kommentare — nur für das optionale Code-Modul
+% (styles/67_code_comments.tex) benötigt. ce_green stammt aus
+% styles/40_colors_structure.tex. Schadlos wenn das Modul deaktiviert ist.
+\newcommand{\ZSFfontCodeComment}{\ttfamily\color{ce_green}}
+
+% Semantische Inhalts-Fontgrössen — die zwei Stufen des Reglers `font`
+% (`normal` | `dense`). Kapitel wählen sie nicht direkt, sondern über den
+% Regler an der Box (styles/60_boxes.tex) oder an der ZSFtable
+% (styles/20_tables.tex). `dense` ist die eine Stufe kleiner: lange Register,
+% Vergleichsmatrizen, gedrängte Aufzählungen.
+%
+% EIN Paar für beide Bausteine, nicht je eines: »eine Stufe kleiner« ist
+% dieselbe Entscheidung, ob sie eine Tabelle oder einen Boxinhalt trifft. Mit
+% zwei Paaren müsste jede Änderung am einen im anderen nachgezogen werden
+% (styles/README → Vereinigungstest).
+%
+% Beide holen die Display-Skips zurück: \normalsize und \footnotesize setzen
+% sie auf die Klassenwerte, und die ZSF-Entscheidung dazu ist eine andere
+% (\ZSFApplyDisplaySkips in 30_layout_spacing). Ohne diesen Nachsatz wären
+% Formeln in jeder Box luftiger als im Fliesstext — lautlos, weil beides
+% für sich korrekt aussieht.
+% ── Der Rollenfaktor des Bausteininhalts ────────────────────────────
+% Das Gegenstück zu \ZSFFlowTextScale, und aus demselben Grund: Wie laut steht
+% der Inhalt der Bausteine — Boxtext, Tabellenzelle, Formel — neben den
+% Titelbalken, die ihn gliedern?
+%
+% Ohne diesen Faktor gab es dafür nur \ZSFBodyFontSize, und das nimmt die
+% Balken MIT. Der Zustand »Balken auf voller Grösse, Inhalt eine Stufe
+% darunter« war damit nicht ausdrückbar — obwohl er der natürliche ist: Die
+% Balkengrössen stehen absolut in bp (oben) und sind auf die Spaltenbreite
+% abgestimmt, der Inhalt dagegen muss in eine Tabellenzelle passen. Das sind
+% zwei Fragen, und sie hatten einen gemeinsamen Regler.
+%
+% Gemessen, woran das auffiel: Eine Formelzelle einer zweispaltigen Tabelle
+% ist 86.2 pt breit. \sin(\arctan(x)) = x/\sqrt{1+x^2} braucht bei einem
+% Inhalt von 8 pt 86.3 pt und bricht um; bei 7 pt sind es 75.9 pt. Wer das
+% ueber \ZSFBodyFontSize loest, schrumpft die Balken von 8.1 auf 7.1 bp mit
+% und aendert das Satzbild an einer Stelle, an der nichts falsch war.
+%
+% Angewandt NACH der Klassenstufe, nicht statt ihr: \normalsize und
+% \footnotesize tragen \ZSFBodyScale bereits (30_layout_spacing rechnet die
+% Stufen um, sobald \ZSFBodyFontSize steht). Der Rollenfaktor multipliziert
+% nur noch — sonst zaehlte die Grundgroesse doppelt.
+%
+% Ein Faktor fuer beide Stufen, nicht zwei: »eine Stufe kleiner« (`font=dense`)
+% ist eine Entscheidung PRO STELLE und bleibt es; wie laut der Inhalt insgesamt
+% steht, ist eine Entscheidung pro ZSF. Zwei Faktoren wuerden die beiden Fragen
+% vermischen (styles/README → Vereinigungstest).
+\providecommand{\ZSFContentScale}{1}
+\makeatletter
+\newcommand{\ZSF@stepScale}[1]{%
+  \setlength{\ZSF@fontSize}{#1\dimexpr\f@size pt\relax}%
+  \setlength{\ZSF@fontSkip}{#1\dimexpr\f@baselineskip\relax}%
+  \fontsize{\the\ZSF@fontSize}{\the\ZSF@fontSkip}\selectfont}
+% Bei Faktor 1 gar nicht erst umschalten: Ein \fontsize auf denselben Wert
+% kostet eine Fontauswahl und kann durch die pt-Rundung minimal danebenliegen.
+\newcommand{\ZSF@applyContentScale}{%
+  \ifdim\ZSFContentScale pt=1pt\else\ZSF@stepScale{\ZSFContentScale}\fi}
+\newcommand{\ZSFfontContent}{\normalsize\ZSF@applyContentScale\ZSFApplyDisplaySkips}
+\newcommand{\ZSFfontContentDense}{\footnotesize\ZSF@applyContentScale\ZSFApplyDisplaySkips}
+\makeatother
+
+% ── Freier Fliesstext: die dritte Inhaltsrolle ───────────────────────
+% `runintext` ist der einzige Inhalts-Baustein OHNE eigene Schriftrolle — er
+% erbt schlicht die Umgebungsgrösse. Damit war der Fliesstext das einzige
+% Stück Satz, das man nur über einen rohen \fontsize erreichen konnte, und
+% genau dort landete historisch der Notausgang in main.tex.
+%
+% Als eigene Rolle ist es eine Entscheidung statt eines Nebeneffekts: Wie laut
+% steht die verbindende Prosa neben dem Bausteininhalt, der sie umgibt? In
+% einer box-lastigen ZSF trägt die Box den prüfungsrelevanten Inhalt und der
+% Fliesstext verbindet — dann darf er eine Spur leiser sein. In einer
+% textlastigen ist es umgekehrt und der Faktor bleibt auf 1.
+%
+% Gerechnet wird von der KLASSENGRÖSSE aus, nicht vom aktuellen Font: So
+% multiplizieren sich Grundgrösse und Rollenfaktor sauber (\ZSF@scaledFont
+% legt \ZSFBodyScale selbst davor), statt sich zu verdoppeln, wenn die Rolle
+% in einem bereits umgeschalteten Kontext aufgerufen wird.
+\providecommand{\ZSFFlowTextScale}{1}
+\makeatletter
+\newcommand{\ZSFfontFlow}{%
+  \ZSF@scaledFont{\ZSFFlowTextScale}{\ZSF@classFontSize pt}{\ZSF@classBaselineSkip}%
+  \ZSFApplyDisplaySkips}
+\makeatother
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSFfontTableHead}{\bfseries}
+% Marke einer ZSFlist und Beschriftung eines \ZSFsep-Blockwechsels — beide
+% sind dieselbe Rolle: eine kurze fette Beschriftung innerhalb eines Bausteins.
+\newcommand{\ZSFfontBlockLabel}{\bfseries}
+% Text, der per \textVorBox/\textNachBox an eine Box gebunden wird.
+\newcommand{\ZSFfontBoxBinding}{\small}
+% Inline-Pille für Stolperfallen (\ZSFdanger).
+\newcommand{\ZSFfontDangerTag}{\sffamily\bfseries}
+%
+%
+%
+\newcommand{\ZSFfontRefLocator}{\upshape\bfseries}
+
+%
+%
+%
+%
+%
+\newcommand{\ZSFBoxNote}[1]{{\ZSFfontNote\color{MutedTextColor}#1}}
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\providecommand{\ZSFDiagramLabelScale}{1}
+% Gerechnet wird oben in \ZSF@scaledFont — dieselbe Stelle wie für jede andere
+% Schriftrolle. Der Rollenfaktor \ZSFDiagramLabelScale multipliziert dort die
+% Grundgrösse der ZSF: Ein diagrammlastiges Blatt dreht seine Beschriftungen
+% kleiner, ohne dass sie aufhören, dem Satz der ZSF zu folgen.
+\makeatletter
+\newcommand{\ZSFfontDiagramLabel}{%
+  \sffamily\ZSF@scaledFont{\ZSFDiagramLabelScale}{5.8bp}{6.4bp}}
+\newcommand{\ZSFfontDiagramLabelSmall}{%
+  \sffamily\ZSF@scaledFont{\ZSFDiagramLabelScale}{4.6bp}{5.1bp}}
+\makeatother
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\NewDocumentCommand{\ZSFkeyword}{s o m}{\ZSFkeywordStyle{#3}}
+
+%
+%
+%
+%
+%
+\newcommand{\ZSFlabel}[1]{\ZSFlabelStyle{#1}}
+
+% Die beiden Darstellungs-Hooks der Marker — getrennt, weil \ZSFkeyword und
+% \ZSFlabel verschiedene Dinge bedeuten und eine ZSF den Unterschied ändern
+% können soll, ohne ein einziges Kapitel anzufassen.
+%
+% BEIDE schlicht fett, ohne Farbe. \ZSFkeyword stand bis hierher fett in der
+% KAPITELFARBE, mit dem Argument, der primäre Scan-Anker müsse sich von jeder
+% anderen Fettung abheben. Das Argument ist am Satz gescheitert: In laufendem
+% Text bringt eine eingefärbte Vokabel Unruhe in den Absatz, ohne dass die
+% Farbe etwas sagt — sie wiederholt nur, in welchem Kapitel man ohnehin gerade
+% ist. Wer den Absatz liest, wird gestört; wer ihn überfliegt, findet die
+% Fettung auch ohne Farbe.
+%
+% Farbe bleibt damit im System das, was sie vorher schon war und wofür sie
+% trägt: Kapitel-Identität auf Flächen (Balken, Akzente), Wegweiser zum ZIEL
+% eines Verweises (\ZSFref) und semantische Zuordnung in Formeln (\ZSFmhl*).
+% Als blosse Betonung im Fliesstext ist sie ausdrücklich nicht vorgesehen.
+%
+% Die Unterscheidung der beiden Marker liegt jetzt allein in der Bedeutung —
+% \ZSFkeyword ist ein Fachbegriff und landet im Register, \ZSFlabel ist eine
+% neutrale Beschriftung und tut das nicht. Das ist der Unterschied, der beim
+% Schreiben zählt; er war nie der Farbe zu entnehmen.
+\newcommand{\ZSFkeywordStyle}[1]{\textbf{#1}}
+\newcommand{\ZSFlabelStyle}[1]{\textbf{#1}}
+
+%
+%
+%
+%
+%
+%
+%
+\newcommand{\ZSFScriptRef}[1]{\hfill\ZSFInk{\ScriptRefColor}{\ZSFfontBoxBinding (S.#1)}}
+
+% \ZSFhl{...} — Hervorhebung des EINEN prüfungskritischsten Fakts pro Box
+% (fett + unterstrichen). Bewusst sparsam: hoechstens einmal pro Block.
+% Klare Rollentrennung:
+%   * Fachbegriff/Scan-Anker        -> \ZSFkeyword
+%   * Stolperfalle/kritische Ausnahme -> \ZSFdanger
+%   * Folgerung                      -> \ZSFconclusion
+%   * sonst die EINE Schlüsselaussage -> \ZSFhl
+% \uline statt \underline: \underline steckt seinen Inhalt in eine
+% unzerbrechliche Box — jede Hervorhebung, die länger als eine Zeile ist,
+% sprengt damit die 50-mm-Spalte. \ZSFhl markiert aber laut Zweck eine ganze
+% Aussage, nicht ein Wort. \uline bricht mit dem Absatz um.
+% Fett als Deklaration, nicht als Argument von \uline: ein \textbf{...} als
+% Argument macht den Inhalt für ulem wieder zu einer Einheit.
+%
+% Die Darstellung liegt wie bei \ZSFkeyword und \ZSFlabel in einem eigenen
+% Hook. Ohne ihn erwischte »die Hervorhebung dieser ZSF umstellen« zwei von
+% drei Markern — der dritte war der einzige mit fest verdrahteter Erscheinung,
+% und man sah es erst am Satz (styles/README → Auszeichnungs-Hooks).
+\newcommand{\ZSFhlStyle}[1]{{\bfseries\uline{#1}}}
+\newcommand{\ZSFhl}[1]{\ZSFhlStyle{#1}}
+
+% Papierorientierte Referenzrollen:
+%   * \ZSFref{label}: hilfreicher Querverweis mit farbiger Abschnittsnummer.
+%   * \ZSFsectionref{label}: kompakte Zielnummer für lokale Router/Tabellen.
+% Ziel-Label via optionales Argument von \SubsubsectionBar/\SubsectionBar/\StartChapter setzen:
+%   \SubsectionBar[sec:matrix-inverse]{Inverse}
+% Farbe = Palette-Farbe des ZIELkapitels (Wegweiser-Prinzip): wird automatisch
+% aus der Kapitelnummer der Referenz abgeleitet ("6.6" -> ChapterColor6).
+% Bei Kapiteln jenseits der Palette wird derselbe Modulo-Lookup wie bei
+% \StartChapter genutzt, damit gewrappte Kapitel und Verweise konsistent sind.
+% Aufrecht + fett statt kursiv für maximale Lesbarkeit bei 6.7bp.
+\makeatletter
+\def\ZSF@refExtractFirst#1#2\@nil{#1}
+\def\ZSF@refExtractChap#1.#2\@nil{#1}
+% Bestimmt \ZSF@refTargetColor aus dem Label; Fallback auf die aktive
+% Kapitelfarbe im ersten latexmk-Pass (Label noch undefiniert).
+\newcommand{\ZSF@refComputeTargetColor}[1]{%
+  \@ifundefined{r@#1}{%
+    \edef\ZSF@refTargetColor{\chaptercolor}%
+  }{%
+    \edef\ZSF@refTargetNum{\expandafter\expandafter\expandafter
+      \ZSF@refExtractFirst\csname r@#1\endcsname\@nil}%
+    \edef\ZSF@refTargetChap{\expandafter\ZSF@refExtractChap\ZSF@refTargetNum.\@nil}%
+    \ZSFSetPaletteColorNameFromNumber{\ZSF@refTargetChap}{\ZSF@refTargetColor}%
+  }%
+}
+% Die Zielfarbe läuft über \ZSFInk. Ohne das steht ein Verweis auf das eigene
+% Kapitel im Titel einer \SubsectionBar als ChapterColorN auf \chaptercolor!75 —
+% derselbe Farbton bei voller Sättigung, also unlesbar, ohne dass Build oder
+% Linter etwas melden. Auf einer Fläche mit eigener Kontrastfarbe erbt der
+% Verweis diese und bleibt lesbar; der Farb-Wegweiser gilt dort, wo er auch
+% ankommt — im Boxinhalt (40_colors_structure → Ink-Vertrag).
+\newcommand{\ZSFref}[1]{%
+  \begingroup
+  \ZSF@refComputeTargetColor{#1}%
+  \hyperref[#1]{{\ZSFfontNote\ZSFfontRefLocator
+    \ZSFInk{\ZSF@refTargetColor}{($\rightarrow$\,\ref*{#1})}}}%
+  \endgroup
+}
+\newcommand{\ZSFsectionref}[1]{%
+  \begingroup
+  \ZSF@refComputeTargetColor{#1}%
+  \hyperref[#1]{{\ZSFfontRefLocator\ZSFInk{\ZSF@refTargetColor}{\ref*{#1}}}}%
+  \endgroup
+}
+\makeatother
+
+\newcommand{\ZSFconclusion}[1]{%
+  \ZSFInterlude{\ZSFspaceS}%
+  \noindent$\Rightarrow$ #1%
+  \ZSFInterlude{\ZSFspaceS}%
+}
+

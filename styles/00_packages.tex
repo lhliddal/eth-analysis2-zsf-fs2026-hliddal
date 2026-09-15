@@ -1,0 +1,61 @@
+% ============================================================
+% 00_packages.tex — Pakete und Paket-Level-Setup
+% ============================================================
+% Hinweis: Reihenfolge ist relevant. Schriften vor Mathe, xcolor mit
+% [table]-Option vor allem, was Tabellen-Farben braucht.
+
+% LuaLaTeX: Fonts kommen als OTF/TTF ueber fontspec — fontenc/inputenc sind
+% dort obsolet (Unicode ist nativ), das carlito-LaTeX-Paket entfaellt.
+\usepackage{fontspec}
+\usepackage[nswissgerman]{babel}
+% Carlito (Calibri-Aequivalent, Google) als Dokumentschrift; Lining Figures
+% explizit, entspricht der frueheren lf-Option. Sans ist die Hauptschrift.
+\setmainfont{Carlito}[Numbers=Lining]
+\setsansfont{Carlito}[Numbers=Lining]
+\renewcommand{\familydefault}{\sfdefault}
+%
+%
+
+\usepackage[landscape, a4paper, margin=1.5mm]{geometry}
+\usepackage{microtype}
+\usepackage{multicol}
+
+\usepackage{mathtools}              % Superset von amsmath
+% unicode-math ersetzt sansmath+amssymb: eine echte Sans-Mathe-Schrift (OTF)
+% statt per Makro nachgebauter Symbole. NewCMSansMath statt Fira Math, weil
+% Fira Math nachweislich Glyphen fehlen, die das Template braucht (gemessen:
+% U+211C/U+2111 Re/Im, U+229B \circledast) — Vollstaendigkeit schlaegt hier
+% die Duktus-Naehe zu Carlito.
+% Die Schrift liegt gevendort in styles/fonts/ (GUST-Lizenz): Ubuntus
+% TeX Live 2023 in der CI liefert NewCMSansMath noch nicht aus, und der
+% feste Pfad macht CI- und lokale Builds glyphengleich.
+\usepackage{unicode-math}
+\setmathfont{NewCMSansMath-Regular.otf}[Path=styles/fonts/]
+\usepackage{siunitx}
+\sisetup{
+  mode=match,
+  propagate-math-font=true,
+  reset-text-family=false,
+  exponent-product = \cdot,
+  output-decimal-marker = {,},
+  per-mode = symbol
+}
+
+\usepackage[table]{xcolor}          % [table] aktiviert \rowcolor / \columncolor
+\usepackage{transparent}
+\usepackage{array}                  % erweiterte Spaltentypen + \arrayrulecolor
+\usepackage{tabularx}               % \linewidth-Fit + X-Spalten
+\usepackage{tabularray}             % moderne Tabellen (valuegrid)
+\usepackage{xstring}
+\usepackage{ragged2e}               % Silbentrennung bei Flattersatz
+\usepackage[normalem]{ulem}         % umbruchfähige Unterstreichung für \ZSFhl
+                                    % (normalem: \emph bleibt kursiv)
+\usepackage{enumitem}               % \setlist
+
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+\usepackage{hyperref}

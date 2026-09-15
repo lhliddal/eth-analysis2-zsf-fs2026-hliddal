@@ -1,0 +1,250 @@
+\StartChapter{Systeme von Differentialgleichungen}
+
+\SubsectionBar[sec:phasenportrait]{Eigenschaften}
+
+\textVorBox{Treten zwei Differentialgleichungen gekoppelt auf, so spricht man von einem \ZSFkeyword{System von Differentialgleichungen 1. Ordnung}:}
+\begin{formulabox}
+    $\displaystyle
+    \begin{cases}
+        y_1' = f_1(x,y_1,y_2,b_1)\\
+        y_2' = f_2(x,y_1,y_2,b_2)
+    \end{cases}$
+\end{formulabox}
+\textNachBox{Dabei sind $y_1$ und $y_2$ Funktionen in $x$.}
+\ZSFindexsee{DGLS}{System von Differentialgleichungen 1. Ordnung}
+
+Wenn $f_1$ und $f_2$ in $x$ stetig und nach $y_1$ und $y_2$ stetig differenzierbar sind, dann hat das AWP $y_1(x_0)=y_{1,0}$, $y_2(x_0)=y_{2,0}$ eine Lösung.
+
+\textVorBox{Ein \ZSFkeyword{autonomes System} ist von der Form:}
+\begin{formulabox}
+    $\displaystyle
+    \begin{cases}
+        y_1' = f_1(y_1,y_2,b_1)\\
+        y_2' = f_2(y_1,y_2,b_2)
+    \end{cases}$
+\end{formulabox}
+\textNachBox{Dabei erfolgt die einzige Abhängigkeit von der Variablen $x$ indirekt über $y_1(x)$ und $y_2(x)$.}
+
+\textVorBox{Eine \ZSFkeyword{Trajektorie} ist die durch $(x_0,y_0)$ gehende Feldlinie. Die Schar aller Trajektorien ist das \ZSFkeyword{Phasenportrait}, ein Vektorfeld:}
+\begin{formulabox}
+    $\displaystyle
+    \begin{cases}
+        x' = f_1(x,y)\\
+        y' = f_2(x,y)
+    \end{cases}
+    \Rightarrow
+    \vec v=
+    \begin{pmatrix}
+        x'\\
+        y'
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+        v_1\\
+        v_2
+    \end{pmatrix}$
+\end{formulabox}
+\ZSFindexsee{Phasendiagramm}{Phasenportrait}
+
+\ZSFNewColumn
+\SubsectionBar{Linear-autonome DGL mit konst. Koeffizienten}
+
+\SubsubsectionBar{Homogene Systeme (Eigenwert-Ansatz)}
+
+\textVorBox{Ein System der folgenden Form ist ein \ZSFkeyword{linear autonomes DGL-System mit konstanten Koeffizienten} der Ordnung 1:}
+\begin{formulabox}
+    $\displaystyle
+    \begin{cases}
+        x_1' = a_{11}x_1 + a_{12}x_2 + b_1\\
+        x_2' = a_{21}x_1 + a_{22}x_2 + b_2
+    \end{cases}$
+\end{formulabox}
+
+\begin{ZSFlist}[Lösungsverfahren: Homogene DGL-Systeme][ordered]
+    \ZSFItem{System aufstellen}{Matrix $A$ und Vektoren $\dot{\vec x}$, $\vec x$, $\vec b$ aufstellen: $\dot{\vec x}=A\vec x$.}
+    \ZSFItem{Eigenwerte/-vektoren}{Eigenwerte $\lambda_i$ und Eigenvektoren $\vec v_i$ bestimmen; Abkürzung \ZSFref{sec:eigenvalues}.}
+    \ZSFItem{Homogene Lösung}{$\vec x=\ZSFsumAuto{i}{} C_i\cdot e^{\lambda_i t}\cdot \vec v_i$.}
+\end{ZSFlist}
+
+\textVorBox{Bei einem imaginären Eigenwertepaar $\lambda_{1,2}=a\pm bi$ gilt in reeller Darstellung:}
+\begin{formulabox}
+    $\displaystyle
+    \vec x=
+    C_1\cdot e^{at}
+    \begin{pmatrix}
+        c\cos(bt)\mp d\sin(bt)\\
+        e\cos(bt)\mp f\sin(bt)\\
+        g\cos(bt)\mp h\sin(bt)
+    \end{pmatrix}
+    +C_2\cdot e^{at}
+    \begin{pmatrix}
+        c\sin(bt)\pm d\cos(bt)\\
+        e\sin(bt)\pm f\cos(bt)\\
+        g\sin(bt)\pm h\cos(bt)
+    \end{pmatrix}$
+\end{formulabox}
+
+\textVorBox{\ZSFlabel{Pragmatischere Formel für die Prüfung} Eigenvektor $\vec v=\ZSFmhlA{\vec u}\pm i\ZSFmhlB{\vec w}$ in Realteil $\ZSFmhlA{\vec u}$ und Imaginärteil $\ZSFmhlB{\vec w}$ aufteilen. Die reelle Lösung ist dann direkt:}
+\begin{formulabox}
+    $\displaystyle \vec x=C_1e^{at}\bigl(\ZSFmhlA{\vec u}\cos(bt)-\ZSFmhlB{\vec w}\sin(bt)\bigr)+C_2e^{at}\bigl(\ZSFmhlA{\vec u}\sin(bt)+\ZSFmhlB{\vec w}\cos(bt)\bigr)$
+\end{formulabox}
+
+\textVorBox{Ist Matrix $A$ \ZSFkeyword{nicht diagonalisierbar} (nur ein Eigenvektor $\ZSFmhlA{\vec v}$), bestimme den \ZSFkeyword{Hauptvektor} $\ZSFmhlB{\vec h}$ via $(A-\lambda I)\ZSFmhlB{\vec h}=\ZSFmhlA{\vec v}$:}
+\begin{formulabox}
+    $\displaystyle \vec x=C_1e^{\lambda t}\ZSFmhlA{\vec v}+C_2e^{\lambda t}\bigl(\ZSFmhlB{\vec h}+t\ZSFmhlA{\vec v}\bigr)$
+\end{formulabox}
+
+\SubsubsectionBar{Inhomogene Systeme \& Elimination}
+
+\textVorBox{Beim \ZSFkeyword[inhomogenes System@inhomogenes System]{inhomogenen} System $\dot{\vec x}=A\vec x+\vec b(t)$: Ansatz via \ZSFref{sec:linear-dgl} (Koeffizientenvergleich):}
+\begin{formulabox}
+    \ZSFlabel{Konstantes Störglied $\vec b$}\quad $\vec x_p=\vec c\Rightarrow A\vec c+\vec b=0$
+    \ZSFsep
+    \ZSFlabel{Exponentielles Störglied $\vec b e^{\mu t}$}\quad $\vec x_p=\vec c e^{\mu t}\Rightarrow(\mu I-A)\vec c=\vec b$
+\end{formulabox}
+\ZSFindex{Störglied}
+
+\textVorBox{Alternativ (bei Resonanz, nicht invertierbarem $A$ oder als Notnagel) eignet sich das \ZSFkeyword{Eliminationsverfahren}:}
+\begin{ZSFlist}[][ordered]
+    \ZSFItem{Zweite Ableitung}{$x_1'$ oder $x_2'$ zu $x_1''$ bzw. $x_2''$ ableiten.}
+    \ZSFItem{Ersetzen}{$x_1'$ bzw. $x_2'$ im abgeleiteten Term durch die ursprüngliche Gleichung ersetzen.}
+    \ZSFItem{Eliminieren}{$x_1$ bzw. $x_2$ mit Hilfe der ursprünglichen Gleichung eliminieren.}
+    \ZSFItem{DGL lösen}{Zu DGL 2.\ Ordnung \ZSFref{sec:const-coeff} umformen und Nullstellen bestimmen.}
+    \ZSFItem{Zweite Funktion}{Aus $x_1$ bzw. $x_2$ die zweite Funktion bestimmen.}
+\end{ZSFlist}
+
+\SubsectionBar{Gleichgewichtspunkte}
+\ZSFindex{Gleichgewichtspunkt}
+\ZSFindexsee{Ruhelage}{Gleichgewichtspunkt}
+\ZSFindexsee{Fixpunkt}{Gleichgewichtspunkt}
+
+\textVorBox{Ein \ZSFkeyword{Gleichgewichtspunkt} (GGWP / Fixpunkt) ist ein Ort $\vec x^*$, an dem das Vektorfeld verschwindet: $\vec f(\vec x^*) = \vec 0$. Dort gestartet, bewegt sich nichts ($\Rightarrow$ konstante Lösung $\vec x(t)=\vec x^*$). Geometrisch: Pfeile laufen zusammen (\ZSFkeyword*{stabil}) bzw. auseinander (\ZSFdanger{instabil}):}
+\begin{formulabox}
+    $\displaystyle
+    \begin{pmatrix} x_1' \\ x_2' \end{pmatrix} =
+    \begin{pmatrix} f_1(x_1,x_2) \\ f_2(x_1,x_2) \end{pmatrix} \stackrel{!}{=} \begin{pmatrix} 0 \\ 0 \end{pmatrix}$
+    \ZSFsep
+    \centering
+    \begin{tikzpicture}[>={Stealth[length=1.2mm]}, line cap=round, line join=round,
+        every node/.style={inner sep=0.2mm, font=\ZSFfontDiagramLabelSmall}]
+      % --- stabil: Pfeile laufen zusammen ---
+      \begin{scope}[shift={(0,0)}]
+        \fill[ChapterColor9] (0,0) circle (0.6pt);
+        \foreach \a in {45, 135, 225, 315}{
+            \draw[->, ChapterColor9, line width=0.65pt] (\a:0.32) -- (\a:0.08);
+        }
+        \node[ChapterColor9] at (0,-0.44) {stabil};
+      \end{scope}
+      % --- instabil: Pfeile laufen auseinander ---
+      \begin{scope}[shift={(2.2,0)}]
+        \fill[ChapterColor14] (0,0) circle (0.6pt);
+        \foreach \a in {45, 135, 225, 315}{
+            \draw[->, ChapterColor14, line width=0.65pt] (\a:0.08) -- (\a:0.32);
+        }
+        \node[ChapterColor14] at (0,-0.44) {instabil};
+      \end{scope}
+    \end{tikzpicture}
+\end{formulabox}
+
+\begin{ZSFlist}[Gleichgewichtspunkt finden]
+    \ZSFItem{DGL-System}{$x_1'=x_2'=0$ setzen und simultan nach $x_1, x_2$ auflösen (linear: immer $\vec 0$; weitere nur falls $\det A = 0$).}
+    \ZSFItem{Gewöhnliche DGL}{$y'=f(y(t))$ mit $f(y_g)=0$ --- das AWP $y(t_0)=y_g$ hat die konstante Lösung $y(t)=y_g$.}
+\end{ZSFlist}
+
+\textVorBox{Bei einem linearen System $\dot{\vec x}=A\vec x$ bestimmen die Eigenwerte $\lambda_i$ bzw. Spur $S$ und Determinante $D$ \ZSFref{sec:eigenvalues} den Typ und die Stabilität des Gleichgewichtspunkts:}
+\ZSFindex[Stabilitat]{Stabilität}
+\ZSFindex{Knoten}
+\ZSFindex{Sattelpunkt}
+\ZSFindexsee{Sattel}{Sattelpunkt}
+\ZSFindex{Strudel}
+\ZSFindexsee{Spiralpunkt}{Strudel}
+\ZSFindex{Zentrum}
+\ZSFindexsee{Wirbelpunkt}{Zentrum}
+\begin{tablebox}[GGWP-Typen: Klassifikation]
+\begin{ZSFinset}
+\centering
+$\Re(\lambda)\to\text{rein/raus};\quad \Im(\lambda)\to\text{Drehung};\quad \text{instab.}\to\text{Pfeile umgek.}$
+
+\ZSFgap[XS]
+\begin{tikzpicture}[>={Stealth[length=1.2mm]}, line cap=round, line join=round,
+    every node/.style={inner sep=0.2mm, font=\ZSFfontDiagramLabelSmall}]
+  % --- Knoten (stabil): Strahlen, die in den GGWP laufen ---
+  \begin{scope}[shift={(0,0)}]
+    \fill[ChapterColor9] (0,0) circle (0.5pt);
+    \foreach \a in {30,90,150,210,270,330}{
+        \draw[ChapterColor9, line width=0.65pt] (\a:0.38) -- (\a:0.10);
+        \draw[->, ChapterColor9, line width=0.65pt] (\a:0.28) -- (\a:0.23);}
+    \node[ChapterColor9] at (0,-0.52) {stab. Knoten};
+  \end{scope}
+  % --- Sattel: rein laengs einer Achse, raus laengs der anderen ---
+  \begin{scope}[shift={(1.65,0)}]
+    \fill[ChapterColor14] (0,0) circle (0.5pt);
+    \draw[->, ChapterColor14, line width=0.65pt] (-0.38,0) -- (-0.12,0);
+    \draw[->, ChapterColor14, line width=0.65pt] (0.38,0) -- (0.12,0);
+    \draw[->, ChapterColor14, line width=0.65pt] (0,0.12) -- (0,0.38);
+    \draw[->, ChapterColor14, line width=0.65pt] (0,-0.12) -- (0,-0.38);
+    \draw[ChapterColor14!75, line width=0.55pt] plot[domain=0.12:0.36,samples=18,variable=\u] ({\u},{0.045/\u});
+    \draw[ChapterColor14!75, line width=0.55pt] plot[domain=0.12:0.36,samples=18,variable=\u] ({-\u},{-0.045/\u});
+    \node[ChapterColor14] at (0,-0.52) {Sattel};
+  \end{scope}
+  % --- Strudel (stabil): hineinspiralend ---
+  \begin{scope}[shift={(3.30,0)}]
+    \fill[ChapterColor4] (0,0) circle (0.5pt);
+    \draw[ChapterColor4, line width=0.65pt]
+    plot[domain=0:540,samples=80,smooth,variable=\t]
+      ({0.38*exp(-0.0028*\t)*cos(\t)},{0.38*exp(-0.0028*\t)*sin(\t)});
+    \draw[->, ChapterColor4, line width=0.65pt]
+    plot[domain=95:150,samples=14,smooth,variable=\t]
+      ({0.38*exp(-0.0028*\t)*cos(\t)},{0.38*exp(-0.0028*\t)*sin(\t)});
+    \node[ChapterColor4] at (0,-0.52) {stab. Strudel};
+  \end{scope}
+  % --- Zentrum: geschlossene Ellipsen ---
+  \begin{scope}[shift={(4.95,0)}]
+    \fill[black] (0,0) circle (0.5pt);
+    \foreach \s in {0.16,0.27,0.38}{
+        \draw[black, line width=0.55pt] (0,0) ellipse [x radius=\s, y radius=0.66*\s];}
+    \draw[->, black, line width=0.55pt] (0.38,0.02) -- (0.38,-0.02);
+    \draw[->, black, line width=0.55pt] (-0.38,-0.02) -- (-0.38,0.02);
+    \node[black] at (0,-0.52) {Zentrum};
+  \end{scope}
+\end{tikzpicture}
+\end{ZSFinset}
+\par\ZSFgap[XS]%
+\begin{ZSFtable}[header=true, rows=tight, colsep=tight]{Y{0.95} Y{0.65} Y{1.30} Y{1.10}}
+    \ZSFheaderRow \ZSFhead{EW $\lambda_{1,2}$} & \ZSFhead{Typ} & \ZSFhead{Stabilität \& Bahn} & \ZSFhead{$2{\times}2$: $S, D$ \ZSFref{sec:eigenvalues}} \\
+    \ZSFspan{L}{4}{\ZSFlabel{Reelle EW: $\lambda_i\in\R$}} \\
+    $\lambda_1,\lambda_2 < 0$ & \ZSFggwpKnoten & \ZSFkeyword*{stabil} (asympt.); Bahnen laufen rein & $S^2 > 4D > 0$,\newline $S < 0$ \\
+    $\lambda_1,\lambda_2 > 0$ & \ZSFggwpKnoten & \ZSFdanger{instabil}; Bahnen laufen raus & $S^2 > 4D > 0$,\newline $S > 0$ \\
+    $\lambda_1 < 0 < \lambda_2$ & \ZSFggwpSattel & \ZSFdanger{immer instabil}; rein/raus längs EV & $D < 0$ \\
+    ein $\lambda_i = 0$ & Grenzfall & einzeln prüfen: keine Aussage & $D = 0$ \\
+    \ZSFspan{L}{4}{\ZSFlabel{Mehrfacher EW: $\lambda_1=\lambda_2$}} \\
+    1 EV & \ZSFggwpKnoten[entart. Knoten] & Stabilität $=$ Vz.\ von $\Re(\lambda)$ & $S^2 = 4D > 0$ \\
+    2 EV & \ZSFggwpKnoten[Stern] & Stabilität $=$ Vz.\ von $\Re(\lambda)$ & $S^2 = 4D > 0$ \\
+    \ZSFspan{L}{4}{\ZSFlabel{Komplexe EW: $\lambda_{1,2}=\ZSFmhlA{a}\pm i\ZSFmhlB{b}\in\C,\; \ZSFmhlB{b}\neq0$}} \\
+    $\ZSFmhlA{a} < 0$ & \ZSFggwpStrudel & \ZSFkeyword*{stabil}; spiralt rein & $S^2 < 4D$,\newline $S < 0$ \\
+    $\ZSFmhlA{a} > 0$ & \ZSFggwpStrudel & \ZSFdanger{instabil}; spiralt raus & $S^2 < 4D$,\newline $S > 0$ \\
+    $\ZSFmhlA{a} = 0$ & \ZSFggwpZentrum & \ZSFkeyword*{stabil} (linear); geschlossene Ellipsen & $S = 0$, $D > 0$
+\end{ZSFtable}
+\end{tablebox}
+
+\SubsectionBar[sec:eigenvalues]{Eigenwerte \& Eigenvektoren}
+\ZSFindex{Eigenwert}
+\ZSFindex{Eigenvektor}
+
+\textVorBox{Die Berechnung von Eigenwerten $\lambda$ und Eigenvektoren $\vec v$ einer Matrix $A$ ist das Fundament zur Lösung von DGL-Systemen.}
+\begin{ZSFlist}[Abkürzung für $2\times 2$-Matrizen][ordered]
+    \ZSFItem{Eigenwerte berechnen}{Eigentlich via $\det(A-\lambda I)=0$. Für $A=\begin{pmatrix}a&b\\c&d\end{pmatrix}$ gilt aber direkt:
+    \[\lambda^2-\ZSFbraceunder{(a+d)}{\text{Spur } S}\lambda+\ZSFbraceunder{(ad-bc)}{\text{Det } D}=0.\]
+    Mit der Mitternachtsformel auflösen liefert $\lambda_1,\lambda_2$.}
+    \ZSFItem{Eigenvektoren bestimmen}{Für jedes $\lambda_i$ die Matrix $(A-\lambda_iI)$ berechnen. Eine beliebige Nicht-Null-Zeile $(\alpha,\beta)$ wählen. Der Eigenvektor entsteht durch Vertauschen und ein Minuszeichen:
+    \[\vec v=\begin{pmatrix}-\beta\\\alpha\end{pmatrix}\quad\text{oder}\quad\begin{pmatrix}\beta\\-\alpha\end{pmatrix}.\]}
+\end{ZSFlist}
+
+\ZSFindex{Mitternachtsformel}
+\ZSFindexsee{abc-Formel}{Mitternachtsformel}
+\ZSFindexsee{pq-Formel}{Mitternachtsformel}
+\begin{defbox}[Mitternachtsformel]
+    \[
+    ax^2+bx+c=0\quad\Rightarrow\quad x_{1,2}=\frac{-b\pm\sqrt{b^2-4ac}}{2a}
+    \]
+\end{defbox}

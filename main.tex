@@ -1,0 +1,34 @@
+\documentclass[8pt]{extarticle}
+\input{preamble}
+
+% ============================================================
+% DOCUMENT
+% ============================================================
+
+\begin{document}
+\setcounter{section}{0}
+\begin{multicols*}{4}
+\ZSFReadableAuto
+
+% Hier neue Kapitel als \input{chapters/chNN_name} einbinden.
+% Für einen bewussten Spaltenumbruch \ZSFNewColumn vor das Strukturmakro setzen.
+\input{chapters/ch00_stichwortverzeichnis}
+\ZSFNewColumn
+\input{chapters/ch01_grundlagen}
+\input{chapters/ch02_komplexe_zahlen}
+\input{chapters/ch03_funktionen}
+\input{chapters/ch04_differentialrechnung}
+\input{chapters/ch05_funktionen_mehrere_variablen}
+\input{chapters/ch06_integrale}
+\ZSFNewColumn
+\input{chapters/ch07_integrale_mehrere_variablen}
+\input{chapters/ch08_vektoranalysis}
+\ZSFNewColumn
+\input{chapters/ch09_differentialgleichungen}
+\input{chapters/ch10_systeme_differentialgleichungen}
+\ZSFNewColumn
+\input{chapters/ch11_anhang}
+\input{chapters/ch12_schlusswort}
+
+\end{multicols*}
+\end{document}
